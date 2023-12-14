@@ -60,7 +60,7 @@ CREATE TABLE Employee (
     email VARCHAR(100) NOT NULL,
     nom VARCHAR(100) NULL,
     prenom VARCHAR(100) NULL,
-    mot_de_passe VARCHAR(100)
+    mot_de_passe VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Adresse (
