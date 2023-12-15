@@ -11,7 +11,7 @@ import User from "../../public/img/user.svg";
          <div>
               <h1>NEGOSUD</h1>
            <div>
-            <Cart className="h-14 w-3"/>
+            <Cart/>
             <User/>
            </div>
          </div>
