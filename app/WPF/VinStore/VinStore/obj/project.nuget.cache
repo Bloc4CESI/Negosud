@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "aIDiZWyUdCOm6Nkuq2VW9aQfeeNHGBH9E/ITywErII171O0+BqGuOxW8Bt7WHybm+G4hzZv6xYXeuEjqm3xEgg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\takus\\Desktop\\ecole\\Cube4\\WPF\\VinStore\\VinStore\\VinStore.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\takus\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
+    "C:\\Users\\takus\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
+    "C:\\Users\\takus\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+  ],
+  "logs": []
+}
