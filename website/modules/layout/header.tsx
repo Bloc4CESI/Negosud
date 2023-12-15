@@ -1,17 +1,18 @@
  "use client";
 import React from "react";
-import Cart from "../../public/img/cart.svg";
 import User from "../../public/img/user.svg";
+import Cart from "../../public/img/cart.svg";
 
  const Header: React.FC = () => {
      return (
-         <div>
+         <div className="flex items-center justify-end">
               <h1>NEGOSUD</h1>
-           <div>
-            <Cart/>
-            <User/>
-           </div>
-         </div>
+              <span className="flex w-12 h-12">
+              <User/>
+                <Cart/>
+              </span>
+        </div>
+                
      );
  };
 
