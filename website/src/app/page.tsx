@@ -3,6 +3,6 @@ import "./globals.css";
 
 export default function Home() {
   return (
-   <Header title={"Negosud"} />
+   <Header/>
   )
 }
