@@ -3,10 +3,7 @@ import React from "react";
 import Cart from "../../public/img/cart.svg";
 import User from "../../public/img/user.svg";
 
- interface HeaderProps {
-     title: string; }
-
- const Header: React.FC<HeaderProps> = () => {
+ const Header: React.FC = () => {
      return (
          <div>
               <h1>NEGOSUD</h1>
