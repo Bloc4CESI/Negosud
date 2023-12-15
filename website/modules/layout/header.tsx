@@ -1,13 +1,20 @@
- import React from "react";
+ "use client";
+import React from "react";
+import Cart from "../../public/img/cart.svg";
+import User from "../../public/img/user.svg";
 
  interface HeaderProps {
      title: string; }
 
- const Header: React.FC<HeaderProps> = ({ title }) => {
+ const Header: React.FC<HeaderProps> = () => {
      return (
-         <header>
-             <h1>{title}</h1>
-         </header>
+         <div>
+              <h1>NEGOSUD</h1>
+           <div>
+            <Cart className="h-14 w-3"/>
+            <User/>
+           </div>
+         </div>
      );
  };
 
