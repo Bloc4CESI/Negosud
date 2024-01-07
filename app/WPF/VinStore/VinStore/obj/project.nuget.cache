@@ -1,12 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "aIDiZWyUdCOm6Nkuq2VW9aQfeeNHGBH9E/ITywErII171O0+BqGuOxW8Bt7WHybm+G4hzZv6xYXeuEjqm3xEgg==",
+  "dgSpecHash": "QkJj0EhU4aAb5E5/OmxI3gdhOWvxsQR6d2VFOe+W/zXK/yajoYhL5qlp4yyOWrQyIN9YiQwhQTrP98a5I4SCmA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\takus\\Desktop\\ecole\\Cube4\\WPF\\VinStore\\VinStore\\VinStore.csproj",
+  "projectFilePath": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\VinStore.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\takus\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
-    "C:\\Users\\takus\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
-    "C:\\Users\\takus\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+    "C:\\Users\\masmo\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
   ],
   "logs": []
 }

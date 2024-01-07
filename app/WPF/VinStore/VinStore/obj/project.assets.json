@@ -151,23 +151,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\takus\\.nuget\\packages\\": {},
+    "C:\\Users\\masmo\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\takus\\Desktop\\ecole\\Cube4\\WPF\\VinStore\\VinStore\\VinStore.csproj",
+      "projectUniqueName": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\VinStore.csproj",
       "projectName": "VinStore",
-      "projectPath": "C:\\Users\\takus\\Desktop\\ecole\\Cube4\\WPF\\VinStore\\VinStore\\VinStore.csproj",
-      "packagesPath": "C:\\Users\\takus\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\takus\\Desktop\\ecole\\Cube4\\WPF\\VinStore\\VinStore\\obj\\",
+      "projectPath": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\VinStore.csproj",
+      "packagesPath": "C:\\Users\\masmo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\takus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\masmo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -176,6 +176,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -218,7 +219,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.2.23502.2\\RuntimeIdentifierGraph.json"
       }
     }
   }
