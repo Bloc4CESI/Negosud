@@ -8,17 +8,15 @@
       d:DesignHeight="450" d:DesignWidth="800"
       Title="LogIn"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-       TextElement.FontWeight="Regular"
-       TextElement.FontSize="13"
-       TextOptions.TextFormattingMode="Ideal"
-       TextOptions.TextRenderingMode="Auto">
-
+      TextElement.FontWeight="Regular"
+      TextElement.FontSize="13"
+      TextOptions.TextFormattingMode="Ideal"
+      TextOptions.TextRenderingMode="Auto">
     <Grid>
         <Grid x:Name="Login">
             <Grid.Background>
-                <ImageBrush Opacity="0.5" ImageSource="/Image_SignIn.jpg" Stretch="UniformToFill"/>
+                <ImageBrush Opacity="0.5" ImageSource="../Photos/Image_SignIn.jpg" Stretch="UniformToFill"/>
             </Grid.Background>
-
             <materialDesign:Card UniformCornerRadius="15"
              Margin="25" materialDesign:ElevationAssist.Elevation="Dp4" Background="#0FF5F4F4">
                 <materialDesign:DialogHost CloseOnClickAway="True" x:Name="DialogHost">
@@ -29,24 +27,28 @@
 
                         <Viewbox Margin="10 0 0 70" MaxWidth="500">
                             <StackPanel >
-
+                                <Image Source="../Photos/logo.png" Height="80" Margin="0 20 0 5"/>
                                 <TextBlock Margin="0 10 0 5" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold"><Run Text="Vin"/><Run Text="S"/><Run Text="tore"/></TextBlock>
                                 <TextBlock HorizontalAlignment="Center" FontSize="10" FontWeight="SemiBold" Text="Connectez-vous à votre compte"/>
-
                                 <TextBox Margin="0 10 0 0" x:Name="txtUsername" Width="auto" FontSize="12"
-                         materialDesign:HintAssist.Hint="Pseudo" BorderThickness="2"
-                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Background="#FFF7F4F4"/>
-                                <PasswordBox Margin="0 10 0 0" x:Name="txtPassword" Width="300" FontSize="12"
-                         materialDesign:HintAssist.Hint="Mot de passe" BorderThickness="2"
-                         BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedPasswordBox}" Background="#FFFBF5F5"/>
-
+                                     materialDesign:HintAssist.Foreground="Black"    
+                                     materialDesign:HintAssist.Hint="Pseudo" BorderThickness="2"
+                                     BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}" Background="#FFF7F4F4"/>
+                                <StackPanel>
+                                    <PasswordBox BorderThickness="2" Background="#FFF7F4F4" x:Name="txtPassword" Width="300" FontSize="12"  Margin="0 20 0 0" 
+                                        materialDesign:HintAssist.Hint="Mot de passe"
+                                        materialDesign:HintAssist.Foreground="Black"         
+                                        materialDesign:TextFieldAssist.HasClearButton="True"
+                                        BorderBrush="{DynamicResource MaterialDesignDivider}"         
+                                        IsEnabled="{Binding ElementName=RevealPasswordOutlinedEnabled, Path=IsChecked}"
+                                        Style="{StaticResource MaterialDesignOutlinedRevealPasswordBox}" />
+                                </StackPanel>
                                 <Button Margin="0 10 0 0" x:Name="loginBtn" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ElevationAssist.Elevation="Dp0"
-                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10"
-                     FontSize="15" Content="Se connecter" Background="#FFBB3B15" />
-
+                                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10" Click="ConnexionClick"
+                                     FontSize="15" Content="Se connecter" BorderBrush="Black" Background="#FFBB3B15" />
                                 <Button Margin="0 10 0 0" x:Name="exitbtn" Style="{StaticResource MaterialDesignFlatButton}" materialDesign:ElevationAssist.Elevation="Dp0"
-                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10"
-                     FontSize="15" Content="Quitter"  Foreground="#FF130705" Background="LightGray" />
+                                     Height="40" Width="300" materialDesign:ButtonAssist.CornerRadius="10"
+                                     FontSize="15" Content="Quitter"  Foreground="#FF130705" Background="LightGray" Click="exitApp" />
                             </StackPanel>
                         </Viewbox>
                         <Frame x:Name="Loginpage" NavigationUIVisibility="Hidden"/>

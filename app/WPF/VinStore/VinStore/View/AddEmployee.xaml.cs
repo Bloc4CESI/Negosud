@@ -13,16 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace VinStore.Pages
+namespace VinStore.View
 {
     /// <summary>
-    /// Logique d'interaction pour LogIn.xaml
+    /// Logique d'interaction pour AddEmployee.xaml
     /// </summary>
-    public partial class LogIn : Page
+    public partial class AddEmployee : UserControl
     {
-        public LogIn()
+        public AddEmployee()
         {
+            InitializeComponent();
         }
     }
-
 }

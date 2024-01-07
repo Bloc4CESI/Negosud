@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\takus\Desktop\ecole\Cube4\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\
 VinStore
 none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
-C:\Users\takus\Desktop\ecole\Cube4\WPF\VinStore\VinStore\App.xaml
-3440481420
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\App.xaml
+5-1246869604
 
-7-1180914806
-201224341718
-Accueil.xaml;LogIn.xaml;MainWindow.xaml;
+231806083541
+203-1245791199
+Accueil.xaml;MainWindow.xaml;View\AddEmployee.xaml;View\LogIn.xaml;View\Navbar.xaml;
 
 True
 
