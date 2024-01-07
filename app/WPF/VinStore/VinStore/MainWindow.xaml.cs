@@ -24,12 +24,10 @@ namespace VinStore
     {
         public MainWindow()
         {
+
             InitializeComponent();
+            MainFrame.Navigate(new LogIn(this));
         }
 
-        private void loginBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Main.NavigationService.Navigate(new LogIn());
-        }
     }
 }
