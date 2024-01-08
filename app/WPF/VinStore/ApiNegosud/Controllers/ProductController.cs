@@ -109,15 +109,6 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-              
-                if (_context.Product.Any(c => c.Reference == Product.Reference.Trim()))
-                {
-                    return BadRequest("Le référence de l'article est déjà utilisée.");
-                }
-                else
-                {
-                    Product.Reference = Product.Reference.Trim();
-                }
                 // Capitaliser la première lettre des noms
                 Product.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Product.Name.Trim());
                 Product.Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Product.Home.Trim());
@@ -191,17 +182,6 @@ namespace ApiNegosud.Controllers
                 if (existingProduct == null)
                 {
                     return NotFound($"Produit avec l'ID {updatedProduct.Id} non trouvé.");
-                }
-                // Vérifier si la référence mis à jour est utilisée par un autre article
-                var isReferenceTaken = _context.Product.Any(c => c.Id != updatedProduct.Id && c.Reference.Trim() == updatedProduct.Reference.Trim());
-
-                if (isReferenceTaken)
-                {
-                    return BadRequest($"La référence de l'article{updatedProduct.Reference} est déjà utilisé par une autre personne.");
-                }
-                else
-                {
-                    existingProduct.Reference = updatedProduct.Reference.Trim();
                 }
                 // Update the existing product properties
                 existingProduct.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedProduct.Name.Trim());
