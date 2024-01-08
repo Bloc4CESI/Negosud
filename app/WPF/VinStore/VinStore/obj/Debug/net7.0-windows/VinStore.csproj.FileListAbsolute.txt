@@ -65,3 +65,5 @@ C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\bin\Deb
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\bin\Debug\net7.0-windows\Newtonsoft.Json.dll
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddEmployee.g.cs
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddEmployee.baml
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddOrderProviderView.g.cs
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddOrderProviderView.baml

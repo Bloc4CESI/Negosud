@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "QkJj0EhU4aAb5E5/OmxI3gdhOWvxsQR6d2VFOe+W/zXK/yajoYhL5qlp4yyOWrQyIN9YiQwhQTrP98a5I4SCmA==",
+  "dgSpecHash": "dMWzLCr0A7mVrQol5PbXREtbjs1gsDezqJeT2nunCaeaM5BzLbio9pwwxSb1EVv/YDYPmp17W/65Wn8aKl+rrg==",
   "success": true,
   "projectFilePath": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\VinStore.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\masmo\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\masmo\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
     "C:\\Users\\masmo\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
-    "C:\\Users\\masmo\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512"
+    "C:\\Users\\masmo\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
   ],
   "logs": []
 }
