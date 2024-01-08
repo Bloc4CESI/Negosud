@@ -23,8 +23,6 @@ namespace ApiNegosud.Models
 
         [Required]
         public string Home { get; set; }
-        [Required]
-        public string Reference { get; set; }
         // Clé étrangère vers Family
         [ForeignKey("Family")]
         public int FamilyId { get; set; }
