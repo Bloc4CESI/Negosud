@@ -1,5 +1,4 @@
 "use client"
-// Login.tsx
 import React, { useState } from "react";
 import "../globals.css";
 import Header from "../../../modules/layout/header";
@@ -17,7 +16,6 @@ const Login: React.FC = () => {
   };
 
   const handleLogin = () => {
-    // Ici, vous pouvez ajouter la logique de connexion, par exemple une requête API
     console.log("Username:", username);
     console.log("Password:", password);
   };

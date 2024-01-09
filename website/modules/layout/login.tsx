@@ -1,6 +1,5 @@
-// Login.tsx
 import React, { useState } from "react";
-import "./Login.css";  // Créez un fichier CSS séparé pour les styles
+import "./Login.css";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -26,12 +25,12 @@ const Login: React.FC = () => {
         <h2>Connexion</h2>
         <form>
           <label>
-            Nom d'utilisateur:
+            Mail
             <input type="text" value={username} onChange={handleUsernameChange} />
           </label>
           <br />
           <label>
-            Mot de passe:
+            Mot de passe
             <input type="password" value={password} onChange={handlePasswordChange} />
           </label>
           <br />
