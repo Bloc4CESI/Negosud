@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import "../globals.css";
 import Header from "../../../modules/layout/header";
+import Footer from "../../../modules/layout/footer";
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -55,6 +56,7 @@ return (
         </div>
     </div>
     </div>
+    <Footer/>
     </>
 );
 };

@@ -3,6 +3,7 @@ import React from 'react';
 import Image from 'next/image';
 import wineImage from '../images/vin.png';
 import Header from '../../../modules/layout/header';
+import Footer from "../../../modules/layout/footer";
 
 const Home = () => {
   return (
@@ -11,7 +12,7 @@ const Home = () => {
 
       <div className="container mx-auto mt-8">
         <header className="text-center">
-          <h1 className="text-4xl font-bold mb-4">Bienvenue sur notre Cave à Vins en Ligne</h1>
+          <h1 className="text-4xl font-bold mb-4">Bienvenue sur NegoSud</h1>
           <p className="text-lg text-gray-600">Découvrez une sélection exceptionnelle de vins.</p>
         </header>
 
@@ -37,6 +38,7 @@ const Home = () => {
           </p>
         </section>
       </div>
+      <Footer/>
     </div>
   );
 };
