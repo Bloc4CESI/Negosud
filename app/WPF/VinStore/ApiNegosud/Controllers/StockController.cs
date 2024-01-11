@@ -92,14 +92,24 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                Stock.Minimum = Stock.Minimum ?? null;
-                Stock.Maximum = Stock.Maximum ?? null;
+                // Ajouter une validation pour AutoOrder, Maximum et Minimum
+                if (Stock.AutoOrder && (Stock.Minimum == null || Stock.Maximum == null || Stock.Maximum ==0 || Stock.Minimum==0))
+                {
+                    return BadRequest("Les valeurs Minimum et Maximum sont obligatoires et différents à 0 lorsque AutoOrder est true");
+                }
                 if (Stock.ProductId > 0)
                 {
-                    var ExistingProduct = _context.Product.Find(Stock.ProductId);
-                    if (ExistingProduct != null)
+                    var existingStock = _context.Stock.SingleOrDefault(s => s.ProductId == Stock.ProductId);
+
+                    if (existingStock != null)
                     {
-                        Stock.Product = ExistingProduct;
+                        return BadRequest("Un stock pour cet article existe déjà. Veuillez le mettre à jour au lieu d'en créer un nouveau.");
+                    }
+
+                    var existingProduct = _context.Product.Find(Stock.ProductId);
+                    if (existingProduct != null)
+                    {
+                        Stock.Product = existingProduct;
                     }
                     else
                     {
@@ -110,7 +120,6 @@ namespace ApiNegosud.Controllers
                 {
                     if (Stock.Product != null)
                     {
-
                         var NewProduct = new Product
                         {
                             Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Stock.Product.Name.Trim()),
@@ -127,7 +136,6 @@ namespace ApiNegosud.Controllers
                         Stock.Product = NewProduct;
               
                     }
-
                 }
                 _context.Add(Stock);
                 _context.SaveChanges();
@@ -151,10 +159,15 @@ namespace ApiNegosud.Controllers
                 {
                     return NotFound($"Le stock du produit avec l'ID {UpdatedStock.Id} non trouvé.");
                 }
+
                 ExistingStock.Minimum = UpdatedStock.Minimum;
                 ExistingStock.Maximum = UpdatedStock.Maximum;
                 ExistingStock.Quantity = UpdatedStock.Quantity;
                 ExistingStock.AutoOrder = UpdatedStock.AutoOrder;
+                if (ExistingStock.AutoOrder && (ExistingStock.Minimum == null || ExistingStock.Maximum == null || ExistingStock.Minimum==0 || ExistingStock.Maximum == 0))
+                {
+                    return BadRequest("Les valeurs Minimum et Maximum sont obligatoires et différents à 0 lorsque AutoOrder est true.");
+                }
                 // Mettre à jour les propriétés du produit associé
                 if (ExistingStock.Product != null && UpdatedStock.Product != null)
                 {

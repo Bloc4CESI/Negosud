@@ -74,13 +74,13 @@ namespace VinStore.View
             newComboBox.IsEditable = true;
             // ajouter un evennt listener à chaque combox 
             newComboBox.SelectionChanged += ProductComboBox_SelectionChanged;
-            productComboBoxIndex++;
             TextBox newTextBox1 = new TextBox
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
                 Padding = new Thickness(10),
-                IsReadOnly = true
+                IsReadOnly = true,
+                Name= "StockQuantity" + productComboBoxIndex
             };
             Grid.SetColumn(newTextBox1, 2);
             Grid.SetRow(newTextBox1, currentRow);
@@ -154,6 +154,20 @@ namespace VinStore.View
             ProductLigneGrid.Children.Add(newTextBox3);
             ProductLigneGrid.Children.Add(addButton);
             ProductLigneGrid.Children.Add(deleteButton);
+            productComboBoxIndex++;
+
+
+
+
+
+
+
+
+
+
+
+
+
             ProductLigneGrid.UpdateLayout();
         }
         private async void ProviderSelected(object sender, RoutedEventArgs e)
@@ -185,6 +199,11 @@ namespace VinStore.View
                 {
                     var productDetails = await ProductService.GetProductById(selectedProduct.Id);
                     StockQuantity.Text = productDetails.Stock?.Quantity.ToString() ?? "N/A";
+                    var textBoxQuantityStock = FindName("StockQuantity" + productComboBoxIndex) as TextBox;
+                    if(textBoxQuantityStock != null)
+                    {
+                        textBoxQuantityStock.Text= productDetails.Stock?.Quantity.ToString() ?? "N/A";
+                    } 
                 }
 
 

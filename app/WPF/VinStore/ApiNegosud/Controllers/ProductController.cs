@@ -152,11 +152,16 @@ namespace ApiNegosud.Controllers
                     var stock = new Stock
                     {
                         Quantity = Product.Stock.Quantity,
-                        AutoOrder = true,
-                        Minimum = Product.Stock.Minimum ?? null,
-                        Maximum = Product.Stock.Maximum ?? null
-
+                        AutoOrder = Product.Stock.AutoOrder,
+                        Minimum = Product.Stock.Minimum,
+                        Maximum = Product.Stock.Maximum
                     };
+                    //  pour AutoOrder => max et min soient obligatoires
+                    if (stock.AutoOrder && (stock.Minimum == null || stock.Maximum == null || stock.Maximum == 0 || stock.Minimum == 0))
+                    {
+                        return BadRequest("Les valeurs Minimum et Maximum sont obligatoires lorsque AutoOrder est true.");
+                    }
+
                 }
                 _context.Add(Product);
                 _context.SaveChanges();
@@ -232,8 +237,12 @@ namespace ApiNegosud.Controllers
                         // Update stock properties
                         existingStock.Quantity = updatedProduct.Stock.Quantity;
                         existingStock.AutoOrder = updatedProduct.Stock.AutoOrder;
-                        existingStock.Minimum = updatedProduct.Stock.Minimum ?? existingStock.Minimum;
-                        existingStock.Maximum = updatedProduct.Stock.Maximum ?? existingStock.Maximum;
+                        existingStock.Minimum = updatedProduct.Stock.Minimum;
+                        existingStock.Maximum = updatedProduct.Stock.Maximum;
+                        if (updatedProduct.Stock.AutoOrder && (updatedProduct.Stock.Minimum == null || updatedProduct.Stock.Maximum == null || updatedProduct.Stock.Maximum==0 || updatedProduct.Stock.Minimum==0))
+                        {
+                            return BadRequest("Les valeurs Minimum et Maximum sont obligatoires lorsque AutoOrder est true.");
+                        }
                     }
                     else
                     {
