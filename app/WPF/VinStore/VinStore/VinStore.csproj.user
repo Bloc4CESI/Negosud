@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\AddCommandProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\AddEmployee.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -15,6 +18,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\AddCommandProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\AddEmployee.xaml">
       <SubType>Designer</SubType>
     </Page>

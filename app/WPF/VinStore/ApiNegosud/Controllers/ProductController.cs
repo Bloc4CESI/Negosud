@@ -274,9 +274,32 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetProductByProvider/{ProviderId}")]
+        public IActionResult GetProductByProvider(int ProviderId)
+        {
+            try
+            {
+                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                Products = Products.Where(p => p.ProviderId == ProviderId);
+                var ProductsList = Products.ToList();
+                if (ProductsList.Count == 0)
+                {
+                    return NotFound("Aucun produit trouvé pour ce fournisseur.");
+                }
+                else
+                {
+                    return Ok(ProductsList);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetProductByFamily/{familyId}")]
         public IActionResult GetProductByFamily(int familyId, int? page = null, int? pageSize = null, string Home = null, string Name = null,
-                           DateOnly? dateProduction = null, Decimal? Price = null, string sortOrder = null)
+                        DateOnly? dateProduction = null, Decimal? Price = null, string sortOrder = null)
         {
             try
             {

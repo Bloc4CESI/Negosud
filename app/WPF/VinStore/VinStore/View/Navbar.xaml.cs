@@ -30,5 +30,10 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddEmployee());
         }
+        private void AddProviderOrder(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddCommandProvider());
+        }
     }
 }
