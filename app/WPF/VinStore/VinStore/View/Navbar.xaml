@@ -29,9 +29,8 @@
                             <materialDesign:PackIcon Kind="Liquor" Foreground="White" Margin="0,0,8,0" />
                             <TextBlock Text="Famille des Vins" Foreground="White" />
                         </StackPanel>
-                    </MenuItem.Header> 
-                    <MenuItem Header="Ajout famille" Foreground="Black"/>
-                    <MenuItem Header="Gestion des familles"  Foreground="Black"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="Gestion des familles"  Foreground="Black" Click="AddFamille_Click"/>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
