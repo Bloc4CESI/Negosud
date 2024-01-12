@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Windows;
 using ApiNegosud.Models;
+using System.Collections.ObjectModel;
 
 namespace VinStore.Services
 {
@@ -59,6 +60,59 @@ namespace VinStore.Services
             }
         }
 
+        public static async Task<List<Product>> GetAllProducts()
+        {
+            try
+            {
+                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/product/");
+                if (string.IsNullOrEmpty(response))
+                {
+                    Console.WriteLine("Aucun produit trouvé");
+                    MessageBox.Show("Aucun produit trouvé");
+                    return null;
+                }
+                else
+                {
+                    List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
+                    return products;
+                }
+            
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite lors de la requête : {ex.Message}");
+                return null;
+            }
+        }
+
+        public static async Task EditProduct(string jsonData, int id, string productName)
+        {
+            try
+            {
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+                // Envoyer la requête PUT
+                HttpResponseMessage response = await ApiConnexion.ApiClient.PutAsync($"https://localhost:7281/api/Product/{id}", content);
+
+                // Vérifier la réponse
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Mise à jour réussie !");
+                    MessageBox.Show($"Le produit \"{productName}\" à bien été mis à jour !");
+                }
+                else
+                {
+                    Console.WriteLine($"Erreur lors de la mise à jour. Code de statut : {response.StatusCode}");
+                    // Vous pouvez également lever une exception ici si nécessaire.
+                    MessageBox.Show($"La mise à jour du produit \"{productName}\" à échoué !");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Propager l'exception pour être gérée par l'appelant
+                throw new Exception($"Une erreur s'est produite lors de la requête : {ex.Message}", ex);
+            }
+        }
 
     }
 }
