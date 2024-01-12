@@ -118,12 +118,12 @@
                 <DataGridTemplateColumn Header="Actions">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Vertical">
                                 <!-- Bouton d'édition -->
                                 <Button Content="Éditer" Click="EditProduct_Click" Margin="0"/>
 
                                 <!-- Bouton de suppression -->
-                                <!--<Button Content="Supprimer" Click="DeleteProduct_Click" Margin="5,0,0,0"/>-->
+                                <Button Content="Supprimer" Click="DeleteProduct_Click" Margin="0,5,0,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -142,17 +142,6 @@
                     <Setter Property="Height" Value="Auto"/>
                 </Style>
             </DataGrid.RowStyle>
-            <DataGrid.ColumnHeaderStyle>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="ContentTemplate">
-                        <Setter.Value>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Content}" TextTrimming="None" TextWrapping="Wrap"/>
-                            </DataTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </DataGrid.ColumnHeaderStyle>
         </DataGrid>
     </Grid>
 </UserControl>

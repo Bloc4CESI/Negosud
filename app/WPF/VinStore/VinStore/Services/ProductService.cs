@@ -114,5 +114,32 @@ namespace VinStore.Services
             }
         }
 
+        public static async Task DeleteProduct(int id, string productName)
+        {
+            try
+            {
+                // Envoyer la requête PUT
+                HttpResponseMessage response = await ApiConnexion.ApiClient.DeleteAsync($"https://localhost:7281/api/Product/{id}");
+
+                // Vérifier la réponse
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine("Suppression réussie !");
+                    MessageBox.Show($"Le produit \"{productName}\" à bien été supprimé !");
+                }
+                else
+                {
+                    Console.WriteLine($"Erreur lors de la suppression. Code de statut : {response.StatusCode}");
+                    // Vous pouvez également lever une exception ici si nécessaire.
+                    MessageBox.Show($"La suppression du produit \"{productName}\" à échoué !");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Propager l'exception pour être gérée par l'appelant
+                throw new Exception($"Une erreur s'est produite lors de la requête : {ex.Message}", ex);
+            }
+        }
+
     }
 }
