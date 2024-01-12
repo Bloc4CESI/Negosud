@@ -26,7 +26,7 @@ namespace VinStore.View
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddEmployee());
         }
@@ -39,6 +39,11 @@ namespace VinStore.View
         {
             GridMain.Children.Clear();
             GridMain.Children.Add(new ListProduct());
+        }
+        private void AddFamille_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddFamily());
         }
     }
 }
