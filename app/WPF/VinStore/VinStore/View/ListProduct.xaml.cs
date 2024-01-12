@@ -46,7 +46,7 @@ namespace VinStore.View
 
             Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
-        private void EditProduct_Click(object sender, RoutedEventArgs e)
+        private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
             // Terminer l'édition pour s'assurer que les modifications sont prises en compte
             productDataGrid.CommitEdit();
@@ -54,11 +54,21 @@ namespace VinStore.View
             // Récupérer l'objet Product associé à la ligne sélectionnée
             Product selectedProduct = productDataGrid.SelectedItem as Product;
 
-            UpdateProductOnServer(selectedProduct);
-            InitializeData();
+            await UpdateProductOnServer(selectedProduct);
+
+            // Actualiser la collection locale
+            // Retirer l'ancien produit
+            products.Remove(selectedProduct);
+
+            // Ajouter le produit mis à jour
+            products.Add(await ProductService.GetProductById(selectedProduct.Id));
+
+            // Rafraîchir la vue du DataGrid pour forcer la mise à jour
+            CollectionViewSource.GetDefaultView(productDataGrid.ItemsSource).Refresh();
+
         }
 
-        private async void UpdateProductOnServer(Product updatedProduct)
+        private async Task UpdateProductOnServer(Product updatedProduct)
         {
             // Construisez le JSON avec les données de l'objet Product
             int id = updatedProduct.Id;
@@ -67,6 +77,33 @@ namespace VinStore.View
 
             // Appelez une méthode de service qui enverra la requête HTTP PUT
             await ProductService.EditProduct(jsonData, id, productName);
+        }
+        private async void DeleteProduct_Click(object sender, RoutedEventArgs e)
+        {
+            // Terminer l'édition pour s'assurer que les modifications sont prises en compte
+            productDataGrid.CommitEdit();
+
+            // Récupérer l'objet Product associé à la ligne sélectionnée
+            Product selectedProduct = productDataGrid.SelectedItem as Product;
+
+            await DeleteProductOnServer(selectedProduct);
+
+            // Actualiser la collection locale
+            // Retirer l'ancien produit
+            products.Remove(selectedProduct);
+
+            // Rafraîchir la vue du DataGrid pour forcer la mise à jour
+            CollectionViewSource.GetDefaultView(productDataGrid.ItemsSource).Refresh();
+
+        }
+        private async Task DeleteProductOnServer(Product updatedProduct)
+        {
+            // Construisez le JSON avec les données de l'objet Product
+            int id = updatedProduct.Id;
+            string productName = updatedProduct.Name;
+
+            // Appelez une méthode de service qui enverra la requête HTTP PUT
+            await ProductService.DeleteProduct(id, productName);
         }
 
     }

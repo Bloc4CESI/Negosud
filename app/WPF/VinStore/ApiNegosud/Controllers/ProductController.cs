@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Linq;
 
 namespace ApiNegosud.Controllers
 {
@@ -264,7 +265,13 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Product = _context.Product.Find(id);
+
+                var Product = _context.Product
+                    .Include(p => p.Stock)
+                    .FirstOrDefault(p => p.Id == id);
+                
+
+
                 if (Product == null)
                 {
                     return BadRequest("Produit non trouvé");
