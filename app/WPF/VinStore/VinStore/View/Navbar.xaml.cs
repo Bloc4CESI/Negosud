@@ -35,5 +35,10 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddCommandProvider());
         }
+        private void ListProduct_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new ListProduct());
+        }
     }
 }
