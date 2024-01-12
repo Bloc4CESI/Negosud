@@ -42,7 +42,7 @@ const Product = () => {
                                 <span className="font-bold text-gray-700 dark:text-gray-300">Select Size:</span>
                                 <div className="flex items-center mt-2">
                                     <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">À l'unité</button>
-                                    <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">En pack</button>
+                                    <button className="bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-white py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 dark:hover:bg-gray-600">Pack 6</button>
                                 </div>
                             </div>
                             <div>
