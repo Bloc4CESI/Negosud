@@ -9,10 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "framer-motion": "^10.17.9",
+    "mysql2": "^3.7.0",
     "next": "14.0.3",
+    "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.49.3",
     "react-router-dom": "^6.21.1"
   },
   "devDependencies": {
