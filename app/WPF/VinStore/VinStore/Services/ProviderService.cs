@@ -12,15 +12,15 @@ namespace VinStore.Services
 {
     public static class ProviderService
     {
-        public static async Task<List<Provider>> GetProviders(string name = null)
+        public static async Task<List<Provider>> GetProviders()
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Provider/?Name={name}");
+                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Provider/GetOnlyPrivdersWithProducts");
                 if (string.IsNullOrEmpty(response))
                 {
-                    Console.WriteLine($"Aucun fournisseur trouvé avec le nom fourni : {name}");
-                    MessageBox.Show($"Aucun fournisseur trouvé avec le nom fourni : {name}");
+                    Console.WriteLine($"Aucun fournisseur trouvé ");
+                    MessageBox.Show($"Aucun fournisseur trouvé ");
                     return null;
                 }
                 else

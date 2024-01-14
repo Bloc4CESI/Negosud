@@ -68,7 +68,7 @@
                         </StackPanel>
                     </MenuItem.Header>
                     <MenuItem Header="Création Commande"  Click="AddProviderOrder"  Foreground="Black"/>
-                    <MenuItem Header="Gestion des Commandes"  Foreground="Black"/>
+                    <MenuItem  x:Name="CommandToValidateHeader" Foreground="Black" Click="CommandToValidate"/>
                 </MenuItem> 
                 <MenuItem>
                     <MenuItem.Header>

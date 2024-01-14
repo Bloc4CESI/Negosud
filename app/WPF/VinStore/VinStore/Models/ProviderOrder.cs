@@ -19,6 +19,8 @@ namespace ApiNegosud.Models
         public int ProviderId { get; set; }
         public virtual Provider? Provider { get; set; }
         public List<ProviderOrderLine>? ProviderOrderLines { get; set; }
+        public string? ProductNames { get; set; }
+
     }
     public enum ProviderOrderStatus
     {

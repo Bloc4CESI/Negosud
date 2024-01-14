@@ -5,6 +5,8 @@ namespace ApiNegosud.Models
 {
     public class ProviderOrderLine
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public int Quantity { get; set; }

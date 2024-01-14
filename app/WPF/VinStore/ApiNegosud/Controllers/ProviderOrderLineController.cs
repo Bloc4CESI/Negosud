@@ -89,7 +89,7 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPost("UpdateOrderLine")]
+        [HttpPut("UpdateOrderLine")]
         public IActionResult UpdateOrderLine(ProviderOrderLine updatedOrderLine)
         {
             try

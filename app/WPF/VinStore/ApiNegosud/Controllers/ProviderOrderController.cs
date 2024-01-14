@@ -81,21 +81,20 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("bystatus/{status}")]
-        public IActionResult GetByStatus(string status)
+        public IActionResult GetByStatus(ProviderOrderStatus status)
         {
             try
-            {
-                if (!Enum.TryParse<ProviderOrderStatus>(status, true, out var parsedStatus))
-                {
-                    return BadRequest("Statut non valide");
-                }
-
+            { 
                 var providerOrders = _context.ProviderOrder
                     .Include(po => po.Provider)
-                    .Include(po => po.ProviderOrderLines)
-                    .Where(po => po.ProviderOrderStatus == parsedStatus)
+                         .ThenInclude(p => p.Address)
+                    .Include(po => po.Provider!.Products)
+                    .Include(po => po.ProviderOrderLines!)
+                        .ThenInclude(line => line.Product)
+                            .ThenInclude(p =>p.Stock)
+                    .Where(po => po.ProviderOrderStatus == status)
+                    .OrderByDescending(po => po.Id)
                     .ToList();
-
                 return Ok(providerOrders);
             }
             catch (Exception ex)
@@ -109,13 +108,8 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                // Ajoutez la commande fournisseur
-                providerOrder.ProviderOrderStatus = ProviderOrderStatus.ENCOURSDEVALIDATION;
-                providerOrder.Date = DateTime.Now;
                 _context.Add(providerOrder);
-                _context.SaveChanges();
-
-                // Ajoutez les lignes de commande fournisseur associées
+                // Ajouter les lignes de commande fournisseur associées
                 if (providerOrder.ProviderOrderLines != null && providerOrder.ProviderOrderLines.Any())
                 {
                     foreach (var orderLine in providerOrder.ProviderOrderLines)
@@ -133,7 +127,7 @@ namespace ApiNegosud.Controllers
                             // Vérifier si une ligne pour ce produit existe déjà dans la commande fournisseur
                             var existingLine = _context.ProviderOrderLine
                                 .FirstOrDefault(line => line.ProviderOrderId == providerOrder.Id
-                                                        && line.ProductId == orderLine.ProductId);
+                                                        && line.ProductId == orderLine.ProductId && line.Id != orderLine.Id);
 
                             if (existingLine != null)
                             {
@@ -145,6 +139,7 @@ namespace ApiNegosud.Controllers
                             {
                                 // Ajouter une nouvelle ligne si elle n'existe pas déjà
                                 _context.ProviderOrderLine.Add(orderLine);
+                                _context.SaveChanges();
                             }
                         }
                         else
@@ -156,8 +151,16 @@ namespace ApiNegosud.Controllers
 
                     _context.SaveChanges();
                 }
-
-                return Ok("La commande est ajoutée avec succès!");
+                var newProviderOrder = _context.ProviderOrder.Include(p => p.ProviderOrderLines)
+                            .FirstOrDefault(p => p.Id == providerOrder.Id);
+                if (newProviderOrder != null)
+                {
+                    return Ok( new { newProviderOrder = newProviderOrder , Message= "La commande est ajoutée avec succès!"});
+                }
+                else
+                {
+                    return BadRequest("La commande n'a pas pu être récupérée après l'ajout.");
+                }
             }
             catch (Exception ex)
             {
@@ -166,7 +169,7 @@ namespace ApiNegosud.Controllers
             }
         }
 
-        [HttpPost("UpdateOrder")]
+        [HttpPut("UpdateOrder")]
         public IActionResult UpdateOrder(ProviderOrder UpdatedProviderOrder)
         {
             try
@@ -249,9 +252,6 @@ namespace ApiNegosud.Controllers
             }
         }
 
-
-
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -284,6 +284,6 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+      
     }
 }

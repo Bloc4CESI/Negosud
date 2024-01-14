@@ -67,3 +67,11 @@ C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Deb
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddEmployee.baml
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddCommandProvider.g.cs
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddCommandProvider.baml
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddFamily.g.cs
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\ListProduct.g.cs
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\AddFamily.baml
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\ListProduct.baml
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\OrderProviderToValidate.g.cs
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\OrderProviderToValidate.baml
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\EditOrderProvider.g.cs
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\obj\Debug\net7.0-windows\View\EditOrderProvider.baml

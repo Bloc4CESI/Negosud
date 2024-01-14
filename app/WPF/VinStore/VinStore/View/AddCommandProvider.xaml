@@ -21,6 +21,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Text="Création du bon de commande fournisseur" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0"/>
         <Border Grid.Row="1" Grid.Column="0" Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="10"     >
@@ -69,7 +70,7 @@
                     materialDesign:HintAssist.Hint="Fournisseur"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"
                     materialDesign:HintAssist.Foreground="Black"           
-                    IsEditable="True" x:Name="ProvidersName" SelectionChanged="ProviderSelected">
+                    IsEditable="True" x:Name="ProvidersName"  SelectionChanged="ProviderSelected">
                 </ComboBox>
                 <TextBox Background="White" Grid.Row="2" Margin="10" Height="40" HorizontalAlignment="Stretch" 
                 materialDesign:HintAssist.Hint="Adresse" 
@@ -86,7 +87,7 @@
             </StackPanel>
         </materialDesign:ColorZone>
         <Border Grid.Row="3"  x:Name="Boder" Grid.Column="0" Height="Auto" Grid.ColumnSpan="2" Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="20" >
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="400">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
                 <Grid x:Name="ProductLigneGrid" Height="Auto">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -102,36 +103,50 @@
                     </Grid.RowDefinitions>
                     <ComboBox  Grid.Row="0" Grid.Column="0" Margin="20" Background="White" Padding="10" Grid.ColumnSpan="2"
                     materialDesign:HintAssist.Hint="Nom de l'article"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"
-                    materialDesign:HintAssist.Foreground="Black" x:Name="ProductsComboBox"      
-                    IsEditable="True" SelectionChanged="ProductComboBox_SelectionChanged">
+                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"  materialDesign:TextFieldAssist.HasClearButton="True" 
+                    materialDesign:HintAssist.Foreground="Black" x:Name="ProductsComboBox_0"      
+                    SelectionChanged="ProductNewComboBox_SelectionChanged">
                     </ComboBox>
                     <TextBox Grid.Row="0"  Grid.Column="2" Margin="20" Background="White" Padding="10" 
                      materialDesign:HintAssist.Hint="Quantité stock"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="StockQuantity"
+                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="StockQuantity0"
                      materialDesign:HintAssist.Foreground="Black" IsReadOnly="True"/>
                     <TextBox Grid.Row="0"  Grid.Column="3" Margin="20" Background="White" Padding="10" 
                     materialDesign:HintAssist.Hint="Quantité"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"
-                    materialDesign:HintAssist.Foreground="Black" />
+                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="QuantityLigneOrder0"
+                    materialDesign:HintAssist.Foreground="Black" TextChanged="TextBox_QuantityChanged" PreviewTextInput="TextBox_IntegerInput"/>
                     <TextBox Grid.Row="0"  Grid.Column="4" Margin="20" Background="White" Padding="10" 
                     materialDesign:HintAssist.Hint="Prix article"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"
-                    materialDesign:HintAssist.Foreground="Black" />
+                    materialDesign:HintAssist.HintOpacity=".26" TextChanged="TextBox_PriceChanged" MaxHeight="50"  x:Name="PriceLigneOrder0"
+                    materialDesign:HintAssist.Foreground="Black" PreviewTextInput="TextBox_DecimalInput" />
                     <Button Grid.Row="0"  Grid.Column="5" Margin="10" Click="AddProduct"
                     Content="{materialDesign:PackIcon Plus}" Background="DarkRed" BorderBrush="DarkRed"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     ToolTip="Ajouter un article" />
-                    <Button Grid.Row="0" Grid.Column="6" Margin="10" 
+                    <Button Grid.Row="0" Grid.Column="6" Margin="10" x:Name="DeleteProduct0"
                     Content="X" Background="DarkRed" BorderBrush="DarkRed"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
-                    ToolTip="Supprimer la ligne article" />
-
-
-
+                    ToolTip="Supprimer la ligne article" Click="DeleteProductRow" />
                 </Grid>
             </ScrollViewer>
         </Border>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Background="White" HorizontalAlignment="Right">
+            <TextBlock  Background="Transparent"  Margin="20" VerticalAlignment="Center"  IsEnabled="True"
+                     Foreground="#a70303" FontWeight="Bold" FontSize="16" x:Name="TotalOrder" />
+            <Button HorizontalAlignment="Right" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" Margin="1 0" FontSize="13" Click="SaveOrderProvider">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ContentSaveAllOutline"  Margin="0,0,5,0"/>
+                    <TextBlock Text="Enregistrer" />
+                </StackPanel>
+            </Button>
+            <Button HorizontalAlignment="Right" Click="SaveAndValidateOrder" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" x:Name="NextPageButton" Margin="1 0" FontSize="13">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ContentSaveCheck" Margin="0,0,5,0"/>
+                    <TextBlock Text="Enregistrer/Valider" />
+                </StackPanel>
+            </Button>
+       
+        </StackPanel>
     </Grid>
 
 </UserControl>
