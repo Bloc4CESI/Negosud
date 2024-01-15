@@ -12,8 +12,11 @@
             TextOptions.TextFormattingMode="Ideal"
             TextOptions.TextRenderingMode="Auto">
     <Grid>
-
-        <materialDesign:ColorZone Padding="16" Background="Black">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <materialDesign:ColorZone Padding="16" Background="Black" Grid.Row="0">
             <Menu>
                 <MenuItem >
                     <MenuItem.Header>
@@ -26,9 +29,8 @@
                             <materialDesign:PackIcon Kind="Liquor" Foreground="White" Margin="0,0,8,0" />
                             <TextBlock Text="Famille des Vins" Foreground="White" />
                         </StackPanel>
-                    </MenuItem.Header> 
-                    <MenuItem Header="Ajout famille" Foreground="Black"/>
-                    <MenuItem Header="Gestion des familles"  Foreground="Black"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="Gestion des familles"  Foreground="Black" Click="AddFamille_Click"/>
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
@@ -37,8 +39,7 @@
                             <TextBlock Text="Article" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Header="Ajout article" Foreground="Black"/>
-                    <MenuItem Header="Gestion des articles"  Foreground="Black"/>
+                    <MenuItem Header="Liste des produits" Foreground="Black" Click="ListProduct_Click"/>
                 </MenuItem> 
                 <MenuItem>
                     <MenuItem.Header>
@@ -63,11 +64,11 @@
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CartArrowUp" Foreground="White" Margin="0,0,8,0" />
-                            <TextBlock Text="Commande Fournisseur" Foreground="White" />
+                            <TextBlock Text="Commande Fournisseur" Foreground="White"/>
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Header="Création Commande"  Foreground="Black"/>
-                    <MenuItem Header="Gestion des Commandes"  Foreground="Black"/>
+                    <MenuItem Header="Création Commande"  Click="AddProviderOrder"  Foreground="Black"/>
+                    <MenuItem  x:Name="CommandToValidateHeader" Foreground="Black" Click="CommandToValidate"/>
                 </MenuItem> 
                 <MenuItem>
                     <MenuItem.Header>
@@ -90,7 +91,7 @@
                 </MenuItem>
             </Menu>
         </materialDesign:ColorZone>
-        <Grid x:Name="GridMain" Height="500" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></Grid>
+        <Grid x:Name="GridMain"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1"></Grid>
     </Grid>
 </UserControl>
 

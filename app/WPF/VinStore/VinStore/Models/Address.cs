@@ -22,7 +22,7 @@ namespace ApiNegosud.Models
 
         public override string ToString()
         {
-            return $"{Number} {Street}, {Name}, {City}, {Country}";
+            return $"{Name} {Number} {Street}, {City}, {Country}";
         }
     }
 }

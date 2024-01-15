@@ -7,18 +7,36 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\AddCommandProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\AddEmployee.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\EditOrderProvider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Navbar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\OrderProviderToValidate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\AddCommandProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\AddEmployee.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\EditOrderProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\Navbar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\OrderProviderToValidate.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

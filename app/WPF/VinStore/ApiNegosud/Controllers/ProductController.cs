@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Http.Extensions;
+using System.Linq;
 
 namespace ApiNegosud.Controllers
 {
@@ -152,11 +153,16 @@ namespace ApiNegosud.Controllers
                     var stock = new Stock
                     {
                         Quantity = Product.Stock.Quantity,
-                        AutoOrder = true,
-                        Minimum = Product.Stock.Minimum ?? null,
-                        Maximum = Product.Stock.Maximum ?? null
-
+                        AutoOrder = Product.Stock.AutoOrder,
+                        Minimum = Product.Stock.Minimum,
+                        Maximum = Product.Stock.Maximum
                     };
+                    //  pour AutoOrder => max et min soient obligatoires
+                    if (stock.AutoOrder && (stock.Minimum == null || stock.Maximum == null || stock.Maximum == 0 || stock.Minimum == 0))
+                    {
+                        return BadRequest("Les valeurs Minimum et Maximum sont obligatoires lorsque AutoOrder est true.");
+                    }
+
                 }
                 _context.Add(Product);
                 _context.SaveChanges();
@@ -232,8 +238,12 @@ namespace ApiNegosud.Controllers
                         // Update stock properties
                         existingStock.Quantity = updatedProduct.Stock.Quantity;
                         existingStock.AutoOrder = updatedProduct.Stock.AutoOrder;
-                        existingStock.Minimum = updatedProduct.Stock.Minimum ?? existingStock.Minimum;
-                        existingStock.Maximum = updatedProduct.Stock.Maximum ?? existingStock.Maximum;
+                        existingStock.Minimum = updatedProduct.Stock.Minimum;
+                        existingStock.Maximum = updatedProduct.Stock.Maximum;
+                        if (updatedProduct.Stock.AutoOrder && (updatedProduct.Stock.Minimum == null || updatedProduct.Stock.Maximum == null || updatedProduct.Stock.Maximum==0 || updatedProduct.Stock.Minimum==0))
+                        {
+                            return BadRequest("Les valeurs Minimum et Maximum sont obligatoires lorsque AutoOrder est true.");
+                        }
                     }
                     else
                     {
@@ -255,7 +265,13 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Product = _context.Product.Find(id);
+
+                var Product = _context.Product
+                    .Include(p => p.Stock)
+                    .FirstOrDefault(p => p.Id == id);
+                
+
+
                 if (Product == null)
                 {
                     return BadRequest("Produit non trouvé");
@@ -274,9 +290,32 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetProductByProvider/{ProviderId}")]
+        public IActionResult GetProductByProvider(int ProviderId)
+        {
+            try
+            {
+                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                Products = Products.Where(p => p.ProviderId == ProviderId);
+                var ProductsList = Products.ToList();
+                if (ProductsList.Count == 0)
+                {
+                    return NotFound("Aucun produit trouvé pour ce fournisseur.");
+                }
+                else
+                {
+                    return Ok(ProductsList);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetProductByFamily/{familyId}")]
         public IActionResult GetProductByFamily(int familyId, int? page = null, int? pageSize = null, string Home = null, string Name = null,
-                           DateOnly? dateProduction = null, Decimal? Price = null, string sortOrder = null)
+                        DateOnly? dateProduction = null, Decimal? Price = null, string sortOrder = null)
         {
             try
             {

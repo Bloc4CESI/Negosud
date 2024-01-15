@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ApiNegosud.Models;
+using VinStore.Services;
 
 namespace VinStore.View
 {
@@ -23,12 +25,44 @@ namespace VinStore.View
         public Navbar()
         {
             InitializeComponent();
+            LoadOrderProvierToValidate();
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
+        { 
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddEmployee());
+        }
+        private void AddProviderOrder(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddCommandProvider());
+        }
+        private void ListProduct_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new ListProduct());
+        }
+        private void AddFamille_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddFamily());
+        }
+        private void CommandToValidate(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new OrderProviderToValidate(GridMain));
+        }
+
+        private async void LoadOrderProvierToValidate()
+        {
+            var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
+            int count = ProviderOrdersToValidate.Count;
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run($"Commande à valider ("));
+            textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
+            textBlock.Inlines.Add(new Run(")"));
+            CommandToValidateHeader.Header = textBlock;
         }
     }
 }

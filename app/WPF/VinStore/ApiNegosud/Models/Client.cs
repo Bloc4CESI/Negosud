@@ -19,7 +19,7 @@ namespace ApiNegosud.Models
         public string Email { get; set; }
 
         [ForeignKey("Address")]
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         /*Propriété de navigation vers l'adresse du client*/
 
         public virtual Address? Address { get; set; }

@@ -21,7 +21,7 @@ namespace VinStore.Services
                 var Employee = JsonConvert.DeserializeObject<Employee>(Response);
                 return Employee;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Nom d'utilisateur ou mot de passe incorrect.");
                 return null;

@@ -3,6 +3,7 @@ using ApiNegosud.DataAccess;
 using ApiNegosud.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ApiNegosud.Controllers
 {
@@ -240,6 +241,33 @@ namespace ApiNegosud.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpGet("GetOnlyPrivdersWithProducts")]
+        public IActionResult GetOnlyPrivdersWithProducts()
+        {
+            try
+            {
+                var Providers = _context.Provider.Include(c => c.Address).Include(c => c.Products)
+                    .Where(c => c.Products.Any())
+                    .AsQueryable();
+                Providers = Providers.OrderByDescending(c => c.Id);
+
+                var FiltredProviders = Providers.ToList();
+
+                if (FiltredProviders.Count == 0)
+                {
+                    return NotFound($"Aucun fournisseur trouvé .");
+                }
+                else
+                {
+                    return Ok(FiltredProviders);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
     }
 

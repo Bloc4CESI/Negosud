@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,12 +40,17 @@ namespace VinStore.Pages
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 // Afficher un message d'erreur ou prendre d'autres mesures appropriées
-                MessageBox.Show("Veuillez saisir le pseudo.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Veuillez saisir le mail.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 IsValid = false;
             }
             if (string.IsNullOrWhiteSpace(txtPassword.Password))
             {
                 MessageBox.Show("Veuillez saisir Votre Mot de passe.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                IsValid = false;
+            }
+            if (!Regex.IsMatch(txtUsername.Text, @"^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$"))
+            {
+                MessageBox.Show("Veuillez saisir une adresse email valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                 IsValid = false;
             }
             return IsValid;
