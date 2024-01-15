@@ -8,7 +8,7 @@ const Header: React.FC = () => {
     <div className="flex items-center justify-end">
       <h1>NEGOSUD</h1>
       <span className="flex w-12 h-12">
-        <Link href="/login" className="flex w-6">
+        <Link href={"/login"} className="flex w-6">
         <User />
         </Link>
         <Cart />
