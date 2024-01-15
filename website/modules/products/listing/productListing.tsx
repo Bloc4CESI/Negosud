@@ -1,9 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { getProducts } from '../../../services/api/products/productService';
 
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  image: string;
+  description: string;
+  dateProduction: string;
+  nbProductBox: number;
+  home: string;
+  familyId: number;
+  family: {
+    id: number;
+    name: string;
+    products: Product[]; // Si la famille peut contenir des produits, sinon ajustez en conséquence
+  };
+  providerId: number;
+  provider: {
+    id: number;
+    name: string;
+    phoneNumber: string;
+    email: string;
+    addressId: number;
+    address: any; // Type d'adresse à définir si nécessaire
+    products: Product[]; // Si le fournisseur peut fournir des produits, sinon ajustez en conséquence
+  };
+  stock: {
+    id: number;
+    quantity: number;
+    minimum: number;
+    maximum: number;
+    autoOrder: boolean;
+    productId: number;
+  };
+}
 
 const ProductListingPage = () => {
-  const [products, setProducts] = useState<[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,7 +50,7 @@ const ProductListingPage = () => {
     };
 
     fetchData();
-  }, []);
+  }, [products]);
 
   console.log(products);
   return (
