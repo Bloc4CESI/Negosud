@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
