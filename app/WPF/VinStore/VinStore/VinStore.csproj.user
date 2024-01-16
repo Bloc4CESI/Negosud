@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="View\AddCommandProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\AddEmployee.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\EditOrderProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Navbar.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\OrderProviderToValidate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\AddCommandProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\AddEmployee.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\EditOrderProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\Navbar.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\OrderProviderToValidate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

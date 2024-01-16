@@ -1,0 +1,13 @@
+﻿<Window x:Name="SignIn" x:Class="VinStore.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="VinStore" Height="600" Width="800"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+          TextElement.FontWeight="Regular"
+          TextElement.FontSize="13"
+          TextOptions.TextFormattingMode="Ideal"
+          TextOptions.TextRenderingMode="Auto">
+    <Grid>
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>
