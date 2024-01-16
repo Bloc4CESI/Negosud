@@ -50,7 +50,7 @@ const ProductListingPage = () => {
     };
 
     fetchData();
-  }, [products]);
+  }, []);
 
   console.log(products);
   return (
