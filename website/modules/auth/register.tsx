@@ -2,6 +2,8 @@
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { createUser } from "../../services/api/user/userService";
+import  Arrow  from "../svg/arrowRight.svg"
+import React from "react";
 
 type FormValues = {
   LastName: string;
@@ -22,8 +24,7 @@ export default function RegisterForm(){
    });
 
   return(
-    <div>
-      <h1>Inscription</h1>
+    <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit(async (formData) => {
        const response = await createUser(formData)
         console.log(response);
@@ -75,7 +76,10 @@ export default function RegisterForm(){
           />
         </div>
         <div>
-          <button type="submit" id="submit">Se connecter</button>
+          <button type="submit" id="submit" className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-black shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none">
+            S&apos;inscrire
+           <Arrow/>
+          </button>
         </div>
       </form>
     </div>

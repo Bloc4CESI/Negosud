@@ -14,7 +14,7 @@ interface Product {
   family: {
     id: number;
     name: string;
-    products: Product[]; // Si la famille peut contenir des produits, sinon ajustez en conséquence
+    products: Product[];
   };
   providerId: number;
   provider: {
@@ -23,8 +23,8 @@ interface Product {
     phoneNumber: string;
     email: string;
     addressId: number;
-    address: any; // Type d'adresse à définir si nécessaire
-    products: Product[]; // Si le fournisseur peut fournir des produits, sinon ajustez en conséquence
+    address: any;
+    products: Product[];
   };
   stock: {
     id: number;
