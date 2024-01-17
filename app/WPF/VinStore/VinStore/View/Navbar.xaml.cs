@@ -58,6 +58,7 @@ namespace VinStore.View
         {
             GridMain.Children.Clear();
             GridMain.Children.Add(new StockView());
+        }
 
         private void CommandToValidate(object sender, RoutedEventArgs e)
         {
