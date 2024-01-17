@@ -31,7 +31,7 @@ const Header = () => {
           </svg>
         </button>
         <div className={`w-full md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`} id="navbar-default">
-          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-500 rounded-lg bg-gray-800 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
+          <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-gray-900 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
             <li>
               <a href={"/login"} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 md:dark:hover:bg-transparent">
                 <User className="h-8 w-8 "/>
