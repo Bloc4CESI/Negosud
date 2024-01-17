@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
              xmlns:local="clr-namespace:VinStore.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -23,7 +25,7 @@
                 <DataGridTemplateColumn Header="Image">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding Image}" Width="50" Height="50"/>
+                            <Image Source="{Binding Image}" Width="50" Height="50" MouseLeftButtonDown="UpdateImageButton_Click"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
@@ -86,25 +88,16 @@
                     </Style>
                 </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-    
+
                 <DataGridTextColumn IsReadOnly="true" Header="Fournisseur" Binding="{Binding Provider.Name}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="TextTrimming" Value="None"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextTrimming" Value="None"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                    
-                <DataGridTextColumn IsReadOnly="true" Header="Stock" Binding="{Binding Stock.Id}">
-                <DataGridTextColumn.ElementStyle>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="TextTrimming" Value="None"/>
-                        <Setter Property="TextWrapping" Value="Wrap"/>
-                    </Style>
-                </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-                    
+
                 <DataGridTextColumn Header="Prix" Binding="{Binding Price}">
                 <DataGridTextColumn.ElementStyle>
                     <Style TargetType="TextBlock">
@@ -120,10 +113,10 @@
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
                                 <!-- Bouton d'édition -->
-                                <Button Content="Éditer" Click="EditProduct_Click" Margin="0"/>
+                                <Button Content="Éditer" Click="EditProduct_Click" Background="#a70303" Margin="0"/>
 
                                 <!-- Bouton de suppression -->
-                                <Button Content="Supprimer" Click="DeleteProduct_Click" Margin="0,5,0,0"/>
+                                <Button Content="Supprimer" Click="DeleteProduct_Click" Background="#a70303" Margin="0,5,0,5"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
