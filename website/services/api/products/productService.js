@@ -15,3 +15,33 @@ export async function getProducts() {
 
   return await response.json();
 }
+
+export async function getFamily() {
+  const response = await fetch(`${API_BASE_URL}/Family`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération des familles');
+  }
+
+  return await response.json();
+}
+
+export async function getFamilyById(id) {
+  const response = await fetch(`${API_BASE_URL}/Family/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération de la famille');
+  }
+
+  return await response.json();
+}
