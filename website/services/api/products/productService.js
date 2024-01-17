@@ -32,7 +32,7 @@ export async function getFamily() {
 }
 
 export async function getFamilyById(id) {
-  const response = await fetch(`${API_BASE_URL}/Family/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/Product/GetProductByFamily/${id}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

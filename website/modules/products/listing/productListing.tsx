@@ -39,7 +39,7 @@ interface Product {
   };
 }
 
-const ProductListingPage = () => {
+export const ProductListing = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -104,4 +104,5 @@ const ProductListingPage = () => {
   );
 };
 
-export default ProductListingPage;
+// @ts-ignore
+export default ProductListing;
