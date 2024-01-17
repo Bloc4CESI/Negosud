@@ -65,11 +65,11 @@ namespace VinStore.View
 
             if (selectedProduct.Image != null)
             {
-
-                string relativeFolderPath = @"..\..\..\Photos";
+                string uniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+                string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
                 string selectedImagePath = selectedProduct.Image;
                 string fileName = System.IO.Path.GetFileName(selectedImagePath);
-                string targetFilePath = System.IO.Path.Combine(relativeFolderPath, fileName);
+                string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName+fileName);
 
                 selectedProduct.Image = targetFilePath;
 
