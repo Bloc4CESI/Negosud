@@ -192,18 +192,7 @@ namespace VinStore.View
                 MessageBox.Show($"Une erreur s'est produite lors de la suppression : {ex.Message}");
             }
         }
-        private async Task<Family> ShowModifyFamilyDialog(string familyName)
-        {
-            // Ici, vous devriez afficher une boîte de dialogue ou un formulaire pour permettre à l'utilisateur de saisir les nouvelles informations
-            // et retourner un objet Family avec les données mises à jour.
-            // Cela dépend de votre interface utilisateur et de votre logique d'édition.
-            // Vous pouvez remplacer cette méthode par la logique spécifique à votre application.
-            // Par exemple, si vous avez un formulaire de modification, récupérez les données du formulaire.
-            // Si vous utilisez une boîte de dialogue, attendez la saisie de l'utilisateur.
-
-            // Dans cet exemple générique, renvoyez simplement une nouvelle instance de Family avec le même nom.
-            return new Family { Name = familyName };
-        }
+        
 
 
 

@@ -47,8 +47,8 @@
                             <materialDesign:PackIcon Kind="PackageVariantClosed" Foreground="White" Margin="0,0,8,0" />
                             <TextBlock Text="Stock" Foreground="White" />
                         </StackPanel>
-                    </MenuItem.Header> 
-                    <MenuItem Header="Gestion du Stock"  Foreground="Black"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="Gestion du Stock"  Foreground="Black"  Click="Stock_Click" />
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
@@ -57,8 +57,7 @@
                             <TextBlock Text="Fournisseurs" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Header="Ajout Fournisseur"  Foreground="Black"/>
-                    <MenuItem Header="Gestion des fournisseurs"  Foreground="Black"/>
+                    <MenuItem Header="Gestion des fournisseurs"  Foreground="Black" Click="Provider_Click" />
                 </MenuItem> 
                 <MenuItem>
                     <MenuItem.Header>
