@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\App.xaml
-62047960689
+101608095205
 
-27-1392157793
+32-1806994795
 203-1245791199
-Accueil.xaml;MainWindow.xaml;View\AddCommandProvider.xaml;View\AddEmployee.xaml;View\LogIn.xaml;View\Navbar.xaml;
+Accueil.xaml;MainWindow.xaml;View\AddCommandProvider.xaml;View\AddEmployee.xaml;View\AddFamily.xaml;View\EditOrderProvider.xaml;View\ListProduct.xaml;View\LogIn.xaml;View\Navbar.xaml;View\OrderProviderToValidate.xaml;
 
-True
+False
 

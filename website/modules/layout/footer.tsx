@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center w-full bg-black">
+    <div className="flex flex-col items-center justify-center w-full dark:bg-gray-900">
       <ul className="flex flex-row justify-evenly w-full mt-3">
         {footer.map((item, index) => (
           <li key={index} className="text-sm text-white">
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
         ))}
       </ul>
       <div className="flex flex-row items-center justify-center w-full mt-4">
-        <p className="text-sm text-white">L&apos;abus d&apos;alcool est dangereux pour la santé, a consommer avec modération.</p>
+        <p className="text-sm text-white">L&apos;abus d&apos;alcool est dangereux pour la santé, à consommer avec modération.</p>
       </div>
       <ul className="flex flex-row w-full justify-center mt-4 gap-3">
         {social.map((item, index) => (

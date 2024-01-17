@@ -1,62 +1,26 @@
 "use client"
-import React, { useState } from "react";
-import "../globals.css";
+import Login from "../../../modules/auth/login";
 import Header from "../../../modules/layout/header";
+import Footer from "../../../modules/layout/footer";
+import { useState } from "react"
+import '../globals.css';
+import Register from "../../../modules/auth/register";
+import AuthToggle from "../../../modules/auth/AuthToggle";
 
-const Login: React.FC = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUsername(e.target.value);
+export default function LoginPage()  {
+  const [isChecked, setIsChecekd] = useState(true);
+  const handleToggle = () => {
+    setIsChecekd((prevIsChecked) => !prevIsChecked);
   };
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = () => {
-    console.log("Username:", username);
-    console.log("Password:", password);
-  };
-// <div className="text-white h-[100vh] flex justify-center items-center bg-cover">
-return (
-    <>
-    <Header/>
-    <div className="container">
-    <div className="h-[100vh] flex justify-center items-center bg-cover">
-        <div className="col-md-6 bg-blue-400 rounded p-8">
-            <h1>Bienvenue chez <strong>NegoSud</strong></h1>
-            <form>
-                <div className="form-group">
-                <label htmlFor="username">Email de l'utilisateur</label>
-                <input
-                    type="email"
-                    className="form-control"
-                    id="username"
-                    name="email"
-                    placeholder="Entrez votre nom d'utilisateur"
-                />
-                </div>
-                <div className="form-group">
-                <label htmlFor="password">Mot de passe</label>
-                <input
-                    type="password"
-                    className="form-control"
-                    id="password"
-                    name="password"
-                    placeholder="Entrez votre mot de passe"
-                />
-                </div>
-                <div className="form-group text-center">
-                <button type="submit" id="submit" className="btn btn-primary">Se connecter</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-    </>
-);
+  return (
+<>
+  <Header/>
+  <div className="flex flex-col items-center">
+  <AuthToggle onToggle={handleToggle} isLogin={isChecked} />
+  {isChecked ?  <Login/> : <Register/>}
+  </div>
+  <Footer/>
+</>
+  )
 };
-
-export default Login;
