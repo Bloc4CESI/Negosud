@@ -15,35 +15,43 @@ export async function getProducts() {
   return await response.json();
 }
 
-export async function getProductByID(id) {
-  const response = await fetch(`${API_BASE_URL}/Product/${id}`, {
+export async function getFamily() {
+  const response = await fetch(`${API_BASE_URL}/Family`, {
+
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
-  
   if (!response.ok) {
-    throw new Error('Erreur lors de la récupération des produits');
+    throw new Error('Erreur lors de la récupération des familles');
   }
 
   return await response.json();
 }
+  
+  export async function getProductByID(id) {
+  const response = await fetch(`${API_BASE_URL}/Product/${id}`, {
+      method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+    if (!response.ok) {
+    throw new Error('Erreur lors de la récupération des produits');
+    
+    
+export async function getFamilyById(id) {
+  const response = await fetch(`${API_BASE_URL}/Product/GetProductByFamily/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
-/*
-import { useEffect } from "react";
-import { getProductByID } from "../../../../services/api/products/productService"
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération de la famille');
+  }
 
-const ProductPage = () => {
-const productId = null;
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const productData = await getProductByID(productId);
-            }
-        }
-    })
-
-    return ()
+  return await response.json();
 }
-*/

@@ -5,8 +5,9 @@ export default function User({ userData }: { userData: any }) {
   return (
     <div>
       Bienvenue
-      {userData.FirstName}
-      {userData.LastName}
+      {userData.firstName}
+      {userData.lastName}
+      {userData.email}
     </div>
   )
 }

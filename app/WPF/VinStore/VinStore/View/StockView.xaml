@@ -1,0 +1,200 @@
+﻿<UserControl x:Class="VinStore.View.StockView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             
+
+             xmlns:local="clr-namespace:VinStore.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto">
+
+    
+
+    <Grid>
+        
+        <Border Grid.Row="1" Grid.Column="1" Margin="10" Background="#F2F5F8" CornerRadius="0 0 0 5" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+
+                </Grid.RowDefinitions>
+                <materialDesign:ColorZone Padding="14" materialDesign:ElevationAssist.Elevation="Dp4"
+               CornerRadius="3" Background="#f5f4ea" Height="99" VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Stock" Foreground="Black" FontSize="48" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
+                    </StackPanel>
+                </materialDesign:ColorZone>
+
+
+
+
+                <DataGrid Margin="15,15,15,15" Grid.Row="1" x:Name="StockDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*"  GridLinesVisibility="None" HorizontalScrollBarVisibility="Hidden"  >
+
+                    
+                    
+                    <DataGrid.Columns>
+
+
+                        <!-- Colonne Nom -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Nom" Binding="{Binding Product.Name}" >
+                            <DataGridTextColumn.ElementStyle >
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Maison -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Maison" Binding="{Binding Product.Home}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Family -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Famille" Binding="{Binding Product.Family.Name}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Stock reel -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Stock Reel" Binding="{Binding Quantity}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Commande Client -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Commande Client" Binding="{Binding Commande_Client}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Commande Producteur -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Commande Producteur" Binding="{Binding Commande_Producteur}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Stock Virtuel -->
+                        <DataGridTextColumn IsReadOnly="true" Header="Stock Virtuel" Binding="{Binding Stock.Id}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Stock Mini -->
+                        <DataGridTextColumn IsReadOnly="False"  Header="Mini" Binding="{Binding Minimum}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style x:Name="MiniBackground" TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="TextBlock.Background" Value="White"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Stock Maxi -->
+                        <DataGridTextColumn x:Name="Maxi" IsReadOnly="False" Header="Maxi" Binding="{Binding Maximum}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextTrimming" Value="None"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="TextBlock.Background" Value="White"/>
+                                    
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Colonne Commande Auto -->
+                        <DataGridTemplateColumn Header="Commande Auto" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="myCheckbox" Checked="myCheckBox_Checked" Unchecked="myCheckBox_Unchecked" IsChecked="{Binding AutoOrder, Mode=TwoWay}" HorizontalAlignment="Center" Background="DarkRed" BorderBrush="DarkRed"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <Setter Property="BorderBrush" Value="#F2F5F8"/>
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+                        </DataGridTemplateColumn>
+
+                        <!-- Colonne Actions -->
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!-- Bouton d'édition -->
+                                    <Button Content="Éditer"   Background="DarkRed" BorderBrush="DarkRed" Click="ButtonEdite_Click" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+
+
+                    </DataGrid.Columns>
+
+                    <DataGrid.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Margin" Value="15,0,0,0"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="BorderThickness" Value="10,0,10,0"/>
+                            <Setter Property="BorderBrush" Value="#f5f4ea" />
+                           
+
+
+                        </Style>
+                    </DataGrid.CellStyle>
+                    
+                    
+
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Setter Property="Height" Value="50"/>
+                            <Setter Property="Background" Value="#f5f4ea"/>
+                            <Setter Property="BorderThickness" Value="1"/>
+                            
+
+                        </Style>
+                        
+                  
+                        
+                    </DataGrid.RowStyle>
+
+                </DataGrid>
+            </Grid>
+
+        </Border>
+    </Grid>
+</UserControl>

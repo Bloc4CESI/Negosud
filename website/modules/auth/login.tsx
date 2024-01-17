@@ -5,8 +5,10 @@ import { useForm } from "react-hook-form";
 import { getUser } from "../../services/api/user/userService";
 import { useRouter } from "next/navigation";
 import Arrow from "../svg/arrowRight.svg";
+import { useAuth } from "../../services/api/user/useAuth";
 
 const Login = () => {
+  const { authenticate } = useAuth();
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -22,6 +24,7 @@ const Login = () => {
         try {
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
+            authenticate(encodeURIComponent(formData.Email));
             router.push('/account');
           } else {
             console.log("error");

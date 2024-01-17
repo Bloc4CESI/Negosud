@@ -43,11 +43,23 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new ListProduct());
         }
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddProduct());
+        }
         private void AddFamille_Click(object sender, RoutedEventArgs e)
         {
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddFamily());
         }
+
+        private void Stock_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new StockView());
+        }
+
         private void CommandToValidate(object sender, RoutedEventArgs e)
         {
             GridMain.Children.Clear();
@@ -63,6 +75,7 @@ namespace VinStore.View
             textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
             textBlock.Inlines.Add(new Run(")"));
             CommandToValidateHeader.Header = textBlock;
+
         }
     }
 }

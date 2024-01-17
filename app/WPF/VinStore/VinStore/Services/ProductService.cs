@@ -76,7 +76,7 @@ namespace VinStore.Services
                     List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
                     return products;
                 }
-            
+
             }
             catch (Exception ex)
             {
@@ -140,6 +140,38 @@ namespace VinStore.Services
                 throw new Exception($"Une erreur s'est produite lors de la requête : {ex.Message}", ex);
             }
         }
+        public static async Task PostProduct(string jsonData, string productName)
+        {
+            try
+            {
+
+                StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                // Envoyer la requête PUT
+                HttpResponseMessage response = await ApiConnexion.ApiClient.PostAsync($"https://localhost:7281/api/Product/", content);
+
+
+                // Vérifier la réponse
+                if (response.IsSuccessStatusCode)
+                    {
+                        Console.WriteLine("Création réussie !");
+                        MessageBox.Show($"Le produit \"{productName}\" à bien été créé !");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Erreur lors de la suppression. Code de statut : {response.StatusCode}");
+                        // Vous pouvez également lever une exception ici si nécessaire.
+                        MessageBox.Show($"La création du produit \"{productName}\" à échoué !");
+                    }
+
+                }
+            catch (Exception ex)
+            {
+                // Gérez les erreurs ici
+                MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
+            }
+        }
+    
 
     }
+
 }
