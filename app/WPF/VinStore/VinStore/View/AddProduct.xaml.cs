@@ -136,7 +136,7 @@ namespace VinStore.View
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
 
-            string relativeFolderPath = @"..\..\..\Photos";
+            string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
 
             string image = "";
 
@@ -146,8 +146,9 @@ namespace VinStore.View
 
                 if (!string.IsNullOrEmpty(selectedImagePath))
                 {
+                    string uniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                     string fileName = System.IO.Path.GetFileName(selectedImagePath);
-                    string targetFilePath = System.IO.Path.Combine(relativeFolderPath, fileName);
+                    string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName+fileName);
 
                     image = targetFilePath;
 
