@@ -45,5 +45,10 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new AddFamily());
         }
+        private void Stock_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new StockView());
+        }
     }
 }
