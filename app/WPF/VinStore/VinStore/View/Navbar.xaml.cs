@@ -43,6 +43,11 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new ListProduct());
         }
+        private void AddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new AddProduct());
+        }
         private void AddFamille_Click(object sender, RoutedEventArgs e)
         {
             GridMain.Children.Clear();

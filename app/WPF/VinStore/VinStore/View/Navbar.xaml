@@ -39,6 +39,7 @@
                             <TextBlock Text="Article" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
+                    <MenuItem Header="Ajouter un produit" Foreground="Black" Click="AddProduct_Click"/>
                     <MenuItem Header="Liste des produits" Foreground="Black" Click="ListProduct_Click"/>
                 </MenuItem> 
                 <MenuItem>
