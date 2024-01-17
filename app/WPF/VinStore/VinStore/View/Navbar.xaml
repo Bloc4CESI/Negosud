@@ -81,15 +81,6 @@
                     <MenuItem Header="Ajout Inventaire" Foreground="Black"/>
                     <MenuItem Header="Gestion Inventaire" Foreground="Black"/>
                 </MenuItem> 
-                <MenuItem>
-                    <MenuItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountArrowRightOutline" Foreground="White" Margin="0,0,8,0" />
-                            <TextBlock Text="Utilisateur" Foreground="White" />
-                        </StackPanel>
-                    </MenuItem.Header>
-                    <MenuItem Header="Ajout utilisateur" Foreground="Black" Click="MenuItem_Click"/>
-                </MenuItem>
             </Menu>
         </materialDesign:ColorZone>
         <Grid x:Name="GridMain"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Grid.Row="1"></Grid>
