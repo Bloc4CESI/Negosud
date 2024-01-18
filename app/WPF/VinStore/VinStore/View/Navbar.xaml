@@ -39,6 +39,7 @@
                             <TextBlock Text="Article" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
+                    <MenuItem Header="Ajouter un produit" Foreground="Black" Click="AddProduct_Click"/>
                     <MenuItem Header="Liste des produits" Foreground="Black" Click="ListProduct_Click"/>
                 </MenuItem> 
                 <MenuItem>
@@ -47,8 +48,8 @@
                             <materialDesign:PackIcon Kind="PackageVariantClosed" Foreground="White" Margin="0,0,8,0" />
                             <TextBlock Text="Stock" Foreground="White" />
                         </StackPanel>
-                    </MenuItem.Header> 
-                    <MenuItem Header="Gestion du Stock"  Foreground="Black"/>
+                    </MenuItem.Header>
+                    <MenuItem Header="Gestion du Stock"  Foreground="Black"  Click="Stock_Click" />
                 </MenuItem>
                 <MenuItem>
                     <MenuItem.Header>
