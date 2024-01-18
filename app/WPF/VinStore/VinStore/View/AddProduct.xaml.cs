@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using VinStore.Services;
 using static System.Net.Mime.MediaTypeNames;
+using RestSharp;
 
 namespace VinStore.View
 {
@@ -136,8 +138,6 @@ namespace VinStore.View
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
 
-            string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
-
             string image = "";
 
             if (ImagePreview.Source != null)
@@ -146,14 +146,10 @@ namespace VinStore.View
 
                 if (!string.IsNullOrEmpty(selectedImagePath))
                 {
-                    string uniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
                     string fileName = System.IO.Path.GetFileName(selectedImagePath);
-                    string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName+fileName);
+                    string uniqueFileName = System.IO.Path.Combine(DateTime.Now.ToString("yyyyMMddHHmmssfff") + fileName);
 
-                    image = targetFilePath;
-
-                    // Copier l'image sélectionnée vers le dossier cible
-                    File.Copy(selectedImagePath, targetFilePath, true);
+                    image = postImgurImg(selectedImagePath, uniqueFileName);
                 }
 
                 bool isFormValid = true;
@@ -265,6 +261,45 @@ namespace VinStore.View
             txtHome.Text = "";
             FamilyName.SelectedIndex = -1; // Réinitialisez la ComboBox "Famille"
             ProvidersName.SelectedIndex = -1; // Réinitialisez la ComboBox "Fournisseur"
+        }
+
+        private string postImgurImg(string selectedpath, string imagename)
+        {
+
+            // Remplacez "VOTRE_CLE_API" par votre clé API Imgur
+            string apiKey = "f8e21651c328f2f";
+
+            // Appel de la méthode pour charger l'image sur Imgur et obtenir le lien
+            string imgurLink = UploadImageToImgur(selectedpath, apiKey, imagename);
+
+            // Afficher le lien Imgur
+            Console.WriteLine("Lien Imgur : " + imgurLink);
+            return imgurLink;
+        }
+
+        static string UploadImageToImgur(string imagePath, string apiKey, string filename)
+        {
+            // Charger le fichier image en bytes
+            byte[] imageData = File.ReadAllBytes(imagePath);
+
+            // Créer une demande à l'API Imgur
+            var client = new RestClient("https://api.imgur.com/3");
+            var request = new RestRequest("image", Method.Post);
+
+            // Ajouter l'image en tant que fichier à la demande
+            request.AddFile("image", imageData, filename);
+
+            // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
+            request.AddHeader("Authorization", $"Client-ID {apiKey}");
+
+            // Exécuter la demande
+            RestResponse response = client.Execute(request);
+
+            // Analyser la réponse JSON pour obtenir le lien Imgur
+            dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+            string imgurLink = jsonResponse.data.link;
+
+            return imgurLink;
         }
 
     }
