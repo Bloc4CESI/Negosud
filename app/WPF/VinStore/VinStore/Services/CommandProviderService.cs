@@ -74,11 +74,18 @@ namespace VinStore.Services
                 return $"Une erreur s'est produite lors de la requête : {ex.Message}";
             }
         }
-        public static async Task<List<ProviderOrder>> GetProviderOrderByStatus(ProviderOrderStatus status)
+        public static async Task<List<ProviderOrder>> GetProviderOrderByStatus(ProviderOrderStatus status, string provider = null)
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetAsync($"https://localhost:7281/api/ProviderOrder/bystatus/{status}");
+                string apiUrl = $"https://localhost:7281/api/ProviderOrder/bystatus/{status}";
+                if (!string.IsNullOrEmpty(provider))
+                {
+                    // Ajouter le paramètre provider à l'URL
+                    apiUrl += $"?provider={Uri.EscapeDataString(provider)}";
+                }
+
+                var response = await ApiConnexion.ApiClient.GetAsync(apiUrl);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -98,6 +105,7 @@ namespace VinStore.Services
                 return null;
             }
         }
+
         public static async Task DeleteProvider(int idProvider)
         {
             var response = await ApiConnexion.ApiClient.DeleteAsync($"https://localhost:7281/api/ProviderOrder/{idProvider}");

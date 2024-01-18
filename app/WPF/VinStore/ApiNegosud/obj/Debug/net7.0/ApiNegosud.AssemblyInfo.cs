@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiNegosud")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a112f242b1254b167309f6e54e8a481ea13c2053")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44b81f0e6cdc79168cfd067135c5beba4f007596")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiNegosud")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiNegosud")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -23,7 +23,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Création du bon de commande fournisseur" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0"/>
+        <TextBlock Grid.Row="0" Text="Edition du bon de commande fournisseur" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline" Margin="10" HorizontalAlignment="Center" Grid.ColumnSpan="2" Grid.Column="0"/>
         <Border Grid.Row="1" Grid.Column="0" Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="10"     >
             <Grid>
                 <Grid.RowDefinitions>
@@ -95,24 +95,39 @@
         </materialDesign:ColorZone>
         <Border Grid.Row="3"  x:Name="Boder" Grid.Column="0" Height="Auto" Grid.ColumnSpan="2" Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="20" >
             <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
-                <DataGrid AutoGenerateColumns="False" Height="Auto"
+                <DataGrid AutoGenerateColumns="False" Height="Auto" x:Name="ProviderOrderLinesDataGrid"
                   CanUserAddRows="False" HeadersVisibility="All" ItemsSource="{Binding ProviderOrderLines}"
                   SelectionUnit="{Binding ElementName=selectionUnitComboBox, Path=SelectedValue}">
                     <DataGrid.Columns>
-                        <materialDesign:DataGridComboBoxColumn Width="*" Header="Nom de l'article" IsEditable="True" x:Name="ProductNameCombox"
-                              ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Provider.Products}"
-    SelectedValueBinding="{Binding Product.Name}" />
+                        <materialDesign:DataGridTextColumn Width="*" Header="Nom de l'article" IsReadOnly="True">
+                            <materialDesign:DataGridTextColumn.Binding>
+                                <Binding Path="Product.Name"/>
+                            </materialDesign:DataGridTextColumn.Binding>
+                        </materialDesign:DataGridTextColumn>
                         <materialDesign:DataGridTextColumn Width="*" Header="Quantité stock" IsReadOnly="True">
                             <materialDesign:DataGridTextColumn.Binding>
                                 <Binding Path="Product.Stock.Quantity"/>
                             </materialDesign:DataGridTextColumn.Binding>
                         </materialDesign:DataGridTextColumn>
-                        <materialDesign:DataGridTextColumn Width="*" Header="Quantité">
+                        <materialDesign:DataGridTextColumn Width="*" Header="Quantité" IsReadOnly="False">
+                            <materialDesign:DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <EventSetter Event="LostFocus" Handler="TextBox_QuantityChanged" />
+                                    <EventSetter Event="PreviewTextInput" Handler="TextBox_IntegerInput" />
+                                </Style>
+                            </materialDesign:DataGridTextColumn.EditingElementStyle>
+                            
                             <materialDesign:DataGridTextColumn.Binding>
                                 <Binding Path="Quantity"/>
                             </materialDesign:DataGridTextColumn.Binding>
                         </materialDesign:DataGridTextColumn>
-                        <materialDesign:DataGridTextColumn Width="*" Header="Prix article">
+                        <materialDesign:DataGridTextColumn Width="*" Header="Prix article" IsReadOnly="False">
+                            <materialDesign:DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <EventSetter Event="LostFocus" Handler="TextBox_PriceChanged" />
+                                    <EventSetter Event="PreviewTextInput" Handler="TextBox_DecimalInput" />
+                                </Style>
+                            </materialDesign:DataGridTextColumn.EditingElementStyle>
                             <materialDesign:DataGridTextColumn.Binding>
                                 <Binding Path="Price"/>
                             </materialDesign:DataGridTextColumn.Binding>
@@ -124,19 +139,18 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal" Background="White" HorizontalAlignment="Right">
             <TextBlock  Background="Transparent"  Margin="20" VerticalAlignment="Center"  IsEnabled="True"
                   Foreground="#a70303" FontWeight="Bold" FontSize="16" x:Name="TotalOrder" />
-            <Button HorizontalAlignment="Right" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" Margin="1 0" FontSize="13" >
+            <Button HorizontalAlignment="Right" Click="UpdateCommandOrder" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" x:Name="NextPageButton" Margin="1 0" FontSize="13">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ContentSaveAllOutline"  Margin="0,0,5,0"/>
-                    <TextBlock Text="Enregistrer" />
+                    <materialDesign:PackIcon Kind="ContentSaveCheck" Margin="0,0,5,0" />
+                    <TextBlock Text="Valider" />
                 </StackPanel>
             </Button>
-            <Button HorizontalAlignment="Right" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" x:Name="NextPageButton" Margin="1 0" FontSize="13">
+            <Button HorizontalAlignment="Right" Click="RefuseOrderCommand" BorderBrush="#a70303" Background="#a70303" Foreground="White" Margin="1 0" FontSize="13" >
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="ContentSaveCheck" Margin="0,0,5,0"/>
-                    <TextBlock Text="Enregistrer/Valider" />
+                    <materialDesign:PackIcon Kind="AlphaXBox"  Margin="0,0,5,0"/>
+                    <TextBlock Text="Refuser" />
                 </StackPanel>
             </Button>
-
         </StackPanel>
     </Grid>
 </UserControl>

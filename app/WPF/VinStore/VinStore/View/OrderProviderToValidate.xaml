@@ -15,32 +15,52 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <Grid>
-
-            <TextBlock Grid.Row="0" Text="Liste des Commandes à valider" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
-            <DataGrid Grid.Row="1" Margin="0,45,0,0" x:Name="CommanToValidatGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Date commande" Foreground="Black" Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}" />
-                    <DataGridTextColumn Header="Prix commande" Foreground="Black" Binding="{Binding Price}" />
-                    <DataGridTextColumn Header="Fournisseur" Foreground="Black" Binding="{Binding ProviderName}" />
-                    <DataGridTextColumn Header="Articles" Binding="{Binding Path=Provider.Name}" />
-                    <DataGridTemplateColumn  Header="Actions">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" >
-                                    <Button  Click="EditOrderProvider" Foreground="White" Background="#a70303">
-                                        <materialDesign:PackIcon Kind="ClipboardEditOutline"/>
-                                    </Button>
-                                    <Button Click="RemoveOrderProvider"  Foreground="White" Background="#a70303">
-                                        <materialDesign:PackIcon Kind="DeleteForever"/>
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="800">
+            <Grid>
+                <TextBlock Grid.Row="0" Text="Liste des Commandes à valider" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
+                <materialDesign:ColorZone  Grid.Row="1" Margin="0,50,0,0" Padding="8,4,8,4" Panel.ZIndex="1"
+                  materialDesign:ElevationAssist.Elevation="Dp1" CornerRadius="2" Mode="Standard">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="1" MinWidth="500" Margin="8,0,0,0" x:Name="ProviderNameTextBox"
+                          VerticalAlignment="Center"  materialDesign:HintAssist.Hint="Rechercher "
+                          materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                          BorderThickness="0" />
+                        <Button Margin="8,0,0,0" Click="SearchCommandWithProviderName" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}">
+                            <materialDesign:PackIcon Kind="Search" Grid.Column="2" />
+                        </Button>
+                        <Button Margin="20,0,0,0" Grid.Column="2" Content="Rechercher par Fournisseur" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}" Click="SearchCommandWithProviderName" />
+                    </Grid>
+                </materialDesign:ColorZone>
+                <DataGrid Margin="0,90,0,0" x:Name="CommanToValidatGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Date commande" Foreground="Black" Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}" />
+                        <DataGridTextColumn Header="Prix commande" Foreground="Black" Binding="{Binding Price}" />
+                        <DataGridTextColumn Header="Fournisseur" Foreground="Black" Binding="{Binding Provider.Name}" />
+                        <DataGridTextColumn Header="Articles" Binding="{Binding Path=ProductNames}" />
+                        <DataGridTemplateColumn  Header="Actions">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Button  Click="EditOrderProvider" Foreground="White" Background="#a70303">
+                                            <materialDesign:PackIcon Kind="ClipboardEditOutline"/>
+                                        </Button>
+                                        <Button Click="RemoveOrderProvider"  Foreground="White" Background="#a70303">
+                                            <materialDesign:PackIcon Kind="DeleteForever"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

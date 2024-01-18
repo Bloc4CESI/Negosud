@@ -8,10 +8,17 @@ namespace ApiNegosud.Models
         public int Id { get; set; }
         [Required]
         public DateTime Date { get; set; }
-        [Required]  
-        public int QuantityInventory { get; set; }
-        [ForeignKey("Stock")]
-        public int StockId { get; set; }
-        public Stock? Stock{ get; set; }
+        [Required]
+        public InventoryEnum StatusInventory { get; set; }
+
+        public List<InventoryLigne>? InventoryLignes { get; set; }
+
+        public enum InventoryEnum
+        {
+            ENCOURSDEVALIDATION,
+            VALIDE,
+            REFUSE
+        }
+
     }
 }
