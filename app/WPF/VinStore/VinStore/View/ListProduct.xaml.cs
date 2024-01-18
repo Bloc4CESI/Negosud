@@ -1,25 +1,18 @@
 ﻿using ApiNegosud.Models;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using VinStore.Services;
-using static System.Net.Mime.MediaTypeNames;
+
 
 namespace VinStore.View
 {
@@ -42,14 +35,6 @@ namespace VinStore.View
             // Créez une liste de produits
             List<Product> products = await ProductService.GetAllProducts();
 
-            string projectPath = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory));
-
-            // Ajoutez d'autres produits selon vos besoins
-            foreach (Product product in products)
-            {
-                product.Image = System.IO.Path.GetFullPath(System.IO.Path.Combine(projectPath + "/test", product.Image));
-            }
-
             // Assigne la liste à la propriété ItemsSource du DataGrid
             productDataGrid.ItemsSource = products;
 
@@ -65,16 +50,16 @@ namespace VinStore.View
 
             if (selectedProduct.Image != null)
             {
-                string uniqueFileName = DateTime.Now.ToString("yyyyMMddHHmmssfff");
-                string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
+                //string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
                 string selectedImagePath = selectedProduct.Image;
                 string fileName = System.IO.Path.GetFileName(selectedImagePath);
-                string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName+fileName);
+                string uniqueFileName = System.IO.Path.Combine(DateTime.Now.ToString("yyyyMMddHHmmssfff")+fileName);
+                //string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName);
 
-                selectedProduct.Image = targetFilePath;
+                selectedProduct.Image = postImgurImg(selectedImagePath, uniqueFileName);
 
                 // Copier l'image sélectionnée vers le dossier cible
-                File.Copy(selectedImagePath, targetFilePath, true);
+                //File.Copy(selectedImagePath, targetFilePath, true);
 
             }
 
@@ -184,5 +169,46 @@ namespace VinStore.View
 
             return FindVisualParent<T>(parentObject);
         }
+
+        private string postImgurImg(string selectedpath, string imagename)
+        {
+
+                // Remplacez "VOTRE_CLE_API" par votre clé API Imgur
+                string apiKey = "f8e21651c328f2f";
+
+                // Appel de la méthode pour charger l'image sur Imgur et obtenir le lien
+                string imgurLink = UploadImageToImgur(selectedpath, apiKey, imagename);
+
+                // Afficher le lien Imgur
+                Console.WriteLine("Lien Imgur : " + imgurLink);
+            return imgurLink;
+        }
+
+            static string UploadImageToImgur(string imagePath, string apiKey, string filename)
+            {
+                // Charger le fichier image en bytes
+                byte[] imageData = File.ReadAllBytes(imagePath);
+
+                // Créer une demande à l'API Imgur
+                var client = new RestClient("https://api.imgur.com/3");
+                var request = new RestRequest("image", Method.Post);
+
+                // Ajouter l'image en tant que fichier à la demande
+                request.AddFile("image", imageData, filename);
+
+                // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
+                request.AddHeader("Authorization", $"Client-ID {apiKey}");
+
+                // Exécuter la demande
+                RestResponse response = client.Execute(request);
+
+                // Analyser la réponse JSON pour obtenir le lien Imgur
+                dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                string imgurLink = jsonResponse.data.link;
+
+                return imgurLink;
+            }
+        
     }
 }
+
