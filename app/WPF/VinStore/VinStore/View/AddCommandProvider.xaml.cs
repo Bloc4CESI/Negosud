@@ -28,12 +28,15 @@ namespace VinStore.View
     /// </summary>
     public partial class AddCommandProvider : UserControl
     {
-        public AddCommandProvider()
+        private Grid _mainGrid;
+        public AddCommandProvider(Grid mainGrid)
         {
             InitializeComponent();
+            _mainGrid = mainGrid;
             OrderDate.SelectedDate= DateTime.Now;
             LoadProviders();
             DeleteProduct0.Visibility= Visibility.Collapsed;
+            
 
         }
         private async void LoadProviders()
@@ -230,7 +233,11 @@ namespace VinStore.View
                 e.Handled = true; // Ignorer si pas un entier
             }
         }
-
+        private bool IsDecimalAllowed(string input)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.,][0-9]*)?$");
+            return regex.IsMatch(input);
+        }
         private void TextBox_DecimalInput(object sender, TextCompositionEventArgs e)
         {
             if (!IsDecimalAllowed(e.Text))
@@ -238,11 +245,6 @@ namespace VinStore.View
                 MessageBox.Show("Veuillez entrer un nombre décimal valide dans le prix.");
                 e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec , ou .
             }
-        }
-        private bool IsDecimalAllowed(string input)
-        {
-            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.,][0-9]*)?$");
-            return regex.IsMatch(input);
         }
         private async void ProviderSelected(object sender, SelectionChangedEventArgs e)
         {
@@ -282,23 +284,28 @@ namespace VinStore.View
                     var productDetails = await ProductService.GetProductById(selectedProduct.Id);
                     // Trouver le nom du TextBox associé à cette ComboBox
                     var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
-                    // Utiliser FindName pour récupérer le TextBox
+                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    // Utiliser FindName pour récupérer le TextBox quantité + prix
                     TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
-
-                    if (quantityTextBox != null)
+                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
+                    if (quantityTextBox != null && priceTextBox != null)
                     {
                         // Mettre à jour le texte du TextBox
                         quantityTextBox.Text = productDetails.Stock?.Quantity.ToString() ?? "N/A";
+                        priceTextBox.Text= productDetails?.Stock?.Product?.Price.ToString();
                     }
                 }
                 else
                 {
                     // Si aucun article n'est sélectionné, effacer la valeur du TextBox
                     var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
                     TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
-                    if (quantityTextBox != null)
+                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
+                    if (quantityTextBox != null && priceTextBox != null)
                     {
                         quantityTextBox.Text = string.Empty;
+                        priceTextBox.Text =string.Empty;
                     }
                 }
             }
@@ -431,7 +438,7 @@ namespace VinStore.View
                     {
                         ProviderId = selectedProviderId,
                         Price = orderDataList.Sum(data => (int)data["Quantity"] * (decimal)data["Price"]),
-                        Date = OrderDate.SelectedDate.Value,
+                        Date = OrderDate.SelectedDate!.Value,
                         ProviderOrderStatus = ProviderOrderStatus.ENCOURSDEVALIDATION,
                         ProviderOrderLines = orderDataList.Select(data => new ProviderOrderLine
                         {
@@ -450,9 +457,14 @@ namespace VinStore.View
         private async void SaveOrderProvider(object sender, RoutedEventArgs e)
         {
             var (responseMessage, createdOrder)  = await SaveOrderProviderStatusInProgress();
-            if (!string.IsNullOrEmpty(responseMessage))
+            if (!string.IsNullOrEmpty(responseMessage) && createdOrder!=null)
             {
-                MessageBox.Show(responseMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                var Message =MessageBox.Show(responseMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (Message == MessageBoxResult.OK)
+                {
+                    _mainGrid.Children.Clear();
+                    _mainGrid.Children.Add(new OrderProviderToValidate(_mainGrid));
+                }
             }
             else
             {
@@ -469,7 +481,12 @@ namespace VinStore.View
                 var updateOrder = await CommandProviderService.UpdateProviderOrder(createdOrder);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
-                    MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (Message == MessageBoxResult.OK)
+                    {
+                        _mainGrid.Children.Clear();
+                        _mainGrid.Children.Add(new ProviderOrderToDelivery(_mainGrid));
+                    }
                 }
                 else
                 {

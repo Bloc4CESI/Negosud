@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="VinStore.View.EditInventory"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:VinStore.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"         
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            TextElement.FontWeight="Regular"
+            TextElement.FontSize="13"
+            TextOptions.TextFormattingMode="Ideal"
+            TextOptions.TextRenderingMode="Auto">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="1" Grid.Column="0" Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="10"     >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="Informations générales" Foreground="Black" FontSize="18" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
+                </StackPanel>
+                <DatePicker Grid.Row="1" Margin="20" Background="#F5F5F5" materialDesign:CalendarAssist.SelectionForegroundColor="Beige"
+          materialDesign:HintAssist.Hint="Date de l'inventaire" BorderBrush="Black" x:Name="OrderDate"
+             materialDesign:TextFieldAssist.UnderlineBrush="Black"  SelectedDate="{Binding Path=Date,Mode=TwoWay}">
+                    <DatePicker.CalendarStyle>
+                        <Style TargetType="Calendar" BasedOn="{StaticResource MaterialDesignCalendarPortrait}">
+                            <Style.Resources>
+                                <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#a70303" />
+                            </Style.Resources>
+                        </Style>
+                    </DatePicker.CalendarStyle>
+                </DatePicker>
+                <TextBlock  Margin="10,0,0,0 " Grid.Row="2" Text="Statut de la commande : En cours de validation" Foreground="Black" FontSize="15" FontWeight="Medium"  Opacity="2"/>
+                <ProgressBar BorderBrush="DarkRed" Grid.Row="3" Margin="10" Height="10" Value="25" Foreground="#a70303" Background="#FBE9E7"/>
+            </Grid>
+        </Border>
+        <Border Grid.Row="2"  x:Name="Boder"  Height="Auto"  Background="#F2F5F8" CornerRadius="0 0 0 5" Margin="20" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="La liste des articles" Foreground="Black" FontSize="18" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
+                </StackPanel>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
+                    <DataGrid AutoGenerateColumns="False" Height="Auto" x:Name="ProviderOrderLinesDataGrid"
+                          CanUserAddRows="False" HeadersVisibility="All" ItemsSource="{Binding InventoryLignes}"
+                          SelectionUnit="{Binding ElementName=selectionUnitComboBox, Path=SelectedValue}">
+                        <DataGrid.Columns>
+                            <materialDesign:DataGridTextColumn Width="*" Header="Nom de l'article" IsReadOnly="True">
+                                <materialDesign:DataGridTextColumn.Binding>
+                                    <Binding Path="Stock.Product.Name"/>
+                                </materialDesign:DataGridTextColumn.Binding>
+                            </materialDesign:DataGridTextColumn>
+                            <materialDesign:DataGridTextColumn Width="*" Header="Quantité stock" IsReadOnly="True">
+                                <materialDesign:DataGridTextColumn.Binding>
+                                    <Binding Path="Stock.Quantity"/>
+                                </materialDesign:DataGridTextColumn.Binding>
+                            </materialDesign:DataGridTextColumn>
+                            <materialDesign:DataGridTextColumn Width="*" Header="Quantité inventaire" IsReadOnly="False">
+                                <materialDesign:DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="{x:Type TextBox}">
+                                        <EventSetter Event="PreviewTextInput" Handler="TextBox_IntegerInput" />
+                                    </Style>
+                                </materialDesign:DataGridTextColumn.EditingElementStyle>
+                                <materialDesign:DataGridTextColumn.Binding>
+                                    <Binding Path="QuantityInventory"/>
+                                </materialDesign:DataGridTextColumn.Binding>
+                            </materialDesign:DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="4" Orientation="Horizontal" Background="White" HorizontalAlignment="Right">
+            <Button HorizontalAlignment="Right" Click="UpdateInventory" BorderBrush="#a70303" Background="Transparent" Foreground="#a70303" x:Name="NextPageButton" Margin="1 0" FontSize="13">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="ContentSaveCheck" Margin="0,0,5,0" />
+                    <TextBlock Text="Valider" />
+                </StackPanel>
+            </Button>
+            <Button HorizontalAlignment="Right" Click="RefuseInventory" BorderBrush="#a70303" Background="#a70303" Foreground="White" Margin="1 0" FontSize="13" >
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="AlphaXBox"  Margin="0,0,5,0"/>
+                    <TextBlock Text="Refuser" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

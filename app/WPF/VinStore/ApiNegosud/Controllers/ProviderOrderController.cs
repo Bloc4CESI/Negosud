@@ -81,20 +81,29 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("bystatus/{status}")]
-        public IActionResult GetByStatus(ProviderOrderStatus status)
+        public IActionResult GetByStatus(ProviderOrderStatus status, string provider = null)
         {
             try
-            { 
-                var providerOrders = _context.ProviderOrder
+            {
+                var providerOrdersQuery = _context.ProviderOrder
                     .Include(po => po.Provider)
-                         .ThenInclude(p => p.Address)
+                        .ThenInclude(p => p.Address)
                     .Include(po => po.Provider!.Products)
                     .Include(po => po.ProviderOrderLines!)
                         .ThenInclude(line => line.Product)
-                            .ThenInclude(p =>p.Stock)
-                    .Where(po => po.ProviderOrderStatus == status)
+                            .ThenInclude(p => p.Stock)
+                    .Where(po => po.ProviderOrderStatus == status);
+
+                if (!string.IsNullOrEmpty(provider))
+                {
+                    // pour filtrer par le nom du fournisseur
+                    providerOrdersQuery = providerOrdersQuery
+                                .Where(po => po.Provider != null && po.Provider.Name.ToLower().Contains(provider.ToLower()));
+                }
+                    var providerOrders = providerOrdersQuery
                     .OrderByDescending(po => po.Id)
                     .ToList();
+
                 return Ok(providerOrders);
             }
             catch (Exception ex)
@@ -139,7 +148,7 @@ namespace ApiNegosud.Controllers
                             {
                                 // Ajouter une nouvelle ligne si elle n'existe pas déjà
                                 _context.ProviderOrderLine.Add(orderLine);
-                                _context.SaveChanges();
+                               /* _context.SaveChanges();*/
                             }
                         }
                         else
