@@ -9,7 +9,7 @@ export default function Home() {
       <div className="max-w-screen-xl mx-auto p-4">
         <div className="my-8">
           <h1 className="text-4xl font-semibold mb-4">Bienvenue sur NegoSud</h1>
-          <a href={"/product"} className="text-lg">
+          <a href={"/listingProducts"} className="text-lg">
             Produit
           </a>
         </div>
