@@ -13,13 +13,43 @@
     <Compile Update="View\AddEmployee.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\CreateInventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\DelivredCommand.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\DetailCommand.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\DetailInventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\EditInventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\EditOrderProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\InventoryToValidate.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Navbar.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\OrderProviderToValidate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ProviderOrderToDelivery.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\RefusedInventory.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\RefusedOrderProvider.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ValidateInventory.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -30,13 +60,43 @@
     <Page Update="View\AddEmployee.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\CreateInventory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\DelivredCommand.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\DetailCommand.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\DetailInventory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\EditInventory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\EditOrderProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\InventoryToValidate.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Navbar.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\OrderProviderToValidate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ProviderOrderToDelivery.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\RefusedInventory.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\RefusedOrderProvider.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ValidateInventory.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

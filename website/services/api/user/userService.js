@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
+import { useState } from "react";
 
-const API_BASE_URL = process.env.API;
+export const API_BASE_URL = 'https://localhost:7281/api';
 export let user = null;
 
 export async function createUser(data) {
@@ -15,7 +16,6 @@ export async function createUser(data) {
   if (!response.ok) {
     throw new Error('Erreur lors de la création de l\'utilisateur');
   }
-
   const user = await response.text();
   return user;
 }
@@ -35,13 +35,17 @@ export async function getUser(email, password) {
   }
 
   const userData = await response.json();
+  console.log(userData);
 
   const connect = bcrypt.compare(password, userData.password).then((match) => {
     return !match;
   });
 
-  return user = userData;
+  return userData;
 }
-export async function deleteUser() {}
+export async function Logout() {
+    localStorage.removeItem('connected');
+    window.location.reload();
+}
 
 

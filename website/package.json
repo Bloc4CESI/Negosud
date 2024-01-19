@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.8.1",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "framer-motion": "^10.17.9",
@@ -17,9 +18,10 @@
     "next-auth": "^4.24.5",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^5.0.1",
     "react-hook-form": "^7.49.3",
-    "react-router-dom": "^6.21.1"
+    "react-icons": "^5.0.1",
+    "react-router-dom": "^6.21.1",
+    "zustand": "^4.4.7"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
@@ -30,6 +32,7 @@
     "eslint": "^8",
     "eslint-config-next": "14.0.3",
     "postcss": "^8",
+    "prisma": "^5.8.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5"
   }
