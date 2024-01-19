@@ -43,8 +43,8 @@ export async function getUser(email, password) {
 
   return userData;
 }
-export async function useLogout() {
-    localStorage.removeItem('account');
+export async function Logout() {
+    localStorage.removeItem('connected');
     window.location.reload();
 }
 

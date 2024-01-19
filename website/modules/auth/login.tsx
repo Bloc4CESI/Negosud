@@ -8,7 +8,7 @@ import Arrow from "../svg/arrowRight.svg";
 import { useAuth } from "../../services/api/user/useAuth";
 
 const Login = () => {
-  const { authenticate } = useAuth();
+  const { authenticate, status } = useAuth();
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -17,6 +17,10 @@ const Login = () => {
     },
   });
 
+  if (localStorage.getItem('connected') !== null) {
+   router.push('/account');
+}
+
 
   return (
     <div className="flex flex-col items-center">
@@ -24,7 +28,7 @@ const Login = () => {
         try {
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
-            authenticate(encodeURIComponent(formData.Email));
+            await authenticate(encodeURIComponent(formData.Email));
             router.push('/account');
           } else {
             console.log("error");

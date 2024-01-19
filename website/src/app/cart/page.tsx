@@ -1,29 +1,24 @@
+"use client"
 import React from "react";
 import Header from "../../../modules/layout/header";
 import Footer from "../../../modules/layout/footer";
 import "../globals.css";
-
-// Importe tes données de panier ici, par exemple :
-// import { products, calculateTotal } from "../path/to/your/cartData";
+import { useAccount } from "../../../services/api/user/useAccount";
+import EmptyCart from "../../../modules/account/emptyCart";
 
 export default function Cart() {
-  // Récupère la liste des produits et le total du panier
-  // Remplace les valeurs factices ci-dessous par tes données réelles
-  const products = [
-    { id: 1, name: "Produit 1", price: 20 },
-    { id: 2, name: "Produit 2", price: 30 },
-    { id: 3, name: "Produit 3", price: 80 },
-    // ... Ajoute d'autres produits selon tes besoins
-  ];
+  const { account} = useAccount();
+  const products: any[] = [];
 
   const total = products.reduce((acc, product) => acc + product.price, 0);
 
   return (
     <>
-      <Header />
-
+    <Header />
+      {products.length === 0 ?
+        <EmptyCart account={account}/>
+        : (
       <div className="container mx-auto mt-8 flex">
-        {/* Section gauche - Liste des produits */}
         <div className="w-2/3 pr-8">
           <h2 className="text-2xl font-bold mb-4">Panier</h2>
           <ul>
@@ -40,8 +35,6 @@ export default function Cart() {
             ))}
           </ul>
         </div>
-
-        {/* Section droite - Total et bouton commander */}
         <div className="w-1/3">
           <div className="bg-gray-200 p-4 rounded-lg">
             <h2 className="text-xl font-bold mb-4">Total du Panier</h2>
@@ -55,6 +48,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
+)}
 
       <Footer />
     </>

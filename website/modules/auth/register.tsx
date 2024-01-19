@@ -1,4 +1,3 @@
-"use client"
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { createUser } from "../../services/api/user/userService";
@@ -6,6 +5,7 @@ import  Arrow  from "../svg/arrowRight.svg"
 import React from "react";
 import { useAuth } from "../../services/api/user/useAuth";
 import { useRouter } from "next/navigation";
+import { PrismaClient } from "@prisma/client";
 
 type FormValues = {
   LastName: string;
@@ -15,6 +15,7 @@ type FormValues = {
   Password: string;
 };
 export default function RegisterForm(){
+  const prisma = new PrismaClient();
   const {authenticate} = useAuth();
   const router = useRouter();
    const { register, handleSubmit } = useForm<FormValues>({
@@ -30,10 +31,10 @@ export default function RegisterForm(){
   return(
     <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit(async (formData) => {
-          try {
+       try {
             const data = await createUser(formData)
             if (data) {
-              authenticate(formData.Email);
+              await authenticate(formData.Email);
               router.push('/account');
             } else {
               console.log("error");

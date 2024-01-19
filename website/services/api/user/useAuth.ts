@@ -1,7 +1,5 @@
-import { Account } from "../../types/types";
 import { useAccountStore } from "./store";
 import { useCallback } from "react";
-import { apiFetch } from "./api";
 import { API_BASE_URL } from "./userService";
 
 export enum AuthStatus {
@@ -33,6 +31,9 @@ export function useAuth() {
       },
     })
       const user = await r.json()
+    console.log(user);
+    localStorage.setItem('account', JSON.stringify(user))
+    localStorage.setItem('connected', 'true')
       setAccount(user)
   }, []);
 

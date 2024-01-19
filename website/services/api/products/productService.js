@@ -31,14 +31,16 @@ export async function getFamily() {
 }
   
   export async function getProductByID(id) {
-  const response = await fetch(`${API_BASE_URL}/Product/${id}`, {
+    const response = await fetch(`${API_BASE_URL}/Product/${id}`, {
       method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     if (!response.ok) {
-    throw new Error('Erreur lors de la récupération des produits');
+      throw new Error('Erreur lors de la récupération des produits');
+    }
+  }
     
     
 export async function getFamilyById(id) {

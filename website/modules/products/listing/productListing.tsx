@@ -80,9 +80,8 @@ export const ProductListing = () => {
       <SortByFamily onFamilyChange={handleFamilyChange}/>
       <ul className="flex flex-wrap">
         {products.map((product) => (
-        <li className="sm:w-1/2 md:w-1/3 lg:w-1/4" key={product.id}>
-        <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-          <img className="object-cover" src={product.image} alt="product image" />
+        <li className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md" key={product.id}>
+          <img className="object-cover w-full h-full" src={product.image} alt="product image" />
         <div className="mt-4 px-5 pb-5">
           <h6 className="text-xl tracking-tight text-slate-900">{product.home}</h6>
             <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
@@ -95,7 +94,6 @@ export const ProductListing = () => {
             <Cart className="mr-2 h-6 w-6"/>
             Add to cart
           </a>
-        </div>
         </div>
         </li>
         ))}
