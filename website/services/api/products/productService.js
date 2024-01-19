@@ -40,6 +40,8 @@ export async function getFamily() {
     if (!response.ok) {
       throw new Error('Erreur lors de la récupération des produits');
     }
+
+    return await response.json();
   }
     
     
