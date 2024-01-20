@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import logo from '../../src/app/images/logo.png';
 import Cart from "../../public/img/cart.svg";
 import User from "../../public/img/user.svg";
@@ -7,14 +7,14 @@ import Burger from "../../public/img/burger.svg";
 
 const Header = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [connected, isConnected] = useState(false);
- 
-  useEffect(()=> {
+  const [connected, setConnected] = useState(false);
+
+  useEffect(() => {
     if (localStorage.getItem('connected') !== null) {
-      isConnected(true)
+      setConnected(true);
     }
-  })
- 
+  }, []);
+
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
   };
@@ -38,15 +38,17 @@ const Header = () => {
         <div className={`w-full md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`} id="navbar-default">
           <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 rounded-lg bg-gray-900 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
             <li>
-              <a href={`${connected ? '/account' : '/login'}`} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 md:dark:hover:bg-transparent">
+              <a href={`${connected ? '/account' : '/login'}`} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
                 <User className="h-8 w-8 "/>
               </a>
             </li>
+            {connected ? (
             <li>
               <a href={"/cart"} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
                 <Cart className="h-8 w-8 "/>
               </a>
-            </li>
+            </li>)
+            : null}
           </ul>
         </div>
       </div>

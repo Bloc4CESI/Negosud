@@ -1,5 +1,5 @@
 "use client"
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { getUser } from "../../services/api/user/userService";
@@ -9,6 +9,7 @@ import { useAuth } from "../../services/api/user/useAuth";
 
 const Login = () => {
   const { authenticate, status } = useAuth();
+  const [connected, setConnected] = useState(false);
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -17,9 +18,14 @@ const Login = () => {
     },
   });
 
-  if (localStorage.getItem('connected') !== null) {
-   router.push('/account');
-}
+
+  useEffect(() => {
+    if (localStorage.getItem('connected') === null) {
+      router.push('/login');
+    } else {
+      setConnected(true);
+    }
+  }, []);
 
 
   return (

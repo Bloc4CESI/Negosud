@@ -1,5 +1,3 @@
-import { DateTime } from "next-auth/providers/kakao";
-
 export type Account = {
   lastName: string;
   firstName: string;
@@ -8,18 +6,26 @@ export type Account = {
   addressId: number;
 }
 
+export type AddressType = {
+  id: number;
+  name: string;
+  number: number;
+  street: string;
+  city: string;
+  country: string;
+}
+
 export type ProductType = {
-  id : number;
+  id: number;
   name: string;
   price: number;
-  image: string;
   description: string;
-  dateProduction: DateTime;
-  nbProductBox: number;
-  familyId: number;
-  family: familyType;
+  image: string;
   home: string;
-};
+  familyId: number;
+  nbProductBox: number;
+  dateProduction: Date;
+}
 
 export type familyType = {
   id : number;
