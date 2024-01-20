@@ -22,7 +22,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <div className="flex flex-col absolute bottom-0 items-center justify-center w-full bg-gray-900 p-4 lg:p-8">
+    <div className="flex flex-col bottom-0 items-center justify-center w-full dark:bg-gray-900 p-4 lg:p-8">
       <ul className="flex flex-row justify-evenly w-full mt-3">
         {footer.map((item, index) => (
           <li key={index} className="text-sm text-white">
