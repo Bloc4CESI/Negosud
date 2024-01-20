@@ -61,7 +61,17 @@ export async function getAddresses(id) {
   return await response.json();
 }
 
-export async function createAddress(id) {
+export async function getOrders(id) {
+  const response = await fetch(`${API_BASE_URL}/ClientOrder/GetOrdersByClient/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération des commandes');
+  }
+  return await response.json();
 }
 

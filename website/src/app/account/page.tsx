@@ -1,5 +1,5 @@
 "use client";
-import User from "../../../modules/auth/user";
+import User from "../../../modules/account/user";
 import { useAccount } from "../../../services/api/user/useAccount";
 import Logout from "../../../modules/extras/button";
 import Header from "../../../modules/layout/header";
@@ -7,7 +7,7 @@ import Footer from "../../../modules/layout/footer";
 import { useRouter } from "next/navigation";
 import "../globals.css";
 import { useEffect, useState } from "react";
-import Address from "../../../modules/auth/adress";
+import Address from "../../../modules/account/adress";
 import { getAddresses } from "../../../services/api/user/userService";
 import { AddressType } from "../../../services/types/types";
 
@@ -23,6 +23,8 @@ export default function Account() {
       setConnected(true);
     }
   }, []);
+
+
 
   return (
     <>
