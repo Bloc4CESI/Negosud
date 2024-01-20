@@ -2,7 +2,7 @@ import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { createUser } from "../../services/api/user/userService";
 import  Arrow  from "../svg/arrowRight.svg"
-import React from "react";
+import React, { useState } from "react";
 import { useAuth } from "../../services/api/user/useAuth";
 import { useRouter } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
@@ -16,6 +16,8 @@ type FormValues = {
 };
 export default function RegisterForm(){
   const prisma = new PrismaClient();
+  const [error, setError] = useState(false);
+  let errorText = "";
   const {authenticate} = useAuth();
   const router = useRouter();
    const { register, handleSubmit } = useForm<FormValues>({
@@ -28,6 +30,7 @@ export default function RegisterForm(){
      },
    });
 
+   console.log(errorText);
   return(
     <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit(async (formData) => {
@@ -37,11 +40,12 @@ export default function RegisterForm(){
               await authenticate(formData.Email);
               router.push('/account');
             } else {
-              console.log("error");
+              setError(true);
+              errorText = data;
             }
           } catch (error){
-            console.log("error");
-          }
+         setError(true);
+       }
         })}>
         <div>
           <InputText
@@ -93,6 +97,9 @@ export default function RegisterForm(){
             S&apos;inscrire
            <Arrow/>
           </button>
+          {error ?
+            <p className="text-red-500 text-xs italic">{errorText}</p>
+            : null}
         </div>
       </form>
     </div>
