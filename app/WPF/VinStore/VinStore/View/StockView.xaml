@@ -35,7 +35,7 @@
 
 
 
-                <DataGrid Margin="15,15,15,15" Grid.Row="1" x:Name="StockDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*"  GridLinesVisibility="None" HorizontalScrollBarVisibility="Hidden"  >
+                <DataGrid Margin="15,15,15,15" Grid.Row="1" x:Name="StockDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*"  GridLinesVisibility="None" HorizontalScrollBarVisibility="Hidden" TextBlock.FontSize="16" >
 
                     
                     
@@ -43,7 +43,7 @@
 
 
                         <!-- Colonne Nom -->
-                        <DataGridTextColumn IsReadOnly="true" Header="Nom" Binding="{Binding Product.Name}" >
+                        <DataGridTextColumn IsReadOnly="true" Header="Nom" Binding="{Binding Product.Name}" MinWidth="200" >
                             <DataGridTextColumn.ElementStyle >
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextTrimming" Value="None"/>
@@ -75,13 +75,22 @@
                         </DataGridTextColumn>
 
                         <!-- Colonne Stock reel -->
-                        <DataGridTextColumn IsReadOnly="true" Header="Stock Reel" Binding="{Binding Quantity}">
+                        <DataGridTextColumn IsReadOnly="False" Header="Stock Reel" Binding="{Binding Quantity}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextTrimming" Value="None"/>
                                     <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="TextBlock.Background" Value="White"/>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="DarkRed"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="DarkRed"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
                         </DataGridTextColumn>
 
                         <!-- Colonne Commande Client -->
@@ -123,6 +132,15 @@
                                     <Setter Property="TextBlock.Background" Value="White"/>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="DarkRed"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="DarkRed"/>
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
+                     
                         </DataGridTextColumn>
 
                         <!-- Colonne Stock Maxi -->
@@ -135,18 +153,35 @@
                                     
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.EditingElementStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Background" Value="White"/>
+                                    <Setter Property="BorderBrush" Value="DarkRed"/>
+                                    <Setter Property="BorderThickness" Value="1"/>
+                                    <Setter Property="Foreground" Value="DarkRed"/>
+                        
+                                </Style>
+                            </DataGridTextColumn.EditingElementStyle>
                         </DataGridTextColumn>
 
                         <!-- Colonne Commande Auto -->
                         <DataGridTemplateColumn Header="Commande Auto" >
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <CheckBox x:Name="myCheckbox" Checked="myCheckBox_Checked" Unchecked="myCheckBox_Unchecked" IsChecked="{Binding AutoOrder, Mode=TwoWay}" HorizontalAlignment="Center" Background="DarkRed" BorderBrush="DarkRed"/>
+                                    <CheckBox x:Name="myCheckbox"  Checked="myCheckBox_Checked" Unchecked="myCheckBox_Unchecked" IsChecked="{Binding AutoOrder, Mode=TwoWay}" HorizontalAlignment="Center" Background="DarkRed" BorderBrush="DarkRed"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellStyle>
+                                
                                 <Style TargetType="DataGridCell">
                                     <Setter Property="BorderBrush" Value="#F2F5F8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Background" Value="#f5f4ea"/>
+                                            <Setter Property="Foreground" Value="DarkRed"/>
+                                            
+                                        </Trigger>
+                                    </Style.Triggers>
                                 </Style>
                             </DataGridTemplateColumn.CellStyle>
                         </DataGridTemplateColumn>
@@ -171,8 +206,14 @@
                             <Setter Property="VerticalAlignment" Value="Center"/>
                             <Setter Property="BorderThickness" Value="10,0,10,0"/>
                             <Setter Property="BorderBrush" Value="#f5f4ea" />
-                           
 
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#f5f4ea"/>
+                                    <Setter Property="Foreground" Value="DarkRed"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                </Trigger>
+                            </Style.Triggers>
 
                         </Style>
                     </DataGrid.CellStyle>
@@ -184,8 +225,6 @@
                             <Setter Property="Height" Value="50"/>
                             <Setter Property="Background" Value="#f5f4ea"/>
                             <Setter Property="BorderThickness" Value="1"/>
-                            
-
                         </Style>
                         
                   

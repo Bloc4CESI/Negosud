@@ -75,6 +75,14 @@ namespace VinStore.View
             GridMain.Children.Add(new StockView());
         }
 
+
+        private void Provider_Click(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new ProviderView());
+        }
+
+
         private void CommandToValidate(object sender, RoutedEventArgs e)
         {
             GridMain.Children.Clear();

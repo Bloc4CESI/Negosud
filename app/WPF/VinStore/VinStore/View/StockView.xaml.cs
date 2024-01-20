@@ -29,7 +29,7 @@ namespace VinStore.View
 
         private ObservableCollection<Stock> stocks;
 
-        public object selectedRow { get; private set; }
+        
 
         public StockView()
         {

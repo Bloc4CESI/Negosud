@@ -58,6 +58,10 @@
                             <TextBlock Text="Fournisseurs" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
+                    <MenuItem Header="Gestion des fournisseurs"  Foreground="Black" Click="Provider_Click" />
+                </MenuItem> 
+                <MenuItem>
+                    <MenuItem.Header>
                     <MenuItem Header="Ajout Fournisseur"  Foreground="Black"/>
                     <MenuItem Header="Gestion des fournisseurs"  Foreground="Black"/>
                 </MenuItem>

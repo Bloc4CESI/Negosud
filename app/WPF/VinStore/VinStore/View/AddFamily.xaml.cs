@@ -179,6 +179,7 @@ namespace VinStore.View
                 MessageBox.Show($"Une erreur s'est produite lors de la suppression : {ex.Message}");
             }
         }
+
         private async Task<Family> ShowModifyFamilyDialog(string familyName)
         {
             return new Family { Name = familyName };
