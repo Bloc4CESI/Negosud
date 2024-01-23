@@ -12,10 +12,9 @@ export default function Home() {
           <Header />
         </div>
       </a>
-      <div className="container mx-auto p-12 my-4">
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-4 md:mb-0 bg-gradient-to-r from-gray-300 to-transparent p-1 rounded-xl">
-            <div className=" h-full w-full bg-white rounded-lg pl-2">
+      <div className="container mx-auto px-12 py-4">
+        <div className="flex flex-col md:flex-row items-center md:bg-[url(../../public/images/vin_accueil.jpg)] bg-clip-border bg-cover bg-center h-96 rounded-lg mb-4">
+          <div className="md:w-1/2 mb-4 md:mb-0">
               <p className="text-lg md:text-xl mb-4">
                 Bienvenue chez NegoSud, votre partenaire de confiance pour l'achat de vins en ligne.
               </p>
@@ -28,31 +27,17 @@ export default function Home() {
                   <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg>
               </a>
-            </div>
-          </div>
-          <div className="md:w-1/2 md:h-1/2 flex justify-center">
-              <img src={ImgIllustration1.src} alt="Description de l'image" className="rounded-full h-96 w-96" />
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center mt-8">
-          <div className="md:w-1/2 order-2 md:order-1 md:mr-8 flex justify-center">
-              <img src={ImgIllustration2.src} alt="Description de l'image" className="rounded-full h-96 w-96" />
-          </div>
-          <div className="md:w-1/2 order-1 md:order-2 mb-5 bg-gradient-to-r from-transparent to-gray-300 p-1 rounded-xl">
-            <div className=" h-full w-full bg-white rounded-lg pl-2">
+        <div className="flex flex-col md:flex-row items-center md:bg-[url(../../public/images/femme_rose.png)] bg-clip-border bg-cover bg-center h-96 rounded-lg text-right justify-end">
+          <div className="md:w-1/2 order-1 md:order-2">
               <p className="text-lg md:text-xl mb-3">
                 Explorez nos sélections de vins exceptionnels, soigneusement choisis pour votre plaisir.
               </p>
-              <p className="text-lg md:text-xl mb-3">
+              <p className="text-lg md:text-xl">
                 Chez NegoSud, nous nous engageons à vous offrir une expérience de dégustation unique.
               </p>
-              <p className="text-lg md:text-xl">
-                Nos fournisseur sont choisis avec une précision comparable à de l'élitisme.
-                <br/>
-                Tandis-que nos vignerons sont une parfaite représentation du capitalisme.
-              </p>
-            </div>
           </div>
         </div>
       </div>
