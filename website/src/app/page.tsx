@@ -1,53 +1,47 @@
 import Header from "../../modules/layout/header";
 import "./globals.css";
 import Footer from "../../modules/layout/footer";
-import ImgIllustration1 from "../../public/images/vin_accueil.jpg";
-import ImgIllustration2 from "../../public/images/femme_rose.png";
+import ArrowRight from "../../modules/svg/arrowRight.svg";
+import Link from 'next/link';
 
 export default function Home() {
   return (
     <>
-      <Header />
-      <div className="container mx-auto p-12 my-12 shadow-lg shadow-gray-300 rounded-xl">
-      <div className="flex flex-col md:flex-row items-center">
-        <div className="md:w-1/2 mb-4 md:mb-0">
-          <p className="text-lg md:text-xl mb-4">
-            Bienvenue chez NegoSud, votre partenaire de confiance pour l'achat de vins en ligne.
-          </p>
-          <p className="text-lg md:text-xl mb-4">
-            Découvrez notre histoire et notre passion pour les vins de qualité.
-          </p>
-          <a href="./listingProducts" type="button" className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center inline-flex me-2 mb-2">
-            Découvrir
-            <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-            </svg>
-          </a>
-        </div>
-        <div className="md:w-1/2 md:ml-8">
-            <img src={ImgIllustration1.src} alt="Description de l'image" className="rounded-full" />
-        </div>
+      <div className="bg-[url(../../public/images/vin_accueil_bg.jpg)] bg-clip-border bg-cover bg-center h-[750px]">
+        <Header/>
+        <Link href="./listingProducts" className="h-full w-full">
+        <p className=" w-full h-[680px] bottom-0 flex items-end">
+          <div className="flex items-end text-white text-xl font-bold mb-4 ml-6">
+            Notre listing
+            <ArrowRight className="ml-1 stroke-white"/>
+          </div>
+        </p>
+        </Link>
       </div>
+      
+      <div className="md:container py-1 md:mx-auto">
+        <div className="flex flex-col md:flex-row items-center bg-[url(../../public/images/vin_accueil.jpg)] bg-clip-border bg-cover bg-center h-72 md:h-96 md:rounded-lg mb-1 md:mb-4">
+          <div className="w-full h-full flex items-center bg-white bg-opacity-40 md:bg-gradient-to-r md:from-white md:via-white md:to-transparent text-center md:text-left px-6 md:px-0 py-6 md:py-0">
+              <p className="text-xl font-mono italic font-bold">
+                Bienvenue chez NegoSud, votre partenaire de confiance pour l'achat de vins en ligne.
+                <br/>
+                <br/>
+                Découvrez notre histoire et notre passion pour les vins de qualité.
+              </p>
+          </div>
+        </div>
 
-      <div className="flex flex-col md:flex-row items-center mt-8">
-        <div className="md:w-1/2 order-2 md:order-1 md:mr-8">
-            <img src={ImgIllustration2.src} alt="Description de l'image" className="rounded-full" />
-        </div>
-        <div className="md:w-1/2 order-1 md:order-2">
-          <p className="text-lg md:text-xl mb-4">
-            Explorez nos sélections de vins exceptionnels, soigneusement choisis pour votre plaisir.
-          </p>
-          <p className="text-lg md:text-xl mb-4">
-            Chez NegoSud, nous nous engageons à vous offrir une expérience de dégustation unique.
-          </p>
-          <p className="text-lg md:text-xl mb-4">
-            Nos fournisseur sont choisis avec une précision comparable à de l'élitisme.
-            <br/>
-            Tandis-que nos vignerons sont une parfaite représentation du capitalisme.
-          </p>
+        <div className="flex flex-col md:flex-row items-center bg-[url(../../public/images/vin_accueil_2.jpg)] bg-clip-border bg-cover bg-center h-72 md:h-96 md:rounded-lg">
+          <div className="w-full h-full flex items-center bg-white bg-opacity-40 md:bg-gradient-to-l md:from-white md:via-white md:to-transparent md:justify-end text-center md:text-right px-6 md:px-0 py-6 md:py-0">
+              <p className="text-xl font-mono italic font-bold">
+                Explorez nos sélections de vins exceptionnels, soigneusement choisis pour votre plaisir.
+                <br/>
+                <br/>
+                Chez NegoSud, nous nous engageons à vous offrir une expérience de dégustation unique.
+              </p>
+          </div>
         </div>
       </div>
-    </div>
       <Footer />
     </>
   )
