@@ -1,4 +1,5 @@
 export type Account = {
+  id: number;
   lastName: string;
   firstName: string;
   phoneNumber: string;
@@ -31,3 +32,27 @@ export type familyType = {
   id : number;
   name: string;
 };
+
+export type OrderType = {
+  id: number;
+  date: string;
+  price: number;
+  orderStatus: OrderStatus;
+  clientId: number;
+}
+
+export type OrderLineType = {
+  id: number;
+  quantity: number;
+  price: number;
+  orderId: number;
+  productId: number;
+}
+
+export enum OrderStatus {
+  REFUSE,
+  LIVRE,
+  ENCOURSDELIVRAISON,
+  VALIDE,
+  ENCOURSDEVALIDATION
+}

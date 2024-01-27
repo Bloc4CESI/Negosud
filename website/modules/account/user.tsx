@@ -31,9 +31,14 @@ export default function User({ userData }: { userData: Account }) {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Mes adresses</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <Button text="Gérer mes adresses" onClick={(() => {
+              {userData.addressId === null ? (
+                <Button text="Ajouter une adresse" onClick={(() => {
+                  router.push('/account/address');
+                })}/>
+              ) : <Button text="Gérer mes adresses" onClick={(() => {
                 router.push('/account/address');
-              })}/>
+              })}/>}
+
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
