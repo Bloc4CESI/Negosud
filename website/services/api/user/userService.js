@@ -1,8 +1,12 @@
-import bcrypt from 'bcryptjs';
-import { useState } from "react";
+import bcrypt from "bcryptjs";
 
 export const API_BASE_URL = 'https://localhost:7281/api';
 export let user = null;
+
+export async function Logout() {
+  localStorage.removeItem('connected');
+  window.location.reload();
+}
 
 export async function createUser(data) {
   const response = await fetch(`${API_BASE_URL}/Client/PostWithAddress`, {
@@ -16,8 +20,8 @@ export async function createUser(data) {
   if (!response.ok) {
     throw new Error('Erreur lors de la création de l\'utilisateur');
   }
-  const user = await response.text();
-  return user;
+
+    return await response.text();
 }
 
 export async function getUser(email, password) {
@@ -30,8 +34,7 @@ export async function getUser(email, password) {
     });
 
   if (!response.ok) {
-    throw console.log(response);
-
+    throw new Error('Erreur lors de la récupération de l\'utilisateur');
   }
 
   const userData = await response.json();
@@ -43,9 +46,32 @@ export async function getUser(email, password) {
 
   return userData;
 }
-export async function Logout() {
-    localStorage.removeItem('connected');
-    window.location.reload();
+
+export async function getAddresses(id) {
+  const response = await fetch(`${API_BASE_URL}/Address/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération des adresses');
+  }
+  return await response.json();
 }
 
+export async function getOrders(id) {
+  const response = await fetch(`${API_BASE_URL}/ClientOrder/GetOrdersByClient/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Erreur lors de la récupération des commandes');
+  }
+  return await response.json();
+}
 

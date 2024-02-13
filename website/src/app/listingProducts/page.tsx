@@ -9,6 +9,7 @@ export default function ListingProducts() {
     <>
     <Header/>
     <ProductListing/>
+    <Footer/>
     </>
   )
 }

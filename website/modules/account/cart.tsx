@@ -1,10 +1,8 @@
 "use client"
 import React from "react";
-import Header from "../../../modules/layout/header";
-import Footer from "../../../modules/layout/footer";
 import "../globals.css";
-import { useAccount } from "../../../services/api/user/useAccount";
-import EmptyCart from "../../../modules/account/emptyCart";
+import { useAccount } from "../../services/api/user/useAccount";
+import EmptyCart from "./emptyCart";
 
 export default function Cart() {
   const { account} = useAccount();
@@ -14,7 +12,6 @@ export default function Cart() {
 
   return (
     <>
-    <Header />
       {products.length === 0 ?
         <EmptyCart account={account}/>
         : (
@@ -49,8 +46,6 @@ export default function Cart() {
         </div>
       </div>
 )}
-
-      <Footer />
     </>
   );
 }

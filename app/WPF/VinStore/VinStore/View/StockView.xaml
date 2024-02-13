@@ -14,9 +14,9 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
 
-    
 
-    <Grid>
+    <ScrollViewer VerticalScrollBarVisibility="Auto"  Height="{x:Static SystemParameters.PrimaryScreenHeight}">
+        <Grid>
         
         <Border Grid.Row="1" Grid.Column="1" Margin="10" Background="#F2F5F8" CornerRadius="0 0 0 5" >
             <Grid>
@@ -236,4 +236,5 @@
 
         </Border>
     </Grid>
+   </ScrollViewer>
 </UserControl>

@@ -149,7 +149,7 @@ namespace VinStore.Services
                 StringContent content = new StringContent(jsonData, Encoding.UTF8, "application/json");
                 // Envoyer la requête PUT
                 HttpResponseMessage response = await ApiConnexion.ApiClient.PostAsync($"https://localhost:7281/api/Product/", content);
-
+               
 
                 // Vérifier la réponse
                 if (response.IsSuccessStatusCode)
