@@ -228,13 +228,23 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Provider = _context.Provider.Find(id);
-                if (Provider == null)
+                var provider = _context.Provider
+                    .Include(p => p.Products) 
+                    .FirstOrDefault(p => p.Id == id);
+
+                if (provider == null)
                 {
                     return BadRequest("Fournisseur non trouvé");
                 }
-                _context.Provider.Remove(Provider);
+
+                if (provider.Products != null && provider.Products.Any())
+                {
+                    return BadRequest("Le fournisseur a des produits associés. Suppression annulée.");
+                }
+
+                _context.Provider.Remove(provider);
                 _context.SaveChanges();
+
                 return Ok("Suppression réussie");
             }
             catch (Exception ex)
