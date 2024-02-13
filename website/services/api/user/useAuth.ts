@@ -30,8 +30,7 @@ export function useAuth() {
         'Content-Type': 'application/json',
       },
     })
-      const user = await r.json()
-    console.log(user);
+    const user = await r.json()
     localStorage.setItem('account', JSON.stringify(user))
     localStorage.setItem('connected', 'true')
       setAccount(user)
