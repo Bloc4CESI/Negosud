@@ -28,6 +28,51 @@ namespace VinStore.View
             InitializeComponent();
             products = new ObservableCollection<Product>();
             InitializeData();
+            InitScroll();
+            //SizeChanged += WindowSizeChanged;
+
+
+        }
+
+   
+
+
+
+        private bool enTrainDeMettreAJour = false;
+
+        private async void WindowSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (!enTrainDeMettreAJour)
+            {
+                enTrainDeMettreAJour = true;
+                
+                // Obtenez la nouvelle hauteur de la fenêtre
+                double nouvelleHauteur = this.ActualHeight;
+
+                // Ajustez la hauteur de la deuxième ligne en fonction de la nouvelle hauteur de la fenêtre
+                double nouvelleHauteurDeuxiemeLigne = nouvelleHauteur; // Ajustez selon vos besoins
+
+                textBlockVariable.Text = nouvelleHauteur.ToString();
+
+                // Assurez-vous que la nouvelle hauteur de la deuxième ligne est positive
+                if (nouvelleHauteurDeuxiemeLigne < 0)
+                {
+                    nouvelleHauteurDeuxiemeLigne = 0;
+                }
+
+                // Mettez à jour la hauteur de la deuxième ligne
+                Dispatcher.Invoke(() =>
+                {
+                    // Mettez à jour la hauteur de la deuxième ligne
+                    MyGrid.RowDefinitions[1].Height = new GridLength(nouvelleHauteurDeuxiemeLigne);
+                });
+
+                await Task.Delay(1000); 
+            }
+            else 
+            { 
+            enTrainDeMettreAJour = false;
+            }
         }
 
         private async void InitializeData()
@@ -39,7 +84,35 @@ namespace VinStore.View
             productDataGrid.ItemsSource = products;
 
             Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
+
+            
+
         }
+
+        private void InitScroll() 
+        {
+
+            double nouvelleHauteur = SystemParameters.PrimaryScreenHeight * 0.75;
+            double nouvelleHauteurDeuxiemeLigne = nouvelleHauteur; // Ajustez selon vos besoins
+
+            textBlockVariable.Text = nouvelleHauteur.ToString();
+
+            // Assurez-vous que la nouvelle hauteur de la deuxième ligne est positive
+            if (nouvelleHauteurDeuxiemeLigne < 0)
+            {
+                nouvelleHauteurDeuxiemeLigne = 0;
+            }
+
+            // Mettez à jour la hauteur de la deuxième ligne
+          
+                // Mettez à jour la hauteur de la deuxième ligne
+                MyGrid.RowDefinitions[1].Height = new GridLength(nouvelleHauteurDeuxiemeLigne);
+           
+
+
+        }
+
+
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
             // Terminer l'édition pour s'assurer que les modifications sont prises en compte
@@ -208,7 +281,11 @@ namespace VinStore.View
 
                 return imgurLink;
             }
-        
+
+        private void productDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
 

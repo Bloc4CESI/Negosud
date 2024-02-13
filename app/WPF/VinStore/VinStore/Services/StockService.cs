@@ -105,9 +105,67 @@ namespace VinStore.Services
 
         }
 
+        public static async Task<bool> InitStock(int ProductId)
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
 
+
+                    // Utilisez une bibliothèque de sérialisation JSON (par exemple, Newtonsoft.Json)
+                    // string jsonData = JsonConvert.SerializeObject(selectedStock);
+
+                    var settings = new JsonSerializerSettings
+                    {
+                        ContractResolver = new DefaultContractResolver
+                        {
+                            NamingStrategy = new CamelCaseNamingStrategy()
+                        }
+                    };
+
+                    var jsonData = "{\"quantity\": 0,\"minimum\": 0,\"maximum\": 0,\"autoOrder\": false,\"productId\": "+ ProductId +"}";
+
+                    //var jsonData = JsonConvert.SerializeObject(new
+                           // {
+                        //ProductId
+                   // }, settings);
+
+                    string apiUrl = $"https://localhost:7281/api/Stock";
+
+                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // La requête a réussi
+                        return true;
+                    }
+                    else
+                    {
+                        // La requête a échoué, examinez les détails de l'erreur si possible
+                        string errorResponse = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"Erreur {response.StatusCode}: {errorResponse}");
+                        return false;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérez les erreurs ici
+                MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
+                return false;
+            }
+
+        }
 
     }
+
+
+
+
     public class BooleanToInverseBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

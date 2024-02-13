@@ -96,6 +96,7 @@ namespace VinStore.View
         private async Task CreateProductOnServer(Product updatedProduct)
         {
 
+
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
@@ -227,7 +228,22 @@ namespace VinStore.View
                         FamilyId = famille?.Id ?? 0, // Utilisez l'Id de la famille si elle n'est pas nulle, sinon 0
                         ProviderId = fournisseur?.Id ?? 0, // Utilisez l'Id du fournisseur s'il n'est pas nul, sinon 0
                         Image = image
+
+
+
                     };
+
+                    createdProduct.Stock = new Stock 
+                    { 
+                        Quantity = 0,
+                        Minimum = 0,
+                        Maximum = 0,
+                        AutoOrder = false
+                    
+                    };
+
+                   
+
 
                     await CreateProductOnServer(createdProduct);
 
