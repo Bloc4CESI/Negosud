@@ -5,7 +5,7 @@ import Cart from "../../public/img/cart.svg";
 import User from "../../public/img/user.svg";
 import Burger from "../../public/img/burger.svg";
 
-const Header = ({style}) => {
+const Header = ({ style }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [connected, setConnected] = useState(false);
 

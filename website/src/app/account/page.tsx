@@ -26,7 +26,7 @@ export default function Account() {
 
   return (
     <>
-      <Header />
+      <Header style={undefined} />
       <User userData={account} />
       <Footer/>
     </>

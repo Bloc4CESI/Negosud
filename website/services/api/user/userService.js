@@ -1,11 +1,10 @@
 import bcrypt from "bcryptjs";
-import { useEffect } from "react";
 
 export const API_BASE_URL = 'http://localhost:5244/api';
-export let user = null;
 
 export async function Logout() {
   localStorage.removeItem('connected');
+  localStorage.removeItem('account');
   window.location.reload();
 }
 

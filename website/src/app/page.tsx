@@ -10,11 +10,7 @@ import Loading from "../../modules/extras/loading";
 export default function Home() {
   const isClient = useIsClient();
 
-  if (!isClient) {
-    return <div>
-      <Loading />
-    </div>;
-  }
+  if (!isClient) {return <div><Loading /></div>;}
   return (
     <>
       <div className="bg-[url(../../public/images/vin_accueil_bg.jpg)] bg-clip-border bg-cover bg-center h-[750px]">
@@ -28,7 +24,6 @@ export default function Home() {
         </p>
         </Link>
       </div>
-      
       <div className="md:container py-1 md:mx-auto">
         <div className="flex flex-col md:flex-row items-center bg-[url(../../public/images/vin_accueil.jpg)] bg-clip-border bg-cover bg-center h-72 md:h-96 md:rounded-lg mb-1 md:mb-4">
           <div className="w-full h-full flex items-center bg-white bg-opacity-40 md:bg-gradient-to-r md:from-white md:via-white md:to-transparent text-center md:text-left px-6 md:px-0 py-6 md:py-0">
@@ -40,7 +35,6 @@ export default function Home() {
               </p>
           </div>
         </div>
-
         <div className="flex flex-col md:flex-row items-center bg-[url(../../public/images/vin_accueil_2.jpg)] bg-clip-border bg-cover bg-center h-72 md:h-96 md:rounded-lg">
           <div className="w-full h-full flex items-center bg-white bg-opacity-40 md:bg-gradient-to-l md:from-white md:via-white md:to-transparent md:justify-end text-center md:text-right px-6 md:px-0 py-6 md:py-0">
               <p className="text-xl font-mono italic font-bold">

@@ -8,7 +8,6 @@ export interface FormFieldPropsInterface extends HTMLProps<HTMLInputElement> {
   descriptionUnderInput?: boolean;
   isRequired?: boolean;
 }
-
 // eslint-disable-next-line react/display-name
 const FormField = forwardRef(
   (

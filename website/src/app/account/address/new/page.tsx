@@ -7,7 +7,7 @@ import "../../../globals.css";
 export default function New() {
   return (
     <>
-      <Header />
+      <Header style={undefined} />
       <div> Nouvelle Adresse</div>
       <AddressForm/>
       <Footer />

@@ -18,7 +18,6 @@ const Login = () => {
     },
   });
 
-
   useEffect(() => {
     if (localStorage.getItem('connected') === null) {
       router.push('/login');
@@ -26,7 +25,6 @@ const Login = () => {
       setConnected(true);
     }
   }, []);
-
 
   return (
     <div className="flex flex-col items-center">

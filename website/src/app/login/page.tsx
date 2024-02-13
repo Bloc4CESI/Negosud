@@ -14,13 +14,13 @@ export default function LoginPage()  {
   };
 
   return (
-<>
-  <Header/>
-  <div className="flex flex-col items-center">
-  <AuthToggle onToggle={handleToggle} isLogin={isChecked} />
-  {isChecked ?  <Login/> : <Register/>}
-  </div>
-  <Footer/>
-</>
+  <>
+    <Header style={undefined}/>
+    <div className="flex flex-col items-center">
+    <AuthToggle onToggle={handleToggle} isLogin={isChecked} />
+    {isChecked ?  <Login/> : <Register/>}
+    </div>
+    <Footer/>
+  </>
   )
 };

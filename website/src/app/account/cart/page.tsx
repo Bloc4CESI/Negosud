@@ -25,7 +25,7 @@ export default function Cart() {
 
   return (
     <>
-    <Header />
+    <Header style={undefined} />
       {products.length === 0 ?
         <EmptyCart account={account}/>
         : (

@@ -6,8 +6,8 @@ export enum AuthStatus {
   Unknown,
   Authenticated,
   Guest
-
 }
+
 export function useAuth() {
   const {account, setAccount} = useAccountStore()
   let status;
