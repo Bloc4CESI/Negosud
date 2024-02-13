@@ -12,17 +12,25 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using ApiNegosud.Models;
 
-namespace VinStore
+namespace VinStore.View
 {
     /// <summary>
-    /// Logique d'interaction pour Accueil.xaml
+    /// Logique d'interaction pour DetailCommandClient.xaml
     /// </summary>
-    public partial class Accueil : UserControl
+    public partial class DetailCommandClient : UserControl
     {
-        public Accueil()
+        public DetailCommandClient()
         {
             InitializeComponent();
+            DataContext = new ClientOrder();
+        }
+        public void DetailClientOrder(ClientOrder ClientOrder)
+        {
+            DataContext = ClientOrder;
+
+            TotalOrder.Text = $"Total commande: {ClientOrder.Price}";
         }
     }
 }

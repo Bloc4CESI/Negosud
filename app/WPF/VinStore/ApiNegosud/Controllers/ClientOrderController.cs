@@ -22,8 +22,11 @@ namespace ApiNegosud.Controllers
         public IActionResult GetOrdersByClient(int ClientId)
         {
             try
-            {
-                var OrdersClient = _context.ClientOrder.Include(co => co.ClientOrderLines).Where(co => co.ClientId == ClientId).ToList();
+            {           
+                var OrdersClient = _context.ClientOrder.Include(co => co.ClientOrderLines!)
+                    .ThenInclude(line => line.Product)
+                           .ThenInclude(p => p.Stock)
+                    .Where(co => co.ClientId == ClientId).ToList();
 
                 if (OrdersClient == null)
                 {
@@ -73,10 +76,12 @@ namespace ApiNegosud.Controllers
                     {
                         // Déduire la quantité commandée du stock
                         product.Stock.Quantity -= clientOrderLine.Quantity;
-                        if ( product.Stock.AutoOrder && product.Stock.Quantity < clientOrderLine.Quantity)
+                        if (product.Stock.AutoOrder &&
+                             product.Stock.Minimum.HasValue && product.Stock.Minimum.Value < clientOrderLine.Quantity &&
+                             product.Stock.Maximum.HasValue && product.Stock.Minimum.HasValue)
                         {
                             // Calculer la quantité manquante
-                            var quantityMissing = Math.Abs(product.Stock.Quantity);
+                            var quantityMissing = product.Stock.Maximum.Value - product.Stock.Minimum.Value;
                             // Vérifier si le fournisseur existe déjà dans le Dictionary
                             if (quantityMissingByProvider.TryGetValue(product.ProviderId, out var existingInfo))
                             {
@@ -122,25 +127,28 @@ namespace ApiNegosud.Controllers
                         var existingProviderOrderLine = _context.ProviderOrderLine
                             .FirstOrDefault(pol => pol.ProductId == productId && pol.ProviderOrderId == existingProviderOrder.Id);
 
-                        if (existingProviderOrderLine != null)
+                        /*if (existingProviderOrderLine != null)
                         {
                             // Si une ligne de commande fournisseur existe, mettre à jour la quantité
                             existingProviderOrderLine.Quantity += info.QuantityMissing;
-                            existingProviderOrder.Price += (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * 0.6m) * info.QuantityMissing;
+                            existingProviderOrder.Price +=  (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * info.QuantityMissing;
 
-                        }
-                        // Ajouter une ligne de commande fournisseur pour chaque produit insuffisant
-                        var providerOrderLine = new ProviderOrderLine
+                        }*/
+                        if (existingProviderOrderLine == null)
                         {
-                            Quantity = info.QuantityMissing,
-                            Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * 0.6m) * info.QuantityMissing, // -40 % du prix produit
-                            ProductId = productId,
-                            ProviderOrderId = existingProviderOrder.Id
-                           
-                        };
+                            // Ajouter une ligne de commande fournisseur pour chaque produit insuffisant
+                            var providerOrderLine = new ProviderOrderLine
+                            {
+                                Quantity = info.QuantityMissing,
+                                Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * info.QuantityMissing, // 1/3 du prix produit
+                                ProductId = productId,
+                                ProviderOrderId = existingProviderOrder.Id
 
-                        _context.ProviderOrderLine.Add(providerOrderLine);
-                        _context.SaveChanges();  // Sauvegarder chaque ligne de commande fournisseur individuellement
+                            };
+
+                            _context.ProviderOrderLine.Add(providerOrderLine);
+                            _context.SaveChanges();  // Sauvegarder chaque ligne de commande fournisseur individuellement
+                        }
                     }
 
                     // Mettre à jour le prix total de la commande fournisseur en fonction des lignes de commande fournisseur
@@ -159,6 +167,75 @@ namespace ApiNegosud.Controllers
             }
         }
 
+        [HttpGet("bystatus/{status}")]
+        public IActionResult GetByStatus(OrderStatus status, DateTime? date = null)
+        {
+            try
+            {
+                var clientOrderQuery = _context.ClientOrder
+                    .Include(co => co.Client)
+                        .ThenInclude(c => c.Address)
+                    .Include(co => co.ClientOrderLines!)
+                        .ThenInclude(line => line.Product)
+                            .ThenInclude(p => p.Stock)
+                    .Where(co => co.OrderStatus == status);
+                if (date.HasValue)
+                {
+                    clientOrderQuery = clientOrderQuery.Where(co => co.Date >= date.Value.Date);
+                }              
+                 var clientOrders = clientOrderQuery.OrderByDescending(po => po.Id).ToList();
+
+                return Ok(clientOrders);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("UpdateOrder")]
+        public IActionResult UpdateOrder(ClientOrder UpdatedClientOrder)
+        {
+            try
+            {
+                // Rechercher la commande existante par ID
+                var existingOrder = _context.ClientOrder
+                    .Include(co => co.ClientOrderLines)
+                    .FirstOrDefault(co => co.Id == UpdatedClientOrder.Id);
+
+                if (existingOrder == null)
+                {
+                    // Si aucune commande existante n'est trouvée avec cet ID, retourner un NotFound
+                    return NotFound($"Commande avec ID {UpdatedClientOrder.Id} non trouvée.");
+                }
+
+                // Mettre à jour les champs de la commande existante avec ceux de UpdatedClientOrder
+                existingOrder.OrderStatus = UpdatedClientOrder.OrderStatus;
+                existingOrder.Price = UpdatedClientOrder.Price;
+                if (UpdatedClientOrder.ClientOrderLines != null)
+                {
+                    foreach (var updatedLine in UpdatedClientOrder.ClientOrderLines)
+                    {
+                        var existingLine = existingOrder.ClientOrderLines!
+                            .FirstOrDefault(col => col.Id == updatedLine.Id);
+
+                        if (existingLine != null)
+                        {
+                            // Mise à jour de la ligne existante
+                            existingLine.ProductId = updatedLine.ProductId;
+                            existingLine.Quantity = updatedLine.Quantity;
+                            existingLine.Price = updatedLine.Price;
+                        }
+                    }
+                }
+                _context.SaveChanges();
+
+                return Ok($"Commande avec ID {UpdatedClientOrder.Id} mise à jour avec succès.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erreur lors de la mise à jour de la commande: {ex.Message}");
+            }
+        }
 
     }
 }

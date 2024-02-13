@@ -66,7 +66,7 @@
                             </materialDesign:DataGridTextColumn>
                             <materialDesign:DataGridTextColumn Width="*" Header="Quantité stock" IsReadOnly="True">
                                 <materialDesign:DataGridTextColumn.Binding>
-                                    <Binding Path="Stock.Quantity"/>
+                                    <Binding Path="QuantityStock"/>
                                 </materialDesign:DataGridTextColumn.Binding>
                             </materialDesign:DataGridTextColumn>
                             <materialDesign:DataGridTextColumn Width="*" Header="Quantité inventaire" IsReadOnly="False">

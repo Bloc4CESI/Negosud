@@ -87,6 +87,22 @@ namespace ApiNegosud.Controllers
                         }
                     }
                 }
+                // si le status est validé on update les quantités des articles selon les inventaires
+                if (UpdatedInventory.StatusInventory == Inventory.InventoryEnum.VALIDE)
+                {
+                    if (UpdatedInventory.InventoryLignes != null && UpdatedInventory.InventoryLignes.Any())
+                    {
+                        foreach (var UpdatedInventoryLigne in UpdatedInventory.InventoryLignes)
+                        {
+                            var productStock = _context.Stock.FirstOrDefault(s => s.Id == UpdatedInventoryLigne.StockId);
+                            if (productStock != null)
+                            {
+                                // Mettre à jour la quantité de stock du produit
+                                productStock.Quantity = UpdatedInventoryLigne.QuantityInventory;
+                            }
+                        }
+                    }
+                }
                 _context.SaveChanges();
                 return Ok("Mise à jour réussie");
             }

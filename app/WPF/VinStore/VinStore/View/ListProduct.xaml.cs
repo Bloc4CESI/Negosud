@@ -23,22 +23,37 @@ namespace VinStore.View
     {
         private ObservableCollection<Product> products;
 
-        public ListProduct()
+        public ListProduct(bool loadAlertProducts = false)
         {
             InitializeComponent();
             products = new ObservableCollection<Product>();
-            InitializeData();
+            InitializeData(loadAlertProducts);
         }
 
-        private async void InitializeData()
+        private async void InitializeData(bool loadAlertProducts = false)
         {
-            // Créez une liste de produits
+            List<Product> loadedProducts;
+            if (loadAlertProducts)
+            {
+                // Charger les produits qui ont une quantité en dessous du seuil
+                loadedProducts = await ProductService.GetAlertProducts();
+            }
+            else
+            {
+                // Charger tous les produits
+                loadedProducts = await ProductService.GetAllProducts();
+            }
+            foreach (var product in loadedProducts)
+            {
+                products.Add(product);
+            }
+            productDataGrid.ItemsSource = products;
+            Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
+   /*         // Créez une liste de produits
             List<Product> products = await ProductService.GetAllProducts();
-
             // Assigne la liste à la propriété ItemsSource du DataGrid
             productDataGrid.ItemsSource = products;
-
-            Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
+            Dispatcher.Invoke(() => { }, DispatcherPriority.Render);*/
         }
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -50,7 +65,6 @@ namespace VinStore.View
 
             if (selectedProduct.Image != null)
             {
-                //string relativeFolderPath = @"..\..\..\..\..\..\..\website\public\img\products";
                 string selectedImagePath = selectedProduct.Image;
                 string fileName = System.IO.Path.GetFileName(selectedImagePath);
                 string uniqueFileName = System.IO.Path.Combine(DateTime.Now.ToString("yyyyMMddHHmmssfff")+fileName);
@@ -60,21 +74,16 @@ namespace VinStore.View
 
                 // Copier l'image sélectionnée vers le dossier cible
                 //File.Copy(selectedImagePath, targetFilePath, true);
-
             }
 
             await UpdateProductOnServer(selectedProduct);
-
             // Actualiser la collection locale
             // Retirer l'ancien produit
             products.Remove(selectedProduct);
-
             // Ajouter le produit mis à jour
             products.Add(await ProductService.GetProductById(selectedProduct.Id));
-
-            // Rafraîchir la vue du DataGrid pour forcer la mise à jour
-            //productDataGrid.Items.Refresh();
-            InitializeData();
+            // Rafraîchir la vue du DataGrid 
+            InitializeData(false);
 
         }
 
@@ -93,21 +102,27 @@ namespace VinStore.View
         {
             // Terminer l'édition pour s'assurer que les modifications sont prises en compte
             productDataGrid.CommitEdit();
-
             // Récupérer l'objet Product associé à la ligne sélectionnée
-            Product selectedProduct = productDataGrid.SelectedItem as Product;
-
-            await DeleteProductOnServer(selectedProduct);
-
-            // Actualiser la collection locale
-            // Retirer l'ancien produit
-            products.Remove(selectedProduct);
-
-            // Rafraîchir la vue du DataGrid pour forcer la mise à jour
-            //productDataGrid.Items.Refresh();
-            InitializeData();
-
+            var selectedProduct = ((FrameworkElement)sender).DataContext as Product;
+            if (selectedProduct != null)
+            {
+                bool isHasAnyTransaction = await ProductService.IsProductHasAnyTransaction(selectedProduct.Id);
+                // Si des inventaires ou des commandes sont associés au produit on supprime pas
+                if (isHasAnyTransaction)
+                {
+                    MessageBox.Show("Vous ne pouvez pas supprimer ce produit car il existe des commandes ou des inventaires associés à ce produit.", "Impossibilité de suppression", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }           
+                else
+                {
+                    await DeleteProductOnServer(selectedProduct);
+                    // Retirer l'ancien produit
+                    products.Remove(selectedProduct);
+                    // Rafraîchir la vue du DataGrid
+                    InitializeData(false);
+                }
+            }
         }
+
         private async Task DeleteProductOnServer(Product updatedProduct)
         {
             // Construisez le JSON avec les données de l'objet Product
@@ -172,13 +187,9 @@ namespace VinStore.View
 
         private string postImgurImg(string selectedpath, string imagename)
         {
-
-                // Remplacez "VOTRE_CLE_API" par votre clé API Imgur
                 string apiKey = "f8e21651c328f2f";
-
                 // Appel de la méthode pour charger l'image sur Imgur et obtenir le lien
                 string imgurLink = UploadImageToImgur(selectedpath, apiKey, imagename);
-
                 // Afficher le lien Imgur
                 Console.WriteLine("Lien Imgur : " + imgurLink);
             return imgurLink;
@@ -188,27 +199,29 @@ namespace VinStore.View
             {
                 // Charger le fichier image en bytes
                 byte[] imageData = File.ReadAllBytes(imagePath);
-
                 // Créer une demande à l'API Imgur
                 var client = new RestClient("https://api.imgur.com/3");
                 var request = new RestRequest("image", Method.Post);
-
                 // Ajouter l'image en tant que fichier à la demande
                 request.AddFile("image", imageData, filename);
-
                 // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
                 request.AddHeader("Authorization", $"Client-ID {apiKey}");
-
                 // Exécuter la demande
                 RestResponse response = client.Execute(request);
-
                 // Analyser la réponse JSON pour obtenir le lien Imgur
                 dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
                 string imgurLink = jsonResponse.data.link;
-
                 return imgurLink;
             }
-        
+            public async Task LoadAlertProducts()
+            {
+                var alertProducts = await ProductService.GetAlertProducts();
+                Dispatcher.Invoke(() =>
+                {
+                    productDataGrid.ItemsSource = alertProducts;
+                });
+            }
+
     }
 }
 

@@ -134,12 +134,12 @@ namespace VinStore.View
             {
                 var ArticleTextBox = ProductLigneGrid.FindName("Product" + i ) as TextBox;
                 var StockQuantityTextBox = ProductLigneGrid.FindName("StockQuantity" + i) as TextBox;
-                var QuantityLigneOrderTextBox = ProductLigneGrid.FindName("QuantityInventory" + i) as TextBox;
-                if (ArticleTextBox != null && StockQuantityTextBox != null && QuantityLigneOrderTextBox != null)
+                var QuantityInventoryTextBox = ProductLigneGrid.FindName("QuantityInventory" + i) as TextBox;
+                if (ArticleTextBox != null && StockQuantityTextBox != null && QuantityInventoryTextBox != null)
                 {
                     // Ajouter les valeurs
                     // Vérifier si l'utilisateur entre toutes les quantités
-                    if (string.IsNullOrWhiteSpace(QuantityLigneOrderTextBox.Text))
+                    if (string.IsNullOrWhiteSpace(QuantityInventoryTextBox.Text))
                     {
                         MessageBox.Show("Veuillez entrer toutes les quantités des articles");
                         isDataValid = false;
@@ -152,7 +152,14 @@ namespace VinStore.View
                         break;
                     }
 
-                    if (!int.TryParse(QuantityLigneOrderTextBox.Text, out int quantityValue) || quantityValue <= 0)
+                    if (!int.TryParse(QuantityInventoryTextBox.Text, out int quantityValueInventory) || quantityValueInventory <= 0)
+                    {
+                        MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
+                        isDataValid = false;
+                        break;
+                    }
+
+                    if (!int.TryParse(StockQuantityTextBox.Text, out int quantityValueStock) || quantityValueStock <= 0)
                     {
                         MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
                         isDataValid = false;
@@ -183,8 +190,9 @@ namespace VinStore.View
                         Dictionary<string, object> InventoryData = new Dictionary<string, object>
                 {
                     { "ProductId", productId },
-                    { "StockQuantity", quantityValue },
-                    { "StockId", stockId }
+                    { "StockQuantity", quantityValueInventory },
+                    { "StockId", stockId },
+                    {"quantityValueStock",quantityValueStock }
                 };
                         InventoryDataList.Add(InventoryData);
                     }
@@ -199,8 +207,9 @@ namespace VinStore.View
                     StatusInventory = ApiNegosud.Models.Inventory.InventoryEnum.ENCOURSDEVALIDATION,
                     InventoryLignes = InventoryDataList.Select(data => new InventoryLigne
                     {
-                        StockId = (int)data["StockId"],
+                        StockId = (int)data["StockId"],                       
                         QuantityInventory = (int)data["StockQuantity"],
+                        QuantityStock = (int)data["quantityValueStock"]
                     }).ToList()
                 };
 

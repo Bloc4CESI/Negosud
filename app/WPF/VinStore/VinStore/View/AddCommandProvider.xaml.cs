@@ -1,24 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Media.Media3D;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using ApiNegosud.Models;
 using MaterialDesignThemes.Wpf;
-using Newtonsoft.Json.Linq;
 using VinStore.Services;
 
 namespace VinStore.View
@@ -68,6 +58,7 @@ namespace VinStore.View
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
+                Style = (Style)FindResource("MaterialDesignFilledComboBox"),
                 Padding = new Thickness(10),
                 Name = "ProductsComboBox_" + productComboBoxIndex
             };
@@ -76,6 +67,7 @@ namespace VinStore.View
             Grid.SetColumn(ComboxProduct, 0);
             Grid.SetColumnSpan(ComboxProduct, 2);
             Grid.SetRow(ComboxProduct, currentRow);
+
             if (ProvidersName.SelectedItem is Provider selectedProvider)
             {
                 ComboxProduct.ItemsSource = await ProductService.GetProductByProvider(selectedProvider.Id);
@@ -85,6 +77,7 @@ namespace VinStore.View
             HintAssist.SetHint(ComboxProduct, "Nom de l'article");
             TextFieldAssist.SetUnderlineBrush(ComboxProduct, Brushes.Black);
             HintAssist.SetHintOpacity(ComboxProduct, 0.26);
+            HintAssist.SetForeground(ComboxProduct, Brushes.Black);
             ComboxProduct.MaxHeight = 50;
             ComboxProduct.Foreground = Brushes.Black;
             ComboxProduct.IsEditable = true;
@@ -96,14 +89,15 @@ namespace VinStore.View
                 Background = Brushes.White,
                 Padding = new Thickness(10),
                 IsReadOnly = true,
-                Name= "StockQuantity" + productComboBoxIndex
+                Style = (Style)FindResource("MaterialDesignFilledTextBox"),
+                Name = "StockQuantity" + productComboBoxIndex
             };
             Grid.SetColumn(TextBoxQuantityStock, 2);
             Grid.SetRow(TextBoxQuantityStock, currentRow);
             RegisterName(TextBoxQuantityStock.Name, TextBoxQuantityStock);
-            // Configurer les propriétés Material Design
             HintAssist.SetHint(TextBoxQuantityStock, "Quantité stock");
             TextFieldAssist.SetUnderlineBrush(TextBoxQuantityStock, Brushes.Black);
+            HintAssist.SetForeground(TextBoxQuantityStock, Brushes.Black);
             HintAssist.SetHintOpacity(TextBoxQuantityStock, 0.26);
             TextBoxQuantityStock.MaxHeight = 50;
             TextBoxQuantityStock.Foreground = Brushes.Black;
@@ -113,6 +107,7 @@ namespace VinStore.View
                 Margin = new Thickness(20),
                 Background = Brushes.White,
                 Padding = new Thickness(10),
+                Style = (Style)FindResource("MaterialDesignFilledTextBox"),
                 Name = "QuantityLigneOrder" + productComboBoxIndex
             };
             TextBoxQuantityLigne.PreviewTextInput += TextBox_IntegerInput;
@@ -120,9 +115,10 @@ namespace VinStore.View
             Grid.SetColumn(TextBoxQuantityLigne, 3);
             Grid.SetRow(TextBoxQuantityLigne, currentRow);
             RegisterName(TextBoxQuantityLigne.Name, TextBoxQuantityLigne);
-            HintAssist.SetHint(TextBoxQuantityLigne, "Quantité");
+            HintAssist.SetHint(TextBoxQuantityLigne, "Quantité à commander");
             TextFieldAssist.SetUnderlineBrush(TextBoxQuantityLigne, Brushes.Black);
             HintAssist.SetHintOpacity(TextBoxQuantityLigne, 0.26);
+            HintAssist.SetForeground(TextBoxQuantityLigne, Brushes.Black);
             TextBoxQuantityLigne.MaxHeight = 50;
             TextBoxQuantityLigne.Foreground = Brushes.Black;
 
@@ -131,6 +127,7 @@ namespace VinStore.View
                 Margin = new Thickness(20),
                 Background = Brushes.White,
                 Padding = new Thickness(10),
+                Style = (Style)FindResource("MaterialDesignFilledTextBox"),
                 Name = "PriceLigneOrder" + productComboBoxIndex
 
             };
@@ -139,11 +136,32 @@ namespace VinStore.View
             Grid.SetColumn(TextBoxPriceLigne, 4);
             Grid.SetRow(TextBoxPriceLigne, currentRow);
             RegisterName(TextBoxPriceLigne.Name, TextBoxPriceLigne);
-            HintAssist.SetHint(TextBoxPriceLigne, "Prix article");
+            HintAssist.SetHint(TextBoxPriceLigne, "Prix article unitaire");
             TextFieldAssist.SetUnderlineBrush(TextBoxPriceLigne, Brushes.Black);
             HintAssist.SetHintOpacity(TextBoxPriceLigne, 0.26);
+            HintAssist.SetForeground(TextBoxPriceLigne, Brushes.Black);
             TextBoxPriceLigne.MaxHeight = 50;
             TextBoxPriceLigne.Foreground = Brushes.Black;
+
+            TextBox TextBoxPriceLigneTotal = new TextBox
+            {
+                Margin = new Thickness(20),
+                IsEnabled = false,
+                Background = Brushes.White,
+                Padding = new Thickness(10),
+                Style = (Style)FindResource("MaterialDesignFilledTextBox"),
+                Name = "PriceTotalLigne" + productComboBoxIndex
+
+            };
+            Grid.SetColumn(TextBoxPriceLigneTotal, 5);
+            Grid.SetRow(TextBoxPriceLigneTotal, currentRow);
+            RegisterName(TextBoxPriceLigneTotal.Name, TextBoxPriceLigneTotal);
+            HintAssist.SetHint(TextBoxPriceLigneTotal, "Prix article total");
+            TextFieldAssist.SetUnderlineBrush(TextBoxPriceLigneTotal, Brushes.Black);
+            HintAssist.SetHintOpacity(TextBoxPriceLigneTotal, 0.26);
+            HintAssist.SetForeground(TextBoxPriceLigneTotal, Brushes.Black);
+            TextBoxPriceLigneTotal.MaxHeight = 50;
+            TextBoxPriceLigneTotal.Foreground = Brushes.Black;
 
             Button addButton = new Button
             {
@@ -155,7 +173,7 @@ namespace VinStore.View
                 ToolTip = "Ajouter un article"
             };
             addButton.Click += AddProduct;
-            Grid.SetColumn(addButton, 5);
+            Grid.SetColumn(addButton, 6);
             Grid.SetRow(addButton, currentRow);
 
             Button deleteButton = new Button
@@ -167,13 +185,14 @@ namespace VinStore.View
                 IsEnabled = true,
                 ToolTip = "Supprimer la ligne article"
             };
-            Grid.SetColumn(deleteButton, 6);
+            Grid.SetColumn(deleteButton, 7);
             Grid.SetRow(deleteButton, currentRow);
             deleteButton.Click += DeleteProductRow;
             ProductLigneGrid.Children.Add(ComboxProduct);
             ProductLigneGrid.Children.Add(TextBoxQuantityStock);
             ProductLigneGrid.Children.Add(TextBoxQuantityLigne);
             ProductLigneGrid.Children.Add(TextBoxPriceLigne);
+            ProductLigneGrid.Children.Add(TextBoxPriceLigneTotal);
             ProductLigneGrid.Children.Add(addButton);
             ProductLigneGrid.Children.Add(deleteButton);
             productComboBoxIndex++;
@@ -209,20 +228,35 @@ namespace VinStore.View
         private void TotalCommand()
         {
             decimal TotalPrice = 0;
-            for (int i = 0;i < ProductLigneGrid.RowDefinitions.Count;i++)
+
+            for (int i = 0; i < ProductLigneGrid.RowDefinitions.Count; i++)
             {
-                var quantityTextBox = ProductLigneGrid.FindName("QuantityLigneOrder" + i) as TextBox;
-                var priceTextBox = ProductLigneGrid.FindName("PriceLigneOrder" + i) as TextBox;
-                if(quantityTextBox != null && priceTextBox != null)
+                var QuantityTextBox = ProductLigneGrid.FindName("QuantityLigneOrder" + i) as TextBox;
+                var PriceTextBox = ProductLigneGrid.FindName("PriceLigneOrder" + i) as TextBox;
+                var PriceTextBoxLigne = ProductLigneGrid.FindName("PriceTotalLigne" + i) as TextBox;
+
+                if (QuantityTextBox != null && PriceTextBox != null)
                 {
-                   if( int.TryParse(quantityTextBox.Text, out var quantityLigne) &&
-                    Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out var PriceLigne))
+                    // Essayez d'abord avec la virgule comme séparateur décimal
+                    if (int.TryParse(QuantityTextBox.Text, out var QuantityLigne) &&
+                        Decimal.TryParse(PriceTextBox.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out var PriceLigne))
                     {
-                        TotalPrice += quantityLigne * PriceLigne;
+                        decimal TotalPriceLigne = QuantityLigne * PriceLigne;
+                        PriceTextBoxLigne.Text = TotalPriceLigne.ToString();
+                        TotalPrice += TotalPriceLigne;
+                    }
+                    // Ensuite, essayez avec le point comme séparateur décimal
+                    else if (int.TryParse(QuantityTextBox.Text, out QuantityLigne) &&
+                             Decimal.TryParse(PriceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out PriceLigne))
+                    {
+                        decimal TotalPriceLigne = QuantityLigne * PriceLigne;
+                        PriceTextBoxLigne.Text = TotalPriceLigne.ToString();
+                        TotalPrice += TotalPriceLigne;
                     }
                 }
             }
-            TotalOrder.Text= $"Total commande: {TotalPrice}";
+
+            TotalOrder.Text = $"Total commande: {TotalPrice}";
         }
         private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)
         {
@@ -277,35 +311,38 @@ namespace VinStore.View
         }
         private async void ProductNewComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox comboBox)
+            if (sender is ComboBox ComboBox)
             {
-                if (comboBox.SelectedItem is Product selectedProduct)
+                if (ComboBox.SelectedItem is Product selectedProduct)
                 {
-                    var productDetails = await ProductService.GetProductById(selectedProduct.Id);
+                    var ProductDetails = await ProductService.GetProductById(selectedProduct.Id);
                     // Trouver le nom du TextBox associé à cette ComboBox
-                    var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
-                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    var TextBoxName = "StockQuantity" + ComboBox.Name.Substring("ProductsComboBox_".Length);
+                    var PriceProduct = "PriceLigneOrder" + ComboBox.Name.Substring("ProductsComboBox_".Length);
                     // Utiliser FindName pour récupérer le TextBox quantité + prix
-                    TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
-                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
-                    if (quantityTextBox != null && priceTextBox != null)
+                    TextBox? QuantityTextBox = ProductLigneGrid.FindName(TextBoxName) as TextBox;
+                    TextBox? PriceTextBox = ProductLigneGrid.FindName(PriceProduct) as TextBox;
+                    if (QuantityTextBox != null && PriceTextBox != null)
                     {
                         // Mettre à jour le texte du TextBox
-                        quantityTextBox.Text = productDetails.Stock?.Quantity.ToString() ?? "N/A";
-                        priceTextBox.Text= productDetails?.Stock?.Product?.Price.ToString();
+                        QuantityTextBox.Text = ProductDetails.Stock?.Quantity.ToString() ?? "N/A";
+                        PriceTextBox.Text= Math.Round((ProductDetails.Price/ 3),2).ToString();
                     }
                 }
                 else
                 {
                     // Si aucun article n'est sélectionné, effacer la valeur du TextBox
-                    var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
-                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
-                    TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
-                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
-                    if (quantityTextBox != null && priceTextBox != null)
+                    var TextBoxName = "StockQuantity" + ComboBox.Name.Substring("ProductsComboBox_".Length);
+                    var PriceProduct = "PriceLigneOrder" + ComboBox.Name.Substring("ProductsComboBox_".Length);
+                    var PriceProductLigne = "PriceTotalLigne" + ComboBox.Name.Substring("ProductsComboBox_".Length);
+                    TextBox? QuantityTextBox = ProductLigneGrid.FindName(TextBoxName) as TextBox;
+                    TextBox? PriceTextBox = ProductLigneGrid.FindName(PriceProduct) as TextBox;
+                    TextBox? PriceLigneTextBox = ProductLigneGrid.FindName(PriceProductLigne) as TextBox;
+                    if (QuantityTextBox != null && PriceTextBox != null)
                     {
-                        quantityTextBox.Text = string.Empty;
-                        priceTextBox.Text =string.Empty;
+                        QuantityTextBox.Text = string.Empty;
+                        PriceTextBox.Text =string.Empty;
+                        PriceLigneTextBox.Text = string.Empty;
                     }
                 }
             }
@@ -401,12 +438,16 @@ namespace VinStore.View
                         isDataValid = false;
                         break;
                     }
-                    if (!Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out var priceValue) || quantityValue <= 0)
+                    decimal priceValue = 0;
+                    // Essayez d'abord avec la virgule ou . comme séparateur décimal
+                    if (!Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out priceValue) &&
+                        !Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out  priceValue) || priceValue<=0)
                     {
                         MessageBox.Show("Veuillez entrer un prix valide.");
                         isDataValid = false;
                         break;
                     }
+              
                     if (OrderDate.SelectedDate == null || ProvidersName.SelectedItem == null)
                     {
                         // La conversion a échoué, faire quelque chose en conséquence (peut-être afficher un message d'erreur)
@@ -444,7 +485,7 @@ namespace VinStore.View
                         {
                             ProductId = (int)data["ProductId"],
                             Quantity = (int)data["Quantity"],
-                            Price = (int)data["Quantity"] * (decimal)data["Price"]
+                            Price = (decimal)data["Price"]
                         }).ToList()
 
                     };
@@ -494,5 +535,6 @@ namespace VinStore.View
                 }
             }
         }
+
     }
 }

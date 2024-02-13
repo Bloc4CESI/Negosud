@@ -17,7 +17,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="800">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="700">
             <Grid>
                 <TextBlock Grid.Row="0" Text="Liste des Commandes à valider" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
                 <materialDesign:ColorZone  Grid.Row="1" Margin="0,50,0,0" Padding="8,4,8,4" Panel.ZIndex="1"

@@ -33,8 +33,12 @@ namespace VinStore.View
             LoadRefusedInventories();
             LoadValidatedInventories();
             LoadInventoryToValidate();
-        }
+            LoadRefusedCommandClient();
+            LoadValidatedCommandClient();
+            LoadDelivredCommandClient();
+            GridMain.Children.Add(new Home(GridMain));
 
+        }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         { 
             GridMain.Children.Clear();
@@ -118,25 +122,46 @@ namespace VinStore.View
             GridMain.Children.Clear();
             GridMain.Children.Add(new RefusedInventory(GridMain));
         }
+        
         private void DeconnxionClick(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
+        private void HomePageClick(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new Home(GridMain));
+        }
+        private void CommandClientToDeliver(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new CommandClientToDelivrey(GridMain));
+        }
+        private void DeliveredClientCommand(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new LivredCommandClient(GridMain));
+        }
+        private void RefusedClientCommand(object sender, RoutedEventArgs e)
+        {
+            GridMain.Children.Clear();
+            GridMain.Children.Add(new RefusedCommandClient(GridMain));
+        }
+
         private async void LoadOrderProvierToValidate()
         {
-            var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
-            int count = ProviderOrdersToValidate.Count;
+            var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
+            int count = providerOrdersToValidate.Count;
             TextBlock textBlock = new TextBlock();
-            textBlock.Inlines.Add(new Run($"Commande à valider ("));
+            textBlock.Inlines.Add(new Run("Commande à valider ("));
             textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
             textBlock.Inlines.Add(new Run(")"));
             CommandToValidateHeader.Header = textBlock;
-
         }
         private async void CommandToDeliver()
         {
-            var ValidatedProviderOrder = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.VALIDE);
-            int count = ValidatedProviderOrder.Count;
+            var validatedProviderOrder = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.VALIDE);
+            int count = validatedProviderOrder.Count;
             TextBlock textBlock = new TextBlock();
             textBlock.Inlines.Add(new Run($"Commande à livrer ("));
             textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
@@ -145,8 +170,8 @@ namespace VinStore.View
         }
         private async void LoadDeliveredCommand()
         {
-            var ProviderOrdersToPay = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.LIVRE);
-            int count = ProviderOrdersToPay.Count;
+            var providerOrdersToPay = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.LIVRE);
+            int count = providerOrdersToPay.Count;
             TextBlock textBlock = new TextBlock();
             textBlock.Inlines.Add(new Run($"Commandes livrées ("));
             textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
@@ -155,15 +180,15 @@ namespace VinStore.View
         }
         private async void LoadRefusedCommand()
         {
-            var RefusedProviderOrders = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.REFUSE);
-            int count = RefusedProviderOrders.Count;
+            var refusedProviderOrders = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.REFUSE);
+            int count = refusedProviderOrders.Count;
             TextBlock textBlock = new TextBlock();
             textBlock.Inlines.Add(new Run($"Commandes refusées ("));
             textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
             textBlock.Inlines.Add(new Run(")"));
             RefusedCommandHeader.Header = textBlock;
         }
-        private async void CommandeProviderMenuItem_Click(object sender, RoutedEventArgs e)
+        private void CommandProviderMenuItem_MouseEnter(object sender, MouseEventArgs e)
         {
             LoadOrderProvierToValidate();
             CommandToDeliver();
@@ -200,11 +225,47 @@ namespace VinStore.View
             textBlock.Inlines.Add(new Run(")"));
             RefusedInventoriesHeader.Header = textBlock;
         }
-        private async void InventoryMenuItem_Click(object sender, RoutedEventArgs e)
+        private void InventoryMenuItem_MouseEnter(object sender, MouseEventArgs e)
         {
             LoadRefusedInventories();
             LoadValidatedInventories();
             LoadInventoryToValidate();
+        }
+        private async void LoadRefusedCommandClient()
+        {
+            var RefusedCommandClients = await CommandClientService.GetClientOrderByStatus(OrderStatus.REFUSE);
+            int count = RefusedCommandClients.Count;
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run($"Commandes Clients refusées ("));
+            textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
+            textBlock.Inlines.Add(new Run(")"));
+            RefusedClientCommandHeader.Header = textBlock;
+        }
+        private async void LoadValidatedCommandClient()
+        {
+            var RefusedCommandClients = await CommandClientService.GetClientOrderByStatus(OrderStatus.VALIDE);
+            int count = RefusedCommandClients.Count;
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run($"Commandes Clients à livrer ("));
+            textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
+            textBlock.Inlines.Add(new Run(")"));
+            CommandClientToDeliverHeader.Header = textBlock;
+        }
+        private async void LoadDelivredCommandClient()
+        {
+            var RefusedCommandClients = await CommandClientService.GetClientOrderByStatus(OrderStatus.LIVRE);
+            int count = RefusedCommandClients.Count;
+            TextBlock textBlock = new TextBlock();
+            textBlock.Inlines.Add(new Run($"Commandes Clients Livrées ("));
+            textBlock.Inlines.Add(new Run($"{count}") { Foreground = Brushes.Red });
+            textBlock.Inlines.Add(new Run(")"));
+            DeliveredClientCommandHeader.Header = textBlock;
+        }
+        private void CommandClientMenuItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            LoadDelivredCommandClient();
+            LoadValidatedCommandClient();
+            LoadRefusedCommandClient();
         }
     }
 }

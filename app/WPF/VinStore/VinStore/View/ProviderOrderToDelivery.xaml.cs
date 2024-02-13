@@ -71,7 +71,7 @@ namespace VinStore.View
                     if (Message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
-                        _mainGrid.Children.Add(new DelivredCommand(_mainGrid));
+                        _mainGrid.Children.Add(new LivredCommandClient(_mainGrid));
                     }
                 }
                 else

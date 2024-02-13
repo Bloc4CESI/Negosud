@@ -109,27 +109,31 @@
                                 <Binding Path="Product.Stock.Quantity"/>
                             </materialDesign:DataGridTextColumn.Binding>
                         </materialDesign:DataGridTextColumn>
-                        <materialDesign:DataGridTextColumn Width="*" Header="Quantité" IsReadOnly="False">
+                        <materialDesign:DataGridTextColumn Width="*" Header="Quantité" IsReadOnly="False" x:Name="Quantity">
                             <materialDesign:DataGridTextColumn.EditingElementStyle>
                                 <Style TargetType="{x:Type TextBox}">
-                                    <EventSetter Event="LostFocus" Handler="TextBox_QuantityChanged" />
+                                    <EventSetter Event="TextChanged" Handler="TextBox_QuantityChanged" />
                                     <EventSetter Event="PreviewTextInput" Handler="TextBox_IntegerInput" />
                                 </Style>
                             </materialDesign:DataGridTextColumn.EditingElementStyle>
-                            
                             <materialDesign:DataGridTextColumn.Binding>
-                                <Binding Path="Quantity"/>
+                                <Binding Path="Quantity" Mode="TwoWay"/>
                             </materialDesign:DataGridTextColumn.Binding>
                         </materialDesign:DataGridTextColumn>
-                        <materialDesign:DataGridTextColumn Width="*" Header="Prix article" IsReadOnly="False">
+                        <materialDesign:DataGridTextColumn Width="*" Header="Prix article unitaire" IsReadOnly="False" x:Name="Price">
                             <materialDesign:DataGridTextColumn.EditingElementStyle>
                                 <Style TargetType="{x:Type TextBox}">
-                                    <EventSetter Event="LostFocus" Handler="TextBox_PriceChanged" />
+                                    <EventSetter Event="TextChanged" Handler="TextBox_PriceChanged" />
                                     <EventSetter Event="PreviewTextInput" Handler="TextBox_DecimalInput" />
                                 </Style>
                             </materialDesign:DataGridTextColumn.EditingElementStyle>
                             <materialDesign:DataGridTextColumn.Binding>
-                                <Binding Path="Price"/>
+                                <Binding Path="Price" Mode="TwoWay"/>
+                            </materialDesign:DataGridTextColumn.Binding>
+                        </materialDesign:DataGridTextColumn>
+                        <materialDesign:DataGridTextColumn Width="*" Header="Prix article total" IsReadOnly="True">
+                            <materialDesign:DataGridTextColumn.Binding>
+                                <Binding Path="TotalPrice" Mode="TwoWay"/>
                             </materialDesign:DataGridTextColumn.Binding>
                         </materialDesign:DataGridTextColumn>
                     </DataGrid.Columns>
