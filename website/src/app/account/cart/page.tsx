@@ -1,10 +1,10 @@
 "use client"
 import { useEffect, useState } from "react";
-import Header from "@/../../modules/layout/header";
-import Footer from "@../../modules/layout/footer";
-import "@/globals.css";
-import { useAccount } from "@/../../services/api/user/useAccount";
-import EmptyCart from "@/../../modules/account/emptyCart";
+import Header from "../../../../modules/layout/header";
+import Footer from "../../../../modules/layout/footer";
+import "../../globals.css";
+import { useAccount } from "../../../../services/api/user/useAccount";
+import EmptyCart from "../../../../modules/account/emptyCart";
 import { useRouter } from "next/navigation";
 
 export default function Cart() {
@@ -59,8 +59,7 @@ export default function Cart() {
           </div>
         </div>
       </div>
-)}
-
+        )}
       <Footer />
     </>
   );
