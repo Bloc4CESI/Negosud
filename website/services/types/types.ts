@@ -23,7 +23,7 @@ export type ProductType = {
   description: string;
   image: string;
   home: string;
-  familyId: number;
+  family: familyType;
   nbProductBox: number;
   dateProduction: Date;
 }
@@ -45,8 +45,8 @@ export type OrderLineType = {
   id: number;
   quantity: number;
   price: number;
-  orderId: number;
-  productId: number;
+  order: OrderType;
+  product: ProductType;
 }
 
 export enum OrderStatus {

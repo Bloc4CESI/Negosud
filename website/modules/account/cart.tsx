@@ -1,33 +1,50 @@
 "use client"
-import React from "react";
-import "../globals.css";
 import { useAccount } from "../../services/api/user/useAccount";
 import EmptyCart from "./emptyCart";
+import React, { useEffect, useState } from "react";
+import {getOrderClient } from "../../services/api/products/cart";
+import {OrderLineType } from "../../services/types/types";
 
 export default function Cart() {
   const { account} = useAccount();
-  const products: any[] = [];
+  const [orders, setOrders] = useState<OrderLineType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const total = products.reduce((acc, product) => acc + product.price, 0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const ordersDate = await getOrderClient(account.id);
+        setOrders(ordersDate);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('Error during product retrieval:', error);
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
 
+  const total = orders.reduce((acc, product) => acc + product.price, 0);
+console.log('######' + orders);
   return (
     <>
-      {products.length === 0 ?
+      {orders.length === 0 ?
         <EmptyCart account={account}/>
         : (
       <div className="container mx-auto mt-8 flex">
         <div className="w-2/3 pr-8">
           <h2 className="text-2xl font-bold mb-4">Panier</h2>
           <ul>
-            {products.map((product, index) => (
+            {orders.map((order, index) => (
               <li
-                key={product.id}
+                key={order.id}
                 className={`flex justify-between my-4 ${
-                  index < products.length ? "bg-gray-200 rounded-full py-2 px-4" : ""
+                  index < orders.length ? "bg-gray-200 rounded-full py-2 px-4" : ""
                 }`}
               >
-                <span>{product.name}</span>
-                <span>{product.price} €</span>
+                <span>{order.product.name}</span>
+                <span>{order.quantity}</span>
+                <span>{order.price} €</span>
               </li>
             ))}
           </ul>
