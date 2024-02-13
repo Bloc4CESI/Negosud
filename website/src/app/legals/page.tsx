@@ -5,7 +5,7 @@ import "../globals.css";
 export default function Legals() {
   return (
     <>
-    <Header />
+    <Header style={undefined} />
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md my-16 rounded-md">
       <h1 className="text-3xl font-bold mb-6">Mentions Légales</h1>
       <section className="mb-8">
@@ -37,14 +37,14 @@ export default function Legals() {
         <h2 className="text-xl font-semibold mb-4">Protection des données personnelles :</h2>
         <p>Les informations collectées sont traitées dans le respect de la réglementation en vigueur. Consultez
           notre <a
-            href="lien-vers-politique-de-confidentialite">Politique de confidentialité</a> pour plus
+            href="">Politique de confidentialité</a> pour plus
           d&apos;informations.</p>
       </section>
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Cookies :</h2>
         <p>Notre site utilise des cookies. En continuant à naviguer, vous acceptez l&apos;utilisation de ces cookies.
           Consultez notre <a
-            href="lien-vers-politique-de-cookies">Politique relative aux cookies</a> pour plus
+            href="">Politique relative aux cookies</a> pour plus
           d&apos;informations.</p>
       </section>
       <section className="mb-8">

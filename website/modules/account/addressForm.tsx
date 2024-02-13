@@ -47,6 +47,7 @@ export default function AddressForm() {
       }, infoClient.state.account)
       setIsLoading(false);
       toast.success("Adresse créée avec succès");
+      router.push('/account')
     },
 (errors) => {
       toast.success("Problème lors de la creation de l'adresse");
@@ -57,15 +58,14 @@ export default function AddressForm() {
   return (
     <>
       <form onSubmit={onSubmit}>
-    <FormField label={"Nom de l'adresse"} {...form.register("name")}/>
-    <FormField label={"Rue"} {...form.register("street")}/>
-    <FormField label={"Code postal"} {...form.register("number")}/>
-    <FormField label={"Ville"} {...form.register("city")}/>
-    <FormField label={"Pays"} {...form.register("country")}/>
+        <FormField label={"Nom de l'adresse"} {...form.register("name")}/>
+        <FormField label={"Rue"} {...form.register("street")}/>
+        <FormField label={"Code postal"} {...form.register("number")}/>
+        <FormField label={"Ville"} {...form.register("city")}/>
+        <FormField label={"Pays"} {...form.register("country")}/>
         <Button disabled={isLoading} type="submit">
           {isLoading ? <Loading/> : "Enregistrer"}
         </Button>
-
       </form>
     </>
   );

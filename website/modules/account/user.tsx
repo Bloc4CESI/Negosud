@@ -1,14 +1,56 @@
 "use client"
 import { Account } from "../../services/types/types";
 import Button from "../extras/button";
-import { Logout } from "../../services/api/user/userService";
+import { getAddresses, Logout } from "../../services/api/user/userService";
 import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import Loading from "../extras/loading";
+import Modal from "../modal";
+
+interface address {
+  city: string
+  country: string
+  name: string
+  number: number
+  street: string
+}
 
 export default function User({ userData }: { userData: Account }) {
-  const router= useRouter();
+  const router = useRouter();
+  const [account, setAccount] = useState({});
+  const [address, setAddress] = useState<address>();
+  const [openSelectedQuoteModal, setOpenSelectedQuoteModal] = useState(false);
+
+  useEffect(() => {
+    const accountString = localStorage.getItem('account');
+    if (accountString !== null) {
+      setAccount(JSON.parse(accountString));
+    }
+  }, []);
+
+  useEffect(() => {
+    //@ts-ignore
+    if (account && account.state && account.state.account && account.state.account.addressId) {
+      //@ts-ignore
+      getAddresses(account.state.account.addressId)
+        .then(r => setAddress(r))
+        .catch(error => console.error("Une erreur s'est produite lors de la récupération des adresses:", error));
+    }
+  }, [account]);
 
   return (
+  <>
     <div className="ml-44 mr-44 mt-10">
+    <Modal
+      title="Êtes-vous sur de vouloir vous déconnecter?"
+      message="Nous ne voulons pas vous voir partir.."
+      type="danger"
+      visible={openSelectedQuoteModal}
+      onAccept={async () => {
+        await Logout()
+      }}
+      onCancel={() => setOpenSelectedQuoteModal(false)}
+    />
       <div className="px-4 sm:px-0">
         <h3 className="text-base font-semibold leading-7 text-gray-900">Bienvenue dans votre espace personnel</h3>
         <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500"></p>
@@ -18,27 +60,24 @@ export default function User({ userData }: { userData: Account }) {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Nom</dt>
             <dd
-              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData.firstName} {userData.lastName}</dd>
+              className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.firstName} {userData?.lastName}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Email</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData.email}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.email}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Numero de telephone</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData.phoneNumber}</dd>
+            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.phoneNumber}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Mes adresses</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              {userData.addressId === null ? (
+              {address == null ? (
                 <Button text="Ajouter une adresse" onClick={(() => {
-                  router.push('/account/address');
+                  router.push('/account/address/new');
                 })}/>
-              ) : <Button text="Gérer mes adresses" onClick={(() => {
-                router.push('/account/address');
-              })}/>}
-
+              ) : <p> {`${address?.street} ${address?.city} ${address?.country}`} </p>}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -52,14 +91,12 @@ export default function User({ userData }: { userData: Account }) {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900"></dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <Button onClick={(async () => {
-                const r = await Logout();
-              })} text="Se déconnecter"/></dd>
+              <Button onClick={() => setOpenSelectedQuoteModal(true)} text="Se déconnecter"/></dd>
           </div>
-
         </dl>
       </div>
     </div>
+  </>
   )
 }
 
