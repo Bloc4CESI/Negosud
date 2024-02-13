@@ -19,6 +19,8 @@ namespace ApiNegosud.Models
         public int ClientId { get; set; }
         public virtual Client? Client { get; set; }
         public List<ClientOrderLine>? ClientOrderLines { get; set; }
+
+        public string? ProductNames { get; set; }
     }
     public enum OrderStatus
     {

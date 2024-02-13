@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getProducts } from '../../../services/api/products/productService';
+import Cart from "../../svg/cart.svg";
+import { getFamilyById, getProducts } from "../../../services/api/products/productService";
+import SortByFamily from "../family/sortByFamily";
+import Loading from "../../extras/loading";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Product {
   id: number;
@@ -36,50 +41,64 @@ interface Product {
   };
 }
 
-const ProductListingPage = () => {
+export const ProductListing = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const productsData = await getProducts();
         setProducts(productsData);
+        setIsLoading(false);
       } catch (error) {
         console.error('Error during product retrieval:', error);
+        setIsLoading(false);
       }
     };
-
     fetchData();
-  }, [products]);
+  }, []);
 
-  console.log(products);
+  const handleFamilyChange = async (familyId: number) => {
+    setIsLoading(true);
+    try {
+      const productsData = await getFamilyById(familyId);
+      if (Array.isArray(productsData)) {
+        setProducts(productsData);
+      } else {
+        console.error('Invalid data format received for products:', productsData);
+      }
+    } catch (error) {
+      console.error('Error during product retrieval:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) return <Loading />;
+
   return (
     <div>
-      <h1>Listing des produits</h1>
-      <ul className="flex">
+      <SortByFamily onFamilyChange={handleFamilyChange}/>
+      <ul className="flex flex-wrap">
         {products.map((product) => (
-        <li key={product.id}>
-        <div className="relative m-10 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
-        <a className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl" href="#">
-          <img className="object-cover" src={product.image} alt="product image" />
-          <span className="absolute top-0 left-0 m-2 rounded-full bg-black px-2 text-center text-sm font-medium text-white">39% OFF</span>
-        </a>
+        <li onClick={(() => {
+          router.push(`listingProducts/product/${product.id}`)
+        })} className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md" key={product.id}>
+          <img className="object-cover w-full h-full" src={product.image} alt="product image" />
         <div className="mt-4 px-5 pb-5">
-          <a href="#">
+          <h6 className="text-xl tracking-tight text-slate-900">{product.home}</h6>
             <h5 className="text-xl tracking-tight text-slate-900">{product.name}</h5>
-          </a>
           <div className="mt-2 mb-5 flex items-center justify-between">
             <p>
-              <span className="text-3xl font-bold text-slate-900">{product.price}</span>
+              <span className="text-3xl font-bold text-slate-900">{product.price}€</span>
             </p>
           </div>
           <a href="#" className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300">
-            <svg xmlns="http://www.w3.org/2000/svg" className="mr-2 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+            <Cart className="mr-2 h-6 w-6"/>
             Add to cart
           </a>
-        </div>
         </div>
         </li>
         ))}
@@ -88,4 +107,5 @@ const ProductListingPage = () => {
   );
 };
 
-export default ProductListingPage;
+// @ts-ignore
+export default ProductListing;

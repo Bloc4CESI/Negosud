@@ -46,24 +46,40 @@ namespace VinStore.View
         private void EditOrderProvider(object sender, RoutedEventArgs e)
         {
             var selectedOrderProvider = ((FrameworkElement)sender).DataContext as ProviderOrder;
-            var EditScreen = new EditOrderProvider();
+            var EditScreen = new EditOrderProvider(_mainGrid);
             if(selectedOrderProvider != null)
-            {
-           
+            {           
                 EditScreen.UpdateProviderOrder(selectedOrderProvider);
                 _mainGrid.Children.Clear();
                 _mainGrid.Children.Add(EditScreen);
 
             }
         }
+        private async void SearchCommandWithProviderName(object sender, RoutedEventArgs e)
+        {
+            var ProviderName = ProviderNameTextBox.Text;
 
+            if (!string.IsNullOrEmpty(ProviderName))
+            {
+                var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION, ProviderName);
+                foreach (var order in ProviderOrdersToValidate)
+                {
+                    if (order.Provider != null && order.ProviderOrderLines != null)
+                    {
+                        order.ProductNames = string.Join(", ", order.ProviderOrderLines.Select(line => line.Product?.Name));
+                    }
+                }
+                CommanToValidatGrid.ItemsSource = ProviderOrdersToValidate;
+            }
+           
+        }
         private async void RemoveOrderProvider(object sender, RoutedEventArgs e)
         {
             var selectedOrderProvider = ((FrameworkElement)sender).DataContext as ProviderOrder;
             if (selectedOrderProvider != null)
             {
                 var Message = MessageBox.Show($"Êtes-vous sûr de supprimer la commande ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (Message != MessageBoxResult.Yes)
+                if (Message == MessageBoxResult.Yes)
                 {
                     await CommandProviderService.DeleteProvider(selectedOrderProvider.Id);
                      LoadOrderProvierToValidate();

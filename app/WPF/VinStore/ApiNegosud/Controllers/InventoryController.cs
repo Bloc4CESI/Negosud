@@ -4,6 +4,7 @@ using ApiNegosud.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using static ApiNegosud.Models.Inventory;
 
 namespace ApiNegosud.Controllers
 {
@@ -18,130 +19,144 @@ namespace ApiNegosud.Controllers
             _context = context;
         }
 
-
-        [HttpGet]
-        public IActionResult Get(string nameProduct = null)
-    {
-            try
-            {
-                // Filtrer les inventaires en fonction des paramètres fournis, en castant en minuscules
-                var inventories = _context.Inventory
-                    .Include(i => i.Stock)
-                    .ThenInclude(s => s.Product)
-                    .AsQueryable();
-
-                if (!string.IsNullOrEmpty(nameProduct))
-                {
-                    // Filtrer par nom de produit
-                    inventories = inventories.Where(i => i.Stock.Product!.Name.ToLower().Contains(nameProduct.Trim().ToLower()));
-                }
-                // Convertir les résultats en une liste
-                var filteredInventories = inventories.ToList();
-
-                if (filteredInventories.Count == 0)
-                {
-                    return NotFound("Aucun inventaire trouvé avec les paramètres fournis.");
-                }
-                else
-                {
-                    return Ok(filteredInventories);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                var inventory = _context.Inventory.Include(i => i.Stock)
-                        .ThenInclude(s => s.Product).FirstOrDefault(i => i.Id == id);
-                if (inventory == null)
-                {
-                    return NotFound($"L'inventaire avec l'ID {id} n'a pas été trouvé");
-                }
-                else
-                {
-                    return Ok(inventory);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
         [HttpPost]
-        public IActionResult Post(Inventory newInventory)
+        public IActionResult Post(Inventory NewInventory)
         {
             try
             {
-
-                // Vérifiez si le stock associé à l'inventaire existe
-                var existingStock = _context.Stock.FirstOrDefault(s => s.Id == newInventory.StockId);
-
-                if (existingStock == null)
+                _context.Add(NewInventory);
+                // Ajouter les lignes inventaires associées
+                if (NewInventory.InventoryLignes != null && NewInventory.InventoryLignes.Any())
                 {
-                    return BadRequest("Stock non trouvé. Veuillez fournir un ID de stock valide.");
+                    foreach (var InventoryLigne in NewInventory.InventoryLignes)
+                    {
+                        InventoryLigne.InventoryId = NewInventory.Id;
+
+                        _context.InventoryLigne.Add(InventoryLigne);
+                    }
+
+                    _context.SaveChanges();
+                }
+                var newInventory = _context.Inventory.Include(p => p.InventoryLignes)
+                            .FirstOrDefault(p => p.Id == NewInventory.Id);
+                if (newInventory != null)
+                {
+                    return Ok(new { newInventory = newInventory, Message = "L'inventaire est ajoutée avec succès!" });
+                }
+                else
+                {
+                    return BadRequest("L'inventaire n'a pas pu être récupérée après l'ajout.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // En cas d'erreur, renvoyer un message d'erreur
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("UpdateInventory")]
+        public IActionResult UpdateInventory(Inventory UpdatedInventory)
+        {
+            try
+            {
+                var ExistingInventory = _context.Inventory.Include(i => i.InventoryLignes).FirstOrDefault(i => i.Id == UpdatedInventory.Id);
+
+                if (ExistingInventory == null)
+                {
+                    return NotFound($"L'inventaire {UpdatedInventory.Id} n'a pas été trouvé");
                 }
 
-                // Ajoutez l'inventaire à la base de données sans charger le détail du stock
-                _context.Inventory.Add(new Inventory
+                // Mettre à jour les propriétés de l'inventaire
+                ExistingInventory.StatusInventory = UpdatedInventory.StatusInventory;
+                ExistingInventory.Date = UpdatedInventory.Date;
+                if (UpdatedInventory.InventoryLignes != null && UpdatedInventory.InventoryLignes.Any())
                 {
-                    Date = newInventory.Date,
-                    QuantityInventory = newInventory.QuantityInventory,
-                    StockId = newInventory.StockId
-                });
+                    foreach (var UpdatedInventoryLigne in UpdatedInventory.InventoryLignes)
+                    {
+                        UpdatedInventoryLigne.InventoryId = UpdatedInventory.Id;
 
+                        var ExistingLigne = ExistingInventory.InventoryLignes!.FirstOrDefault(il => il.Id == UpdatedInventoryLigne.Id);
+
+                        if (ExistingLigne != null)
+                        {
+                            ExistingLigne.QuantityInventory = UpdatedInventoryLigne.QuantityInventory;
+                        }
+                        else
+                        {
+                            ExistingInventory.InventoryLignes!.Add(UpdatedInventoryLigne);
+                        }
+                    }
+                }
+                // si le status est validé on update les quantités des articles selon les inventaires
+                if (UpdatedInventory.StatusInventory == Inventory.InventoryEnum.VALIDE)
+                {
+                    if (UpdatedInventory.InventoryLignes != null && UpdatedInventory.InventoryLignes.Any())
+                    {
+                        foreach (var UpdatedInventoryLigne in UpdatedInventory.InventoryLignes)
+                        {
+                            var productStock = _context.Stock.FirstOrDefault(s => s.Id == UpdatedInventoryLigne.StockId);
+                            if (productStock != null)
+                            {
+                                // Mettre à jour la quantité de stock du produit
+                                productStock.Quantity = UpdatedInventoryLigne.QuantityInventory;
+                            }
+                        }
+                    }
+                }
                 _context.SaveChanges();
-
-                return Ok("L'inventaire a été créé avec succès!");
+                return Ok("Mise à jour réussie");
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-        [HttpPut("{id}")]
-        public IActionResult Put(Inventory updatedInventory)
+        [HttpGet("bystatus/{status}")]
+        public IActionResult GetByStatus(InventoryEnum  status, DateTime? date = null)
         {
             try
             {
-                // Récupérer l'inventaire existant de la base de données
-                var existingInventory = _context.Inventory.FirstOrDefault(i => i.Id == updatedInventory.Id);
-
-                if (existingInventory == null)
+                var InventoryQuery = _context.Inventory
+                    .Include(i => i.InventoryLignes!)
+                        .ThenInclude(il => il.Stock)
+                            .ThenInclude(s => s.Product)
+                    .Where(po => po.StatusInventory == status);
+                if (date.HasValue)
                 {
-                    return NotFound($"L'inventaire avec l'ID {updatedInventory.Id} n'a pas été trouvé.");
+                    InventoryQuery = InventoryQuery.Where(po => po.Date >= date.Value.Date);
                 }
-                // Mettre à jour les propriétés de l'inventaire existant
-                existingInventory.Date = updatedInventory.Date;
-                existingInventory.QuantityInventory = updatedInventory.QuantityInventory;
-                _context.SaveChanges();
+                var Inventories = InventoryQuery.OrderByDescending(po => po.Id).ToList();
 
-                return Ok("L'inventaire a été mis à jour avec succès!");
+                return Ok(Inventories);
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
-                var Inventory = _context.Inventory.Find(id);
+                var Inventory = _context.Inventory
+                    .Include(i => i.InventoryLignes) // Inclure les lignes d'inventaire
+                    .SingleOrDefault(i => i.Id == id);
+
                 if (Inventory == null)
                 {
-                    return BadRequest("Inventaire non trouvé");
+                    return BadRequest($"L'inventaire l'ID {id} est non trouvée");
                 }
+                if (Inventory.InventoryLignes != null && Inventory.InventoryLignes.Any())
+                {
+                    // Supprimer toutes les lignes d'inventaire associées
+                    _context.InventoryLigne.RemoveRange(Inventory.InventoryLignes);
+                }
+                // Supprimer la commande fournisseur elle-même
                 _context.Inventory.Remove(Inventory);
+
                 _context.SaveChanges();
+
                 return Ok("Suppression réussie");
             }
             catch (Exception ex)
@@ -149,6 +164,6 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
-    }
 
+    }
 }

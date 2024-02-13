@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model Address {
+  Id       Int        @id(map: "PK_Address") @default(autoincrement())
+  Name     String     @db.NVarChar(50)
+  Number   Int
+  Street   String     @db.NVarChar(Max)
+  City     String     @db.NVarChar(50)
+  Country  String     @db.NVarChar(50)
+  Client   Client[]
+  Provider Provider[]
+}
+
+model Client {
+  Id          Int           @id(map: "PK_Client") @default(autoincrement())
+  FirstName   String        @db.NVarChar(50)
+  LastName    String        @db.NVarChar(50)
+  Email       String        @db.NVarChar(255)
+  PhoneNumber String        @db.NVarChar(50)
+  Password    String        @db.Text
+  AddressId   Int?
+  Address     Address?      @relation(fields: [AddressId], references: [Id], onDelete: NoAction, onUpdate: NoAction, map: "FK_Client_Address")
+  ClientOrder ClientOrder[]
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map(name: "Client_id")
+  expires      DateTime
+  sessionToken String   @unique @map(name: "session_token")
+  accessToken  String   @unique @map(name: "access_token")
+  createdAt    DateTime @default(now()) @map(name: "created_at")
+  updatedAt    DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "sessions")
+}
+
+model ClientOrder {
+  Id              Int               @id(map: "PK_ClientOrder") @default(autoincrement())
+  Date            DateTime          @db.DateTime
+  Price           Decimal           @db.Decimal(10, 2)
+  ClientId        Int
+  OrderStatus     String            @db.NVarChar(50)
+  Client          Client            @relation(fields: [ClientId], references: [Id], onUpdate: NoAction, map: "FK_ClientOrder_Client")
+  ClientOrderLine ClientOrderLine[]
+}
+
+model ClientOrderLine {
+  Id            Int         @id(map: "PK_ClientOrderLine") @default(autoincrement())
+  Quantity      Int
+  Price         Decimal     @db.Decimal(10, 2)
+  ClientOrderId Int
+  ProductId     Int
+  ClientOrder   ClientOrder @relation(fields: [ClientOrderId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ClientOrderLine_ClientOrder")
+  Product       Product     @relation(fields: [ProductId], references: [Id], onUpdate: NoAction, map: "FK_ClientOrderLine_Product")
+}
+
+model Employee {
+  Id        Int     @id(map: "PK_Employee") @default(autoincrement())
+  LastName  String? @db.NVarChar(50)
+  FirstName String? @db.NVarChar(50)
+  Password  String  @db.Text
+  Email     String  @db.NVarChar(255)
+}
+
+model Family {
+  Id      Int       @id(map: "PK_Family") @default(autoincrement())
+  Name    String    @db.NVarChar(50)
+  Product Product[]
+}
+
+model Inventory {
+  Id              Int              @id(map: "PK_Inventaire") @default(autoincrement())
+  Date            DateTime         @db.Date
+  StatusInventory String           @db.VarChar(20)
+  InventoryLigne  InventoryLigne[]
+}
+
+model InventoryLigne {
+  Id                Int       @id(clustered: false, map: "PK_InventoryLigne") @default(autoincrement())
+  StockId           Int
+  InventoryId       Int
+  QuantityInventory Int
+  Inventory         Inventory @relation(fields: [InventoryId], references: [Id], onUpdate: NoAction, map: "FK_InventoryLigne_Inventory")
+  Stock             Stock     @relation(fields: [StockId], references: [Id], onUpdate: NoAction, map: "FK_InventoryLigne_Stock")
+}
+
+model Product {
+  Id                Int                 @id(map: "PK_Product") @default(autoincrement())
+  Name              String              @db.NVarChar(50)
+  Price             Decimal             @db.Decimal(10, 2)
+  Image             String              @db.NVarChar(Max)
+  Description       String?             @db.Text
+  DateProduction    DateTime            @db.Date
+  NbProductBox      Int?
+  FamilyId          Int
+  ProviderId        Int
+  Home              String              @db.NVarChar(Max)
+  ClientOrderLine   ClientOrderLine[]
+  Family            Family              @relation(fields: [FamilyId], references: [Id], onUpdate: NoAction, map: "FK_Product_Family")
+  Provider          Provider            @relation(fields: [ProviderId], references: [Id], onUpdate: NoAction, map: "FK_Product_Provider")
+  ProviderOrderLine ProviderOrderLine[]
+  Stock             Stock[]
+}
+
+model Provider {
+  Id            Int             @id(map: "PK_Provider") @default(autoincrement())
+  Name          String          @db.NVarChar(50)
+  PhoneNumber   String          @db.NVarChar(50)
+  Email         String          @db.NVarChar(255)
+  AddressId     Int
+  Product       Product[]
+  Address       Address         @relation(fields: [AddressId], references: [Id], onUpdate: NoAction, map: "FK_Provider_Address")
+  ProviderOrder ProviderOrder[]
+}
+
+model ProviderOrder {
+  Id                  Int                 @id(map: "PK_ProviderOrder") @default(autoincrement())
+  Date                DateTime            @db.DateTime
+  Price               Decimal             @db.Decimal(10, 2)
+  ProviderId          Int
+  ProviderOrderStatus String              @db.NVarChar(50)
+  Provider            Provider            @relation(fields: [ProviderId], references: [Id], onUpdate: NoAction, map: "FK_ProviderOrder_Provider")
+  ProviderOrderLine   ProviderOrderLine[]
+}
+
+model ProviderOrderLine {
+  Id              Int           @id(map: "PK_ProviderOrderLine") @default(autoincrement())
+  Quantity        Int
+  Price           Decimal       @db.Decimal(10, 2)
+  ProviderOrderId Int
+  ProductId       Int
+  Product         Product       @relation(fields: [ProductId], references: [Id], onUpdate: NoAction, map: "FK_ProviderOrderLine_Product")
+  ProviderOrder   ProviderOrder @relation(fields: [ProviderOrderId], references: [Id], onDelete: Cascade, onUpdate: NoAction, map: "FK_ProviderOrderLine_ProviderOrder")
+}
+
+model Stock {
+  Id             Int              @id(map: "PK_Stock") @default(autoincrement())
+  Quantity       Int
+  Minimum        Int?
+  Maximum        Int?
+  AutoOrder      Boolean
+  ProductId      Int
+  InventoryLigne InventoryLigne[]
+  Product        Product          @relation(fields: [ProductId], references: [Id], onUpdate: NoAction, map: "FK_Stock_Product")
+}

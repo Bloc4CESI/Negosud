@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "dMWzLCr0A7mVrQol5PbXREtbjs1gsDezqJeT2nunCaeaM5BzLbio9pwwxSb1EVv/YDYPmp17W/65Wn8aKl+rrg==",
+  "dgSpecHash": "hisi/vnnYgjgfyAUQVV2srq2jv78UnB9TJR4M+gGBOVNaFLVGe/4oxSZyNOTLACN45WlJljCsDnQZgOgrrLUkw==",
   "success": true,
   "projectFilePath": "C:\\Users\\masmo\\OneDrive\\Bureau\\negosud\\Negosud\\app\\WPF\\VinStore\\VinStore\\VinStore.csproj",
   "expectedPackageFiles": [
@@ -8,7 +8,10 @@
     "C:\\Users\\masmo\\.nuget\\packages\\materialdesigncolors\\2.1.4\\materialdesigncolors.2.1.4.nupkg.sha512",
     "C:\\Users\\masmo\\.nuget\\packages\\materialdesignthemes\\4.9.0\\materialdesignthemes.4.9.0.nupkg.sha512",
     "C:\\Users\\masmo\\.nuget\\packages\\microsoft.xaml.behaviors.wpf\\1.1.39\\microsoft.xaml.behaviors.wpf.1.1.39.nupkg.sha512",
-    "C:\\Users\\masmo\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+    "C:\\Users\\masmo\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\restsharp\\110.2.0\\restsharp.110.2.0.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
+    "C:\\Users\\masmo\\.nuget\\packages\\system.text.json\\7.0.2\\system.text.json.7.0.2.nupkg.sha512"
   ],
   "logs": []
 }

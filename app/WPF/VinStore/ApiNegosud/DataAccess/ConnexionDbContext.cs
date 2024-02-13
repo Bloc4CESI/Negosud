@@ -21,6 +21,7 @@ namespace ApiNegosud.DataAccess
         public DbSet<ProviderOrder> ProviderOrder { get; set; }
         public DbSet<ProviderOrderLine> ProviderOrderLine { get; set; }
         public DbSet<Inventory> Inventory { get; set; }
+        public DbSet<InventoryLigne> InventoryLigne { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>()
@@ -33,6 +34,9 @@ namespace ApiNegosud.DataAccess
             modelBuilder.Entity<ProviderOrder>()
             .Property(co => co.ProviderOrderStatus)
             .HasConversion<string>();
+            modelBuilder.Entity<Inventory>()
+           .Property(co => co.StatusInventory)
+           .HasConversion<string>();
         }
         
     }

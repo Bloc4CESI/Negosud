@@ -50,16 +50,12 @@ namespace VinStore.Services
                 }
                 else
                 {
-                    // Gérez le cas où aucune famille correspondante n'a été trouvée
-                    // Vous pouvez lever une exception, retourner une valeur par défaut, etc.
-                    return -1; // Remplacez ceci par la logique appropriée
+                    return -1; 
                 }
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
-                // Vous pouvez lever une exception, retourner une valeur par défaut, etc.
-                return -1; // Remplacez ceci par la logique appropriée
+                return -1; 
             }
         }
 

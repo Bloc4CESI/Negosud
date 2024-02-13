@@ -95,35 +95,40 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="80"/>
                         <ColumnDefinition Width="80"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <ComboBox  Grid.Row="0" Grid.Column="0" Margin="20" Background="White" Padding="10" Grid.ColumnSpan="2"
+                    <ComboBox  Grid.Row="0"   Style="{StaticResource MaterialDesignFilledComboBox}" Grid.Column="0" Margin="20" Background="White" Padding="10" Grid.ColumnSpan="2"
                     materialDesign:HintAssist.Hint="Nom de l'article"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50"  materialDesign:TextFieldAssist.HasClearButton="True" 
-                    materialDesign:HintAssist.Foreground="Black" x:Name="ProductsComboBox_0"      
+                    materialDesign:HintAssist.Foreground="Black" x:Name="ProductsComboBox_0"  
                     SelectionChanged="ProductNewComboBox_SelectionChanged">
                     </ComboBox>
                     <TextBox Grid.Row="0"  Grid.Column="2" Margin="20" Background="White" Padding="10" 
-                     materialDesign:HintAssist.Hint="Quantité stock"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="StockQuantity0"
+                     materialDesign:HintAssist.Hint="Quantité stock" materialDesign:TextFieldAssist.UnderlineBrush="Black"
+                     materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="StockQuantity0"  Style="{StaticResource MaterialDesignFilledTextBox}"
                      materialDesign:HintAssist.Foreground="Black" IsReadOnly="True"/>
-                    <TextBox Grid.Row="0"  Grid.Column="3" Margin="20" Background="White" Padding="10" 
-                    materialDesign:HintAssist.Hint="Quantité"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="QuantityLigneOrder0"
+                    <TextBox Grid.Row="0"  Grid.Column="3" Margin="20" Background="White" Padding="10"  Style="{StaticResource MaterialDesignFilledTextBox}"
+                    materialDesign:HintAssist.Hint="Quantité à commander"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
+                    materialDesign:HintAssist.HintOpacity=".26"  MaxHeight="50" x:Name="QuantityLigneOrder0" 
                     materialDesign:HintAssist.Foreground="Black" TextChanged="TextBox_QuantityChanged" PreviewTextInput="TextBox_IntegerInput"/>
                     <TextBox Grid.Row="0"  Grid.Column="4" Margin="20" Background="White" Padding="10" 
-                    materialDesign:HintAssist.Hint="Prix article"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
-                    materialDesign:HintAssist.HintOpacity=".26" TextChanged="TextBox_PriceChanged" MaxHeight="50"  x:Name="PriceLigneOrder0"
+                    materialDesign:HintAssist.Hint="Prix article unitaire"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
+                    materialDesign:HintAssist.HintOpacity=".26" TextChanged="TextBox_PriceChanged" MaxHeight="50"  Style="{StaticResource MaterialDesignFilledTextBox}" x:Name="PriceLigneOrder0"
                     materialDesign:HintAssist.Foreground="Black" PreviewTextInput="TextBox_DecimalInput" />
-                    <Button Grid.Row="0"  Grid.Column="5" Margin="10" Click="AddProduct"
+                    <TextBox Grid.Row="0"  Grid.Column="5" Margin="20" Background="White" Padding="10"  Style="{StaticResource MaterialDesignFilledTextBox}"
+                         materialDesign:HintAssist.Hint="Prix article total"  materialDesign:TextFieldAssist.UnderlineBrush="Black"
+                         materialDesign:HintAssist.HintOpacity=".26" MaxHeight="50"   x:Name="PriceTotalLigne0"
+                         materialDesign:HintAssist.Foreground="Black" IsEnabled="False" />
+                    <Button Grid.Row="0"  Grid.Column="6" Margin="10" Click="AddProduct"
                     Content="{materialDesign:PackIcon Plus}" Background="DarkRed" BorderBrush="DarkRed"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     ToolTip="Ajouter un article" />
-                    <Button Grid.Row="0" Grid.Column="6" Margin="10" x:Name="DeleteProduct0"
+                    <Button Grid.Row="0" Grid.Column="7" Margin="10" x:Name="DeleteProduct0"
                     Content="X" Background="DarkRed" BorderBrush="DarkRed"
                     IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
                     ToolTip="Supprimer la ligne article" Click="DeleteProductRow" />
@@ -148,5 +153,4 @@
        
         </StackPanel>
     </Grid>
-
 </UserControl>

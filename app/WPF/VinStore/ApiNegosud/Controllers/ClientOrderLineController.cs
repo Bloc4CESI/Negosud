@@ -26,7 +26,9 @@ namespace ApiNegosud.Controllers
             try
             {
                 var clientCart = _context.ClientOrderLine
+                    .Include(co =>co.ClientOrder)
                     .Include(col => col.Product)
+                     .ThenInclude(p => p.Stock)
                     .Where(col => col.ClientOrder.ClientId == ClientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
                     .ToList();
 
@@ -47,60 +49,58 @@ namespace ApiNegosud.Controllers
         [HttpPost("AddProductToCart")]
         public IActionResult AddProductToCart(int ProductId, int ClientId, int Quantity, Decimal Price)
         {
-        try
-        {
-            // Vérifier si la commande du client existe
-            var ClientOrder = _context.ClientOrder.FirstOrDefault(co => co.ClientId == ClientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
-            if (ClientOrder == null)
+            try
             {
-                // Si la commande n'existe pas, créez une nouvelle commande pour le client
-                ClientOrder = new ClientOrder
+                // Vérifier si la commande du client existe
+                var ClientOrder = _context.ClientOrder.FirstOrDefault(co => co.ClientId == ClientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
+                if (ClientOrder == null)
                 {
-                    ClientId = ClientId,
-                    Date = DateTime.Now,
-                    // la primere fois c'est le prix de la ligne => Ps: n'oubliez pas à multiplier * NbProductBox -20% en cas de paquet
-                    Price = Price,
-                    OrderStatus = OrderStatus.ENCOURSDEVALIDATION
-                };
+                    // Si la commande n'existe pas, créez une nouvelle commande pour le client
+                    ClientOrder = new ClientOrder
+                    {
+                        ClientId = ClientId,
+                        Date = DateTime.Now,
+                        // la primere fois c'est le prix de la ligne => Ps: n'oubliez pas à multiplier * NbProductBox -20% en cas de paquet
+                        Price = Price,
+                        OrderStatus = OrderStatus.ENCOURSDEVALIDATION
+                    };
 
-                _context.ClientOrder.Add(ClientOrder);
-                _context.SaveChanges();
+                    _context.ClientOrder.Add(ClientOrder);
+                    _context.SaveChanges();
+                }
+                    // Vérifier si le produit existe déjà dans la commande
+                    var existingOrderLine = _context.ClientOrderLine
+                        .FirstOrDefault(col => col.ClientOrderId == ClientOrder.Id && col.ProductId == ProductId);
+
+                    if (existingOrderLine != null)
+                    {
+                        // Si le produit existe déjà, mettez à jour la quantité
+                        existingOrderLine.Quantity += Quantity;
+                        existingOrderLine.Price += Price; // Update the total price if needed
+                    }
+                    else
+                    {
+                        // Ajouter le produit à la ligne de commande du client
+                        var clientOrderLine = new ClientOrderLine
+                        {
+                        ClientOrder = ClientOrder,
+                        ClientOrderId = ClientOrder.Id,
+                        ProductId = ProductId,
+                        // Ps: n'oubliez pas à multiplier * NbProductBox en cas de paquet (front)
+                        Quantity = Quantity,
+                        Price = Price
+                        };   
+                        _context.ClientOrderLine.Add(clientOrderLine);
+                    }
+                    _context.SaveChanges();
+
+                return Ok("La ligne de la commande est ajoutée avec succès!");
             }
-            // Vérifier si le produit existe déjà dans la commande
-            var existingOrderLine = _context.ClientOrderLine
-                .FirstOrDefault(col => col.ClientOrderId == ClientOrder.Id && col.ProductId == ProductId);
-
-            if (existingOrderLine != null)
+            catch (Exception ex)
             {
-                // Si le produit existe déjà, mettez à jour la quantité
-                existingOrderLine.Quantity += Quantity;
-                existingOrderLine.Price += Price; // Update the total price if needed
+                // En cas d'erreur, renvoyer un message d'erreur
+                return BadRequest(ex.Message);
             }
-            else
-            {
-                // Ajouter le produit à la ligne de commande du client
-                var clientOrderLine = new ClientOrderLine
-                {
-                    ClientOrder = ClientOrder,
-                    ClientOrderId = ClientOrder.Id,
-                    ProductId = ProductId,
-                    // Ps: n'oubliez pas à multiplier * NbProductBox en cas de paquet (front)
-                    Quantity = Quantity,
-                    Price = Price
-                };
-
-                _context.ClientOrderLine.Add(clientOrderLine);
-            }
-
-            _context.SaveChanges();
-
-            return Ok("La ligne de la commande est ajoutée avec succès!");
-        }
-        catch (Exception ex)
-        {
-            // En cas d'erreur, renvoyer un message d'erreur
-            return BadRequest(ex.Message);
-        }
         }
 
     [HttpPut("UpdateCartProductQuantity")]

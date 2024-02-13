@@ -1,12 +1,15 @@
 "use client"
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { getUser } from "../../services/api/user/userService";
 import { useRouter } from "next/navigation";
 import Arrow from "../svg/arrowRight.svg";
+import { useAuth } from "../../services/api/user/useAuth";
 
 const Login = () => {
+  const { authenticate, status } = useAuth();
+  const [connected, setConnected] = useState(false);
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -16,12 +19,22 @@ const Login = () => {
   });
 
 
+  useEffect(() => {
+    if (localStorage.getItem('connected') === null) {
+      router.push('/login');
+    } else {
+      setConnected(true);
+    }
+  }, []);
+
+
   return (
     <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit(async (formData) => {
         try {
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
+            await authenticate(encodeURIComponent(formData.Email));
             router.push('/account');
           } else {
             console.log("error");
