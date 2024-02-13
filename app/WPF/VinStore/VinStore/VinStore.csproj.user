@@ -13,6 +13,9 @@
     <Compile Update="View\AddEmployee.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\CommandClientToDelivrey.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\CreateInventory.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -20,6 +23,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\DetailCommand.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\DetailCommandClient.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\DetailInventory.xaml.cs">
@@ -31,7 +37,13 @@
     <Compile Update="View\EditOrderProvider.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Home.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\InventoryToValidate.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\LivredCommandClient.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Navbar.xaml.cs">
@@ -41,6 +53,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\ProviderOrderToDelivery.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\RefusedCommandClient.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\RefusedInventory.xaml.cs">
@@ -60,6 +75,9 @@
     <Page Update="View\AddEmployee.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\CommandClientToDelivrey.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\CreateInventory.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -67,6 +85,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\DetailCommand.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\DetailCommandClient.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\DetailInventory.xaml">
@@ -78,7 +99,13 @@
     <Page Update="View\EditOrderProvider.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\Home.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\InventoryToValidate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\LivredCommandClient.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Navbar.xaml">
@@ -88,6 +115,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ProviderOrderToDelivery.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\RefusedCommandClient.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\RefusedInventory.xaml">

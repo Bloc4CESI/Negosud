@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <materialDesign:ColorZone Padding="16" Background="Black" Grid.Row="0">
             <Menu>
-                <MenuItem >
+                <MenuItem Click="HomePageClick">
                     <MenuItem.Header>
                         <materialDesign:PackIcon Kind="Home" Foreground="White" Margin="0,0,8,0" />
                     </MenuItem.Header>
@@ -59,13 +59,8 @@
                         </StackPanel>
                     </MenuItem.Header>
                     <MenuItem Header="Gestion des fournisseurs"  Foreground="Black" Click="Provider_Click" />
-                </MenuItem> 
-                <MenuItem>
-                    <MenuItem.Header>
-                    <MenuItem Header="Ajout Fournisseur"  Foreground="Black"/>
-                    <MenuItem Header="Gestion des fournisseurs"  Foreground="Black"/>
                 </MenuItem>
-                <MenuItem Click="CommandeProviderMenuItem_Click">
+                <MenuItem MouseEnter="CommandProviderMenuItem_MouseEnter">
                     <MenuItem.Header  >
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CartArrowUp" Foreground="White" Margin="0,0,8,0" />
@@ -78,7 +73,7 @@
                     <MenuItem  x:Name="DeliveredCommandHeader" Foreground="Black" Click="DeliveredCommand"/>
                     <MenuItem  x:Name="RefusedCommandHeader" Foreground="Black" Click="RefusedCommand"/>
                 </MenuItem>
-                <MenuItem Click="InventoryMenuItem_Click">
+                <MenuItem MouseEnter="InventoryMenuItem_MouseEnter">
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ClipboardEditOutline" Foreground="White" Margin="0,0,8,0" />
@@ -89,19 +84,21 @@
                     <MenuItem  x:Name="InventoryToValidateHeader" Foreground="Black" Click="InventoryToValidate"/>
                     <MenuItem  x:Name="ValidatedInventoriesHeader" Foreground="Black" Click="ValidatedInventories"/>
                     <MenuItem  x:Name="RefusedInventoriesHeader" Foreground="Black" Click="RefusedInventories"/>
-                </MenuItem> 
-                <MenuItem>
+                </MenuItem>
+                <MenuItem MouseEnter="CommandClientMenuItem_MouseEnter">
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="AccountArrowRightOutline" Foreground="White" Margin="0,0,8,0" />
-                            <TextBlock Text="Utilisateur" Foreground="White" />
+                            <materialDesign:PackIcon Kind="CartArrowUp" Foreground="White" Margin="0,0,8,0" />
+                            <TextBlock Text="Commandes Clients" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Header="Ajout utilisateur" Foreground="Black" Click="MenuItem_Click"/>
+                    <MenuItem  x:Name="CommandClientToDeliverHeader" Foreground="Black" Click="CommandClientToDeliver"/>
+                    <MenuItem  x:Name="DeliveredClientCommandHeader" Foreground="Black" Click="DeliveredClientCommand"/>
+                    <MenuItem  x:Name="RefusedClientCommandHeader" Foreground="Black" Click="RefusedClientCommand"/>
                 </MenuItem>
                 <MenuItem Click="DeconnxionClick">
                     <MenuItem.Header>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="250,0,0,0">
                             <materialDesign:PackIcon Kind="AccountArrowRightOutline" Foreground="White" Margin="0,0,8,0" />
                             <TextBlock Text="Déconnexion" Foreground="White" />
                         </StackPanel>

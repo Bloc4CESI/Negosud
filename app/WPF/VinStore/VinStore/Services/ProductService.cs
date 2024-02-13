@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Windows;
 using ApiNegosud.Models;
 using System.Collections.ObjectModel;
+using VinStore.View;
 
 namespace VinStore.Services
 {
@@ -64,7 +65,7 @@ namespace VinStore.Services
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/product/");
+                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Product/");
                 if (string.IsNullOrEmpty(response))
                 {
                     Console.WriteLine("Aucun produit trouvé");
@@ -170,8 +171,52 @@ namespace VinStore.Services
                 MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
             }
         }
-    
+        public static async Task<List<Product>> GetAlertProducts()
+        {
+            try
+            {
+                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Product/GetAlertProduct");
+                if (string.IsNullOrEmpty(response))
+                {
+                    Console.WriteLine("Aucun produit trouvé");
+                    MessageBox.Show("Aucun produit trouvé");
+                    return null;
+                }
+                else
+                {
+                    List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
+                    return products;
+                }
 
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite lors de la requête : {ex.Message}");
+                return null;
+            }
+        }
+        public static async Task<bool> IsProductHasAnyTransaction(int idProduct)
+        {
+            try
+            {
+                var response = await ApiConnexion.ApiClient.GetAsync($"https://localhost:7281/api/Product/IsProductHasAnyTransaction/{idProduct}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = await response.Content.ReadAsStringAsync();
+                    return Convert.ToBoolean(responseContent);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Une erreur s'est produite lors de la requête : {ex.Message}");
+                return false;
+            }
+        }
     }
 
 }

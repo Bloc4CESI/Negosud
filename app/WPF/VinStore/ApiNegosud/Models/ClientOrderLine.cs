@@ -13,7 +13,7 @@ namespace ApiNegosud.Models
 
         [ForeignKey("ClientOrder")]
         public int ClientOrderId { get; set; }
-        public virtual required ClientOrder ClientOrder { get; set; }
+        public  ClientOrder? ClientOrder { get; set; }
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public virtual Product? Product { get; set; }

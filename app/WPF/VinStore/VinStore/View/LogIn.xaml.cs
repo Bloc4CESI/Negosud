@@ -68,6 +68,10 @@ namespace VinStore.Pages
                     _context.InitializeComponent();
                     _context.MainFrame.Navigate(new Navbar());
                 }
+                else
+                {
+                    MessageBox.Show($"Nom d'utilisateur ou mot de passe incorrect.");
+                }
             }
         }
     }

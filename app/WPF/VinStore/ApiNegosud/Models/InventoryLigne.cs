@@ -15,6 +15,8 @@ namespace ApiNegosud.Models
 
         [Required]
         public int QuantityInventory { get; set; }
+        [Required]
+        public int QuantityStock { get; set; }
         public Stock? Stock { get; set; }
         public Inventory? Inventory { get; set; }
     }

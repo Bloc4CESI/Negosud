@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET7_0;NETCOREAPP
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\VinStore\App.xaml
-20618956096
+27-580644553
 
-44503441939
-203-1245791199
-Accueil.xaml;MainWindow.xaml;View\AddCommandProvider.xaml;View\AddEmployee.xaml;View\AddFamily.xaml;View\CreateInventory.xaml;View\DelivredCommand.xaml;View\DetailCommand.xaml;View\DetailInventory.xaml;View\EditInventory.xaml;View\EditOrderProvider.xaml;View\InventoryToValidate.xaml;View\ListProduct.xaml;View\LogIn.xaml;View\Navbar.xaml;View\OrderProviderToValidate.xaml;View\ProviderOrderToDelivery.xaml;View\RefusedInventory.xaml;View\RefusedOrderProvider.xaml;View\ValidateInventory.xaml;
+53739800953
+2042052942536
+MainWindow.xaml;View\AddCommandProvider.xaml;View\AddEmployee.xaml;View\AddFamily.xaml;View\AddProduct.xaml;View\CommandClientToDelivrey.xaml;View\CreateInventory.xaml;View\DelivredCommand.xaml;View\DetailCommand.xaml;View\DetailCommandClient.xaml;View\DetailInventory.xaml;View\EditInventory.xaml;View\EditOrderProvider.xaml;View\Home.xaml;View\InventoryToValidate.xaml;View\ListProduct.xaml;View\LivredCommandClient.xaml;View\LogIn.xaml;View\Navbar.xaml;View\OrderProviderToValidate.xaml;View\ProviderOrderToDelivery.xaml;View\ProviderView.xaml;View\RefusedCommandClient.xaml;View\RefusedInventory.xaml;View\RefusedOrderProvider.xaml;View\StockView.xaml;View\ValidateInventory.xaml;
 
 True
 

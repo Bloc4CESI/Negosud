@@ -79,6 +79,30 @@ namespace ApiNegosud.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet("GetAlertProduct")]
+        public IActionResult GetAlertProduct()
+        {
+            try
+            {
+                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                Products = Products.Where(p => p.Stock != null &&
+                                      (p.Stock.Minimum.HasValue ? p.Stock.Quantity < p.Stock.Minimum.Value : p.Stock.Quantity < 4));
+
+                var FiltredProducts = Products.ToList();
+                if (FiltredProducts.Count == 0)
+                {
+                    return NotFound("Aucun produit trouvé avec les paramètres fournis.");
+                }
+                else
+                {
+                    return Ok(FiltredProducts);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -269,8 +293,6 @@ namespace ApiNegosud.Controllers
                 var Product = _context.Product
                     .Include(p => p.Stock)
                     .FirstOrDefault(p => p.Id == id);
-                
-
 
                 if (Product == null)
                 {
@@ -366,6 +388,25 @@ namespace ApiNegosud.Controllers
                 {
                     return Ok(FiltredProducts);
                 }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("IsProductHasAnyTransaction/{idProduct}")]
+        public IActionResult IsProductHasAnyTransaction(int idProduct)
+        {
+            try
+            {
+                // Vérifier si le produit a un inventaire
+                var hasInventory = _context.InventoryLigne.Any(il => il.Stock != null && il.Stock.ProductId == idProduct);
+                // Vérifier si le produit a une commande  fournisseur 
+                var hasProviderOrder = _context.ProviderOrderLine.Any(pol => pol.ProductId == idProduct);
+                // Vérifier si le produit a une commande  client 
+                var hasClientOrder = _context.ClientOrderLine.Any(col => col.ProductId == idProduct);
+                var isHasAnyTransaction = hasInventory || hasProviderOrder || hasClientOrder;
+                return Ok(isHasAnyTransaction);
             }
             catch (Exception ex)
             {

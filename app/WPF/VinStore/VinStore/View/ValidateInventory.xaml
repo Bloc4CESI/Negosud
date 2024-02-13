@@ -12,11 +12,11 @@
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="800">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="700">
             <Grid>
                 <TextBlock Grid.Row="0" Text="Liste des inventaires validés" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
                 <materialDesign:ColorZone  Grid.Row="1" Margin="0,50,0,0" Padding="8,4,8,4" Panel.ZIndex="1"
-      materialDesign:ElevationAssist.Elevation="Dp1" CornerRadius="2" Mode="Standard">
+                    materialDesign:ElevationAssist.Elevation="Dp1" CornerRadius="2" Mode="Standard">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition  Width="Auto" />
@@ -46,7 +46,7 @@
                         <DataGridTemplateColumn  Header="Détail inventaire">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Détail" Click="ShowCommandDetails_Click" Foreground="White" Background="#a70303"/>
+                                    <Button Content="Détail"  Width="100" HorizontalAlignment="Left" VerticalAlignment="Stretch" Click="ShowCommandDetails_Click" Foreground="White" Background="#a70303"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

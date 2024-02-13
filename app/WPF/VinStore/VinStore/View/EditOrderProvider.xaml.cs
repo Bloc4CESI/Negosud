@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -60,22 +61,67 @@ namespace VinStore.View
         }
         private void TextBox_QuantityChanged(object sender, RoutedEventArgs e)
         {
-            TotalCommand();
+            if (sender is TextBox quantityTextBox)
+            {
+                // Convertir la valeur en int
+                if (int.TryParse(quantityTextBox.Text, out int quantity))
+                {
+                    // Mettre à jour la propriété Quantity de la ligne
+                    if (quantityTextBox.DataContext is ProviderOrderLine orderLine)
+                    {
+                        orderLine.Quantity = quantity;
+                        orderLine.TotalPrice = quantity * orderLine.Price;
+                    }
+                    // Appeler la méthode TotalCommand pour mettre à jour le total
+                    TotalCommand();
+                }
+            }
         }
 
         private void TextBox_PriceChanged(object sender, RoutedEventArgs e)
         {
-            TotalCommand();
-        }
-        private void TotalCommand()
-        {           
-            if (DataContext is ProviderOrder ProviderOrder)
+            if (sender is TextBox priceTextBox)
             {
-                var Total= ProviderOrder.ProviderOrderLines!.Sum(orderLine => orderLine.Quantity * orderLine.Price);
+                // Convertir la valeur en decimal (si nécessaire)
+                if (decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out decimal price))
+                {
+                    // Mettre à jour la propriété Price de la ligne
+                    if (priceTextBox.DataContext is ProviderOrderLine orderLine)
+                    {
+                        orderLine.Price = price;
+                        orderLine.TotalPrice = price * orderLine.Quantity;
+                    }
 
-                TotalOrder.Text = $"Total commande: {Total}";
+                    // Appeler la méthode TotalCommand pour mettre à jour le total
+                    TotalCommand();
+                }
+                // Ensuite, essayez avec le point comme séparateur décimal
+                else if (decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out price))
+                {
+                    // Mettre à jour la propriété Price de la ligne
+                    if (priceTextBox.DataContext is ProviderOrderLine orderLine)
+                    {
+                        orderLine.Price = price;
+                        orderLine.TotalPrice = price * orderLine.Quantity;
+                    }
+
+                    // Appeler la méthode TotalCommand pour mettre à jour le total
+                    TotalCommand();
+                }
             }
         }
+        private void TotalCommand()
+        {
+            decimal TotalPrice = 0;
+
+            foreach (ProviderOrderLine orderLine in ProviderOrderLinesDataGrid.ItemsSource)
+            {
+                decimal TotalPriceLigne = orderLine.Quantity * orderLine.Price;
+                TotalPrice += TotalPriceLigne;
+            }
+            TotalOrder.Text = $"Total commande: {TotalPrice}";
+        }
+
         private async void UpdateCommandOrder(object sender, RoutedEventArgs e)
         {
             if (DataContext is ProviderOrder ProviderOrder)

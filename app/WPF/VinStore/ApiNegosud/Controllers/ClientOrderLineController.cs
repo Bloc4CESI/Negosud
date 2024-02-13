@@ -26,7 +26,9 @@ namespace ApiNegosud.Controllers
             try
             {
                 var clientCart = _context.ClientOrderLine
+                    .Include(co =>co.ClientOrder)
                     .Include(col => col.Product)
+                     .ThenInclude(p => p.Stock)
                     .Where(col => col.ClientOrder.ClientId == ClientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
                     .ToList();
 

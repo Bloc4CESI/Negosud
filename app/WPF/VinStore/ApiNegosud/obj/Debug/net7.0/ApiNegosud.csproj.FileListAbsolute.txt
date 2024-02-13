@@ -78,3 +78,4 @@ C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\ApiNegosud\bin\D
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\ApiNegosud\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\ApiNegosud\bin\Debug\net7.0\Newtonsoft.Json.dll
 C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\ApiNegosud\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
+C:\Users\masmo\OneDrive\Bureau\negosud\Negosud\app\WPF\VinStore\ApiNegosud\bin\Debug\net7.0\RestSharp.dll

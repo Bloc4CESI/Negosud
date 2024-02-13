@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System;
+using System.ComponentModel;
 
 namespace ApiNegosud.Models
 {
-    public class ProviderOrderLine
+    public class ProviderOrderLine : INotifyPropertyChanged
     {
         public int Id { get; set; }
         [Required]
@@ -18,5 +19,18 @@ namespace ApiNegosud.Models
         [ForeignKey("Product")]
         public int ProductId { get; set; }
         public virtual Product? Product { get; set; }
+        public Decimal TotalPrice
+        {
+            get { return Quantity * Price; }
+            set {
+                OnPropertyChanged(nameof(TotalPrice));
+            }
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }
