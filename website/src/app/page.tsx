@@ -1,10 +1,20 @@
+"use client";
 import Header from "../../modules/layout/header";
 import "./globals.css";
 import Footer from "../../modules/layout/footer";
 import ArrowRight from "../../modules/svg/arrowRight.svg";
 import Link from 'next/link';
+import { useEffect, useState } from "react";
+import Loading from "../../modules/extras/loading";
 
 export default function Home() {
+  const isClient = useIsClient();
+
+  if (!isClient) {
+    return <div>
+      <Loading />
+    </div>;
+  }
   return (
     <>
       <div className="bg-[url(../../public/images/vin_accueil_bg.jpg)] bg-clip-border bg-cover bg-center h-[750px]">
@@ -45,4 +55,12 @@ export default function Home() {
       <Footer />
     </>
   )
+}
+const useIsClient =() => {
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return isClient;
 }
