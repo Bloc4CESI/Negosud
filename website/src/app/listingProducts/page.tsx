@@ -7,7 +7,7 @@ import "../globals.css";
 export default function ListingProducts() {
   return (
     <>
-    <Header/>
+    <Header style={"bg-white text-black stroke-black"}/>
     <ProductListing/>
     <Footer/>
     </>
