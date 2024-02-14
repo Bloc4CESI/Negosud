@@ -125,7 +125,7 @@ namespace ApiNegosud.Controllers
         }
     }
 
-        [HttpDelete("RemoveProductFromCart{ClientOrderLineId}")]
+        [HttpDelete("RemoveProductFromCart/{ClientOrderLineId}")]
         public IActionResult RemoveProductFromCart(int ClientOrderLineId)
         {
             try
