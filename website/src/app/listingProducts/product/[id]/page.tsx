@@ -10,6 +10,7 @@ export default function Product({ params }: { params: { id: number }}) {
     <>
     <Header style={undefined}/>
     <FormProduct id={id}/>
+    <Footer/>
     </>
   )
 }
