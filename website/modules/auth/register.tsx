@@ -20,17 +20,8 @@ export default function RegisterForm(){
   let errorText = "";
   const {authenticate} = useAuth();
   const router = useRouter();
-   const { register, handleSubmit } = useForm<FormValues>({
-     defaultValues: {
-       FirstName: '',
-       LastName: '',
-       PhoneNumber: 0,
-       Email: '',
-       Password: "",
-     },
-   });
+  const { register, handleSubmit } = useForm<FormValues>();
 
-   console.log(errorText);
   return(
     <div className="flex flex-col items-center">
       <form onSubmit={handleSubmit(async (formData) => {
@@ -97,9 +88,7 @@ export default function RegisterForm(){
             S&apos;inscrire
            <Arrow/>
           </button>
-          {error ?
-            <p className="text-red-500 text-xs italic">{errorText}</p>
-            : null}
+          {error ? <p className="text-red-500 text-xs italic">{errorText}</p> : null}
         </div>
       </form>
     </div>

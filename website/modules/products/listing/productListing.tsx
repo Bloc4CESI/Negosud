@@ -77,7 +77,6 @@ export const ProductListing = () => {
   };
 
   if (isLoading) return <Loading />;
-
   return (
     <div>
       <SortByFamily onFamilyChange={handleFamilyChange}/>

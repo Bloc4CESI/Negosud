@@ -7,9 +7,9 @@ import "../../globals.css";
 export default function Cart() {
   return (
     <>
-    <Header/>
-    <CartPage/>
-    <Footer/>
+      <Header/>
+      <CartPage/>
+      <Footer/>
     </>
   )
 }

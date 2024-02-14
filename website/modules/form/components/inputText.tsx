@@ -9,7 +9,7 @@ interface Props {
 export const InputText: React.FC<Props & InputHTMLAttributes<HTMLInputElement>> = ({ register, error, ...other }) => {
   return (
     <div>
-      <input className="py-3 px-4 block border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none" {...other} {...register} />
+      <input className="py-3 px-4 block border-gray-400 rounded-lg text-sm focus:border-blue-500" {...other} {...register} />
       <div>{error ? <span className="error">{error}</span> : null}</div>
     </div>
   );
