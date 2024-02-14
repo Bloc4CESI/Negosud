@@ -15,10 +15,10 @@ export default function LoginPage()  {
 
   return (
   <>
-    <Header style={undefined}/>
+    <Header style="bg-white stroke-black"/>
     <div className="flex flex-col items-center">
-    <AuthToggle onToggle={handleToggle} isLogin={isChecked} />
-    {isChecked ?  <Login/> : <Register/>}
+    {isChecked ?  <Login handleToggle={handleToggle} isChecked={isChecked} /> :
+      <Register handleToggle={handleToggle} isChecked={isChecked}/>}
     </div>
     <Footer/>
   </>

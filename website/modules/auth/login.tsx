@@ -6,10 +6,13 @@ import { getUser } from "../../services/api/user/userService";
 import { useRouter } from "next/navigation";
 import Arrow from "../svg/arrowRight.svg";
 import { useAuth } from "../../services/api/user/useAuth";
+import AuthToggle from "./AuthToggle";
 
-const Login = () => {
+const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any }) => {
   const { authenticate, status } = useAuth();
   const [connected, setConnected] = useState(false);
+  const [error, setError] = useState(false);
+  let errorText;
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -27,52 +30,65 @@ const Login = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <form onSubmit={handleSubmit(async (formData) => {
+      <form className="w-full" onSubmit={handleSubmit(async (formData) => {
         try {
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
             await authenticate(encodeURIComponent(formData.Email));
-            router.push('/account');
+            router.push("/account");
           } else {
-            console.log("error");
+            setError(true);
+            errorText = data;
           }
         } catch (error) {
-          console.log(error);
+          setError(true);
         }
-        })}>
-        <div>
-          <InputText
-            type="email"
-            id="email"
-            name="email"
-            placeholder="Entrez votre mail"
-            register={register("Email")}
-          />
-        </div>
-        <div>
-          <InputText
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Entrez votre mot de passe"
-            register={register("Password")}
-          />
-        </div>
-        <div>
-          <button
-            type="submit"
-            id="submit"
-            className="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-black shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none"
-          >
-            Se connecter
-            <Arrow/>
-          </button>
+      })}>
+        <div className="h-screen md:flex">
+          <div
+            className="relative overflow-hidden md:flex w-1/2 bg-[url(https://c1.wallpaperflare.com/preview/835/704/875/drink-fruit-glass-grape.jpg)] i justify-around items-center hidden">
+          </div>
+          <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
+            <div className="bg-white">
+              <h1 className="text-gray-800 font-bold text-2xl mb-7">Encore vous?</h1>
+              <div className="flex items-center border-2 py-2 px-3 rounded-2xl mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                </svg>
+                <InputText
+                  className="pl-2 outline-none border-none"
+                  type="email"
+                  placeholder="Email"
+                  register={register("Email")}
+                  required
+                />
+              </div>
+              <div className="flex items-center border-2 py-2 px-3 rounded-2xl">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" viewBox="0 0 20 20"
+                     fill="currentColor">
+                  <path fillRule="evenodd"
+                        d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                        clipRule="evenodd" />
+                </svg>
+                <InputText
+                  className="pl-2 outline-none border-none"
+                  type="password"
+                  placeholder="Mot de passe"
+                  register={register("Password")}
+                  required
+                />
+              </div>
+              <button type="submit"
+                      className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Me connecter
+              </button>
+              {error ? <p>{error}</p> : null}
+              <AuthToggle className="cursor-pointer" onToggle={handleToggle} isLogin={isChecked} text={"Je n'ai pas de compte"}/>
+            </div>
+          </div>
         </div>
       </form>
-      <div>
-      </div>
-    </div>
   );
 };
 
