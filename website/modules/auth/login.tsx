@@ -11,6 +11,8 @@ import AuthToggle from "./AuthToggle";
 const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any }) => {
   const { authenticate, status } = useAuth();
   const [connected, setConnected] = useState(false);
+  const [error, setError] = useState(false);
+  let errorText;
   const router = useRouter();
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -33,32 +35,18 @@ const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
             await authenticate(encodeURIComponent(formData.Email));
-            router.push('/account');
+            router.push("/account");
           } else {
-            console.log("error");
+            setError(true);
+            errorText = data;
           }
         } catch (error) {
-          console.log(error);
+          setError(true);
         }
       })}>
         <div className="h-screen md:flex">
           <div
-            className="relative overflow-hidden md:flex w-1/2 bg-gradient-to-tr from-blue-800 to-purple-700 i justify-around items-center hidden">
-            <div>
-              <h1 className="text-white font-bold text-4xl font-sans">GoFinance</h1>
-              <p className="text-white mt-1">The most popular peer to peer lending at SEA</p>
-              <button type="submit"
-                      className="block w-28 bg-white text-indigo-800 mt-4 py-2 rounded-2xl font-bold mb-2">Read More
-              </button>
-            </div>
-            <div
-              className="absolute -bottom-32 -left-40 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div
-              className="absolute -bottom-40 -left-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div
-              className="absolute -top-40 -right-0 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
-            <div
-              className="absolute -top-20 -right-20 w-80 h-80 border-4 rounded-full border-opacity-30 border-t-8"></div>
+            className="relative overflow-hidden md:flex w-1/2 bg-[url(https://c1.wallpaperflare.com/preview/835/704/875/drink-fruit-glass-grape.jpg)] i justify-around items-center hidden">
           </div>
           <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
             <div className="bg-white">
@@ -93,8 +81,9 @@ const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any
                 />
               </div>
               <button type="submit"
-                      className="block w-full bg-indigo-600 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Me connecter
+                      className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Me connecter
               </button>
+              {error ? <p>{error}</p> : null}
               <AuthToggle className="cursor-pointer" onToggle={handleToggle} isLogin={isChecked} text={"Je n'ai pas de compte"}/>
             </div>
           </div>

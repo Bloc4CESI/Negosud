@@ -4,6 +4,7 @@ import logo from '../../src/app/images/logo.png';
 import Cart from "../../public/img/cart.svg";
 import User from "../../public/img/user.svg";
 import Burger from "../../public/img/burger.svg";
+import { GiWineBottle } from "react-icons/gi";
 
 const Header = ({ style } : { style: string }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -27,7 +28,12 @@ const Header = ({ style } : { style: string }) => {
           <span className="self-center text-2xl font-semibold whitespace-nowrap">NegoSud</span>
         </a>
         <div className="block w-auto" id="navbar-default">
-          <ul className="font-medium flex mt-4 rounded-lg flex-row space-x-8 rtl:space-x-reverse">
+          <ul className="font-medium flex rounded-lg flex-row space-x-8 rtl:space-x-reverse">
+            <li>
+              <a href={'/listingProducts'}>
+              <GiWineBottle className="h-7 w-7" />
+              </a>
+            </li>
             <li>
               <a href={`${connected ? '/account' : '/login'}`} className="block py-2 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
                 <User className="h-8 w-8"/>
