@@ -2,7 +2,7 @@
 import { useAccount } from "../../services/api/user/useAccount";
 import EmptyCart from "./emptyCart";
 import React, { useEffect, useState } from "react";
-import {getOrderClient } from "../../services/api/products/cart";
+import {getOrderClient, deleteOrderClientLine } from "../../services/api/products/cart";
 import {OrderLineType } from "../../services/types/types";
 
 export default function Cart() {
@@ -24,8 +24,16 @@ export default function Cart() {
     fetchData();
   }, []);
 
+  const handleDeleteOrderLine = async (orderId: number) => {
+    try {
+        await deleteOrderClientLine(orderId);
+        window.location.reload(); // Recharge la page après la suppression
+    } catch (error) {
+        console.error('Error deleting order line:', error);
+    }
+};
+
   const total = orders.reduce((acc, product) => acc + product.price, 0);
-console.log('######' + orders);
   return (
     <>
       {orders.length === 0 ?
@@ -45,6 +53,9 @@ console.log('######' + orders);
                 <span>{order.product.name}</span>
                 <span>{order.quantity}</span>
                 <span>{order.price} €</span>
+                <span>
+                <button onClick={() => handleDeleteOrderLine(order.id)} className="w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800">Delete</button>
+                </span>
               </li>
             ))}
           </ul>
