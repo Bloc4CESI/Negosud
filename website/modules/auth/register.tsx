@@ -1,12 +1,12 @@
 import { InputText } from "../form/components/inputText";
 import { useForm } from "react-hook-form";
 import { createUser } from "../../services/api/user/userService";
-import  Arrow  from "../svg/arrowRight.svg"
 import React, { useState } from "react";
 import { useAuth } from "../../services/api/user/useAuth";
 import { useRouter } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import AuthToggle from "./AuthToggle";
+import LoadingButton from "../extras/buttonLoading";
 
 type FormValues = {
   LastName: string;
@@ -18,6 +18,7 @@ type FormValues = {
 export default function RegisterForm({ handleToggle, isChecked } : { handleToggle: any, isChecked: any }){
   const prisma = new PrismaClient();
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   let errorText = "";
   const {authenticate} = useAuth();
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function RegisterForm({ handleToggle, isChecked } : { handleToggl
 
   return(
       <form className="w-full" onSubmit={handleSubmit(async (formData) => {
+        setIsLoading(true);
         try {
           const data = await createUser(formData)
           if (data) {
@@ -81,10 +83,9 @@ export default function RegisterForm({ handleToggle, isChecked } : { handleToggl
                       <path
                         d="M18 13.446a3.02 3.02 0 0 0-.946-1.985l-1.4-1.4a3.054 3.054 0 0 0-4.218 0l-.7.7a.983.983 0 0 1-1.39 0l-2.1-2.1a.983.983 0 0 1 0-1.389l.7-.7a2.98 2.98 0 0 0 0-4.217l-1.4-1.4a2.824 2.824 0 0 0-4.218 0c-3.619 3.619-3 8.229 1.752 12.979C6.785 16.639 9.45 18 11.912 18a7.175 7.175 0 0 0 5.139-2.325A2.9 2.9 0 0 0 18 13.446Z" />
                     </svg>
-                  <input type="text" id="phone-input" aria-describedby="helper-text-explanation"
+                  <input type="number" id="phone-input" aria-describedby="helper-text-explanation"
                          className="pl-2 outline-none border-none"
                          placeholder="06 48 93 40 10"
-                         pattern="^0[0-9]{10}"
                          {...register("PhoneNumber")}
                          required
                   />
@@ -99,10 +100,12 @@ export default function RegisterForm({ handleToggle, isChecked } : { handleToggl
                   <InputText className="pl-2 outline-none border-none" type="password" placeholder="Mot de passe"
                              register={register("Password")} required />
                 </div>
+              {isLoading ? <LoadingButton className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"/> : (
                 <button type="submit"
                         className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Créer mon compte
                 </button>
-                    {error ? <p>{error}</p> : null}
+              )}
+                {error ? <p>{error}</p> : null}
                 <AuthToggle className="cursor-pointer" onToggle={handleToggle} isLogin={isChecked} text={"J'ai déjà un compte"} />
             </div>
           </div>

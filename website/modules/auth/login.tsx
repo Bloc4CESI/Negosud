@@ -7,11 +7,13 @@ import { useRouter } from "next/navigation";
 import Arrow from "../svg/arrowRight.svg";
 import { useAuth } from "../../services/api/user/useAuth";
 import AuthToggle from "./AuthToggle";
+import LoadingButton from "../extras/buttonLoading";
 
 const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any }) => {
   const { authenticate, status } = useAuth();
   const [connected, setConnected] = useState(false);
   const [error, setError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   let errorText;
   const router = useRouter();
   const { register, handleSubmit } = useForm({
@@ -31,6 +33,7 @@ const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any
 
   return (
       <form className="w-full" onSubmit={handleSubmit(async (formData) => {
+        setIsLoading(true);
         try {
           const data = await getUser(formData.Email, formData.Password);
           if (data) {
@@ -80,9 +83,11 @@ const Login = ({ handleToggle, isChecked } : { handleToggle: any, isChecked: any
                   required
                 />
               </div>
+              {isLoading ? <LoadingButton className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2"/> : (
               <button type="submit"
                       className="block w-full bg-zinc-800 mt-4 py-2 rounded-2xl text-white font-semibold mb-2">Me connecter
               </button>
+              )}
               {error ? <p>{error}</p> : null}
               <AuthToggle className="cursor-pointer" onToggle={handleToggle} isLogin={isChecked} text={"Je n'ai pas de compte"}/>
             </div>

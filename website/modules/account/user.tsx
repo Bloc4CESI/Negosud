@@ -17,30 +17,18 @@ interface address {
 // @ts-ignore
 export default function User({ userData }) {
   const router = useRouter();
-  const [account, setAccount] = useState({});
   const [address, setAddress] = useState<address>();
   const [isLoading, setIsLoading] = useState(true);
   const [openSelectedQuoteModal, setOpenSelectedQuoteModal] = useState(false);
 
   useEffect(() => {
-    const accountString = localStorage.getItem('account');
-    if (accountString !== null) {
-      setAccount(JSON.parse(accountString));
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    //@ts-ignore
-    if (account && account.state && account.state.account && account.state.account.addressId) {
-      //@ts-ignore
-      getAddresses(account.state.account.addressId)
+    if (userData?.addressId !== null) {
+      getAddresses(userData?.addressId)
         .then(r => setAddress(r))
         .catch(error => console.error("Une erreur s'est produite lors de la récupération des adresses:", error));
       setIsLoading(false);
-    }
-  }, [account]);
+    } setIsLoading(false);
+  }, []);
 
   if (isLoading) return (<Loading/>);
 
