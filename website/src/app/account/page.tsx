@@ -7,7 +7,7 @@ import Footer from "../../../modules/layout/footer";
 import { useRouter } from "next/navigation";
 import "../globals.css";
 import { useEffect, useState } from "react";
-import Address from "../../../modules/account/adress";
+import Address from "../../../modules/account/address/adress";
 import { getAddresses } from "../../../services/api/user/userService";
 import { AddressType } from "../../../services/types/types";
 
@@ -26,7 +26,7 @@ export default function Account() {
 
   return (
     <>
-      <Header style={undefined} />
+      <Header/>
       <User userData={account} />
       <Footer/>
     </>

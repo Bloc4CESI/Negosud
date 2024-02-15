@@ -1,9 +1,10 @@
 "use client"
-import { useAccount } from "../../services/api/user/useAccount";
+import { useAccount } from "../../../services/api/user/useAccount";
 import EmptyCart from "./emptyCart";
 import React, { useEffect, useState } from "react";
-import {getOrderClient, deleteOrderClientLine } from "../../services/api/products/cart";
-import {OrderLineType } from "../../services/types/types";
+import {getOrderClient, deleteOrderClientLine } from "../../../services/api/products/cart";
+import {OrderLineType } from "../../../services/types/types";
+import Loading from "../../extras/loading";
 
 export default function Cart() {
   const { account} = useAccount();
@@ -13,7 +14,7 @@ export default function Cart() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const ordersDate = await getOrderClient(account.id);
+        const ordersDate = await getOrderClient(account?.id);
         setOrders(ordersDate);
         setIsLoading(false);
       } catch (error) {
@@ -34,10 +35,13 @@ export default function Cart() {
 };
 
   const total = orders.reduce((acc, product) => acc + product.price, 0);
+
+  if (isLoading) return <Loading/>
+
   return (
     <>
       {orders.length === 0 ?
-        <EmptyCart account={account}/>
+        <EmptyCart account={account ? account : undefined}/>
         : (
       <div className="container mx-auto mt-8 flex">
         <div className="w-2/3 pr-8">

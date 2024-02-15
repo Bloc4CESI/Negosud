@@ -6,7 +6,7 @@ import User from "../../public/img/user.svg";
 import Burger from "../../public/img/burger.svg";
 import { GiWineBottle } from "react-icons/gi";
 
-const Header = ({ style } : { style: string }) => {
+const Header = ({ style } : { style?: string }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [connected, setConnected] = useState(false);
 

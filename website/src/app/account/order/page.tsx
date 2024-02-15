@@ -8,7 +8,7 @@ import { OrderType } from "../../../../services/types/types";
 import { getOrders } from "../../../../services/api/user/userService";
 import { useAccount } from "../../../../services/api/user/useAccount";
 import Loading from "../../../../modules/extras/loading";
-import Orders from "../../../../modules/account/orders";
+import Orders from "../../../../modules/account/orders/orders";
 
 export default function OrdersPage() {
   const { account} = useAccount();
@@ -22,7 +22,7 @@ const [orders, setOrders] = useState<OrderType[]>([]);
       router.push('/login');
     } else {
       setConnected(true);
-      getOrders(account.id).then((orders) => {
+      getOrders(account?.id).then((orders) => {
       setOrders(orders);
       setLoading(false);
       });

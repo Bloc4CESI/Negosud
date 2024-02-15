@@ -5,7 +5,9 @@ import SortByFamily from "../family/sortByFamily";
 import Loading from "../../extras/loading";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import { TrashIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/solid";
+import { fetchData } from "next-auth/client/_utils";
 interface Product {
   id: number;
   name: string;
@@ -44,15 +46,25 @@ interface Product {
 export const ProductListing = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedFamily, setSelectedFamily] = useState<number>();
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        if (selectedFamily) {
+          const productsData = await getFamilyById(selectedFamily);
+          if (Array.isArray(productsData)) {
+            setProducts(productsData);
+          } else {
+            console.error('Invalid data format received for products:', productsData);
+          }
+        } else {
         const productsData = await getProducts();
         setProducts(productsData);
         setIsLoading(false);
-      } catch (error) {
+      }}
+      catch (error) {
         console.error('Error during product retrieval:', error);
         setIsLoading(false);
       }
@@ -60,31 +72,40 @@ export const ProductListing = () => {
     fetchData();
   }, []);
 
-  const handleFamilyChange = async (familyId: number) => {
-    setIsLoading(true);
-    try {
-      const productsData = await getFamilyById(familyId);
+  const handleFamilyChange = async (e: React.SetStateAction<number | undefined>) => {
+    if (e === undefined) {
+      const productsData = await getProducts();
+      setProducts(productsData);
+      setIsLoading(false);
+    } else {
+      const productsData = await getFamilyById(e);
+      setSelectedFamily(e);
       if (Array.isArray(productsData)) {
         setProducts(productsData);
       } else {
         console.error('Invalid data format received for products:', productsData);
       }
-    } catch (error) {
-      console.error('Error during product retrieval:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   if (isLoading) return <Loading />;
   return (
-    <div>
-      <SortByFamily onFamilyChange={handleFamilyChange}/>
+    <div className="m-16 mt-2">
+      <div className="p-5 mb-5 border-b-2 border-b-zinc-800 flex justify-between">
+        <div>
+         <h2 className="text-5xl flex justify-center">NOS PRODUITS</h2>
+        </div>
+        <div className="flex items-end">
+          <SortByFamily onFamilyChange={handleFamilyChange} />
+        </div>
+      </div>
       <ul className="flex flex-wrap">
         {products.map((product) => (
-        <li onClick={(() => {
-          router.push(`listingProducts/product/${product.id}`)
-        })} className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md" key={product.id}>
+          <li onClick={(() => {
+            router.push(`listingProducts/product/${product.id}`);
+          })}
+              className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              key={product.id}>
           <img className="object-cover w-full h-full" src={product.image} alt="product image" />
         <div className="mt-4 px-5 pb-5">
           <h6 className="text-xl tracking-tight text-slate-900">{product.home}</h6>

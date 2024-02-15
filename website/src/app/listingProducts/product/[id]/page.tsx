@@ -8,7 +8,7 @@ export default function Product({ params }: { params: { id: number }}) {
   const { id } = params;
   return (
     <>
-    <Header style={undefined}/>
+    <Header/>
     <FormProduct id={id}/>
     <Footer/>
     </>
