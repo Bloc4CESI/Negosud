@@ -62,7 +62,6 @@ export enum OrderStatus {
 }
 
 export type StockType = {
-
     id : number;
     quantity: number;
     minimum: number;
