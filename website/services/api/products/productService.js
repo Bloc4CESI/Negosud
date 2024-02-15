@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5244/api';
+const API_BASE_URL = 'https://localhost:7281/api';
 
 export async function getProducts() {
   const response = await fetch(`${API_BASE_URL}/Product`, {
@@ -43,7 +43,6 @@ export async function getFamily() {
 
     return await response.json();
   }
-    
     
 export async function getFamilyById(id) {
   const response = await fetch(`${API_BASE_URL}/Product/GetProductByFamily/${id}`, {

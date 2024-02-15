@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:5244/api";
+const API_BASE_URL = "https://localhost:7281/api";
 
 export async function getOrderClient(Id) {
   const response = await fetch(`${API_BASE_URL}/ClientOrderLine/GetClientCart/${Id}`,{
@@ -54,6 +54,20 @@ export async function getOrderById(id){
   });
   if (!response.ok) {
     throw new Error('Erreur lors de la recuperation de la commande');
+  }
+  return await response.json();
+}
+
+export async function putOrderClient(data){
+  const response = await fetch(`${API_BASE_URL}/ClientOrder/UpdateOrder`,{
+    method: 'PUT',
+    headers : {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Erreur lors de la mise à jour de la commande');
   }
   return await response.json();
 }

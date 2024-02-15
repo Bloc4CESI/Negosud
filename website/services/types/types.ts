@@ -47,8 +47,9 @@ export type OrderType = {
 export type OrderLineType = {
   id: number;
   quantity: number;
-  order: OrderType;
+  clientOrder: OrderType;
   product: ProductType;
+  price: number;
 }
 
 export enum OrderStatus {
