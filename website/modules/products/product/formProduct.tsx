@@ -59,69 +59,96 @@ export const FormProduct = ({ id }: { id: number }) => {
     year: "numeric",
     month: "long",
   }) : '';
+  console.log(product);
 
 return (
-    <div>
-        <div className="bg-white py-8">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex flex-col md:flex-row -mx-4">
-                    <div className="md:flex-1 px-4">
-                        <div className="h-[460px] rounded-lg bg-gray-300 mb-4">
-                            <img src={product?.image} alt="Product" className="w-full h-full object-cover"/>
+    <section className="overflow-hidden bg-white py-11 font-poppins">
+        <div className="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
+            <div className="flex flex-wrap -mx-4">
+                <div className="w-full px-4 md:w-1/2 ">
+                    <div className="sticky top-0 z-50 overflow-hidden ">
+                        <div className="relative mb-6 lg:mb-10 lg:h-2/4 ">
+                            <img src={product?.image} alt=""
+                                className="object-cover w-full lg:h-full "/>
                         </div>
-                        <div className="flex -mx-2 mb-4">
-                            <div className="w-full px-2">
-                                <button onClick={handleAddToCart} className="w-full bg-gray-900 text-white py-2 px-4 rounded-full font-bold hover:bg-gray-800">Add to Cart</button>
-                            </div>
-                        </div>
-                        </div>
-                    <div className="md:flex-1 px-4">
-                        <h2 className="text-2xl font-bold text-black mb-2">{product?.name}</h2>
-                        <div className="flex mb-4">
-                            <div className="mr-4">
-                                <span className="font-bold text-black">Famille de vin: </span>
-                                <span className="text-black">{product?.family.name}</span>
-                            </div>
-                        </div>
-                        <div className="flex mb-4">
-                            <div className="mr-4">
-                                <span className="font-bold text-black">Date de production: </span>
-                                <span className="text-black">{dateFr}</span>
-                            </div>
-                        </div>
-                        <div className="flex mb-4">
-                            <div className="mr-4">
-                                <span className="font-bold text-black">Maison: </span>
-                                <span className="text-black">{product?.home ? product.home : "Inconnu"}</span>
-                            </div>
-                        </div>
-                        <div className="flex mb-4">
-                            <div className="mr-4">
-                                <span className="font-bold text-black">Price: </span>
-                                <span className="text-black">{finalPrice}</span>
-                            </div>
-                        </div>
-                        <div className="mb-4">
-                            <span className="font-bold text-black">Select Size: </span>
-                            <div className="flex items-center mt-2">
-                                    <input type="radio" id="option1" name="options" value="unitaire" checked={selectedOption === "unitaire"} onChange={handleOptionChange} className="hidden" />
-                                    <label htmlFor="option1" className="bg-gray-300 text-gray-700 py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 cursor-pointer">À l'unité</label>
-
-                                    <input type="radio" id="option2" name="options" value={`pack_${product?.nbProductBox}`} checked={selectedOption !== "unitaire"} onChange={handleOptionChange} className="hidden" />
-                                    <label htmlFor="option2" className="bg-gray-300 text-gray-700 py-2 px-4 rounded-full font-bold mr-2 hover:bg-gray-400 cursor-pointer">Pack de {product?.nbProductBox}</label>
-                                </div>
-                        <div>
-                            <span className="font-bold text-black">Product Description: </span>
-                            <p className="text-black text-sm mt-2">
-                                {product?.description}
+                    </div>
+                </div>
+                <div className="w-full px-4 md:w-1/2 ">
+                    <div className="lg:pl-20">
+                        <div className="mb-8 ">
+                            <span className="flex items-center mb-3">
+                            <h2 className=" max-w-xl text-2xl font-bold dark:text-gray-800 md:text-4xl">
+                                {product?.name} - </h2>
+                                <p className="mt-2 ml-2 text-sm font-bold dark:text-gray-800">{dateFr}</p>
+                            </span>
+                            <p className="text-base font-bold max-w-md mb-4 dark:text-gray-600">
+                            {product?.family.name} signé {product?.home}     
                             </p>
+                            <p className="max-w-md mb-8 text-gray-700 dark:text-gray-600">
+                            {product?.description}    
+                            </p>
+                            <p className="inline-block mb-8 text-4xl font-bold dark:text-gray-800 ">
+                                <span>{finalPrice}€</span>
+                            </p>
+                            <p className="text-green-600 text-base font-bold">{product?.stock?.quantity} en stock !</p>
+                        </div>
+                        <div className="items-center mb-8">
+                            <h2 className="w-16 text-xl font-bold dark:text-gray-600">
+                                Quantité:</h2>
+                            <div className="flex flex-wrap mt-1">
+                                <input
+                                  type="radio"
+                                  id="option1"
+                                  name="options"
+                                  value="unitaire"
+                                  checked={selectedOption === "unitaire"}
+                                  onChange={handleOptionChange}
+                                  className="hidden"
+                                />
+                                <label
+                                  htmlFor="option1"
+                                  className={`py-2 mb-2 mr-1 border w-20 text-center ${
+                                    selectedOption === "unitaire"
+                                      ? "bg-blue-400 text-white"
+                                      : "hover:border-blue-400 dark:border-gray-600 hover:text-blue-600 dark:hover:border-gray-400 dark:text-gray-800"
+                                  }`}
+                                >
+                                  À l'unité
+                                </label>
+                                <input
+                                  type="radio"
+                                  id="option2"
+                                  name="options"
+                                  value={`pack_${product?.nbProductBox}`}
+                                  checked={selectedOption !== "unitaire"}
+                                  onChange={handleOptionChange}
+                                  className="hidden"
+                                />
+                                <label
+                                  htmlFor="option2"
+                                  className={`py-2 mb-2 mr-1 border w-20 text-center ${
+                                    selectedOption !== "unitaire"
+                                      ? "bg-blue-400 text-white"
+                                      : "hover:border-blue-400 dark:border-gray-600 hover:text-blue-600 dark:hover:border-gray-400 dark:text-gray-800"
+                                  }`}
+                                >
+                                  Pack de {product?.nbProductBox}
+                                </label>
+                            </div>
+                        </div>
+                        <div className="flex flex-wrap items-center -mx-4 ">
+                            <div className="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
+                                <button
+                                    onClick={handleAddToCart} className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
+                                    Ajouter au panier
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    </div>
+    </section>
 );
 };
 
