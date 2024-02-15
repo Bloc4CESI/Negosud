@@ -27,6 +27,7 @@ export type ProductType = {
   family: familyType;
   nbProductBox: number;
   dateProduction: Date;
+  stock: StockType;
 }
 
 export type familyType = {
@@ -58,4 +59,15 @@ export enum OrderStatus {
   ENCOURSDELIVRAISON,
   VALIDE,
   ENCOURSDEVALIDATION
+}
+
+export type StockType = {
+
+    id : number;
+    quantity: number;
+    minimum: number;
+    maximum: number;
+    autoOrder: boolean;
+    productId: number;
+    product : ProductType;
 }

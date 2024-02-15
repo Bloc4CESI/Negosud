@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 
 export function useAccount() {
   const {account} = useAuth();
-
   return {
     account,
   }

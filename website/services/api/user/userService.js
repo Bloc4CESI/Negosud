@@ -64,7 +64,6 @@ export async function createAddress(data, userData) {
   if (!addAddressToClient.ok) {
     throw new Error('Erreur lors de l\'ajout de l\'adresse à l\'utilisateur');
   }
-  localStorage.removeItem('account');
   localStorage.setItem('account', JSON.stringify(userData));
   return await addAddressToClient.text();
 }
