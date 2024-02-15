@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { getFamily } from "../../../services/api/products/productService";
+import { Listbox, Transition } from "@headlessui/react";
+import { ChevronUpDownIcon, XMarkIcon } from "@heroicons/react/24/solid";
 
 interface Family {
   id: number;
@@ -7,13 +9,16 @@ interface Family {
 }
 
 interface SortByFamilyProps {
-  onFamilyChange: (familyId: number) => void;
+  onFamilyChange: (familyId: number | undefined) => void;
+  error?: string;
 }
 
-export default function SortByFamily({ onFamilyChange }: SortByFamilyProps){
-  const [family, setFamily] = useState<Family[]>([])
+export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByFamilyProps) {
+  const [family, setFamily] = useState<Family[]>([]);
+  const [selectedFamily, setSelectedFamily] = useState();
+  const [selectedNameFamily, setSelectedNameFamily] = useState();
   const [loading, setLoading] = useState(true);
-  const [isFamilyOpen, setIsFamilyOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,41 +27,61 @@ export default function SortByFamily({ onFamilyChange }: SortByFamilyProps){
         setFamily(familyData);
         setLoading(false);
       } catch (error) {
-        console.error('Error during family retrieval:', error);
         setLoading(false);
       }
     };
     fetchData();
-  },[]);
+  }, []);
 
-  const handleFamilyChange = (familyId: number) => {
-    setIsFamilyOpen(false);
-    onFamilyChange(familyId);
-  };
+  const handleChange = (e: any) => {
+    setSelectedFamily(e);
+    onFamilyChange(e.id);
+    setSelectedNameFamily(e.name);
+  }
 
   return(
-    <div>
-      <button
-        onClick={() => setIsFamilyOpen(!isFamilyOpen)}
-        className="text-gray-700 hover:bg-gray-50 border-b border-gray-100 md:hover:bg-transparent md:border-0 pl-3 pr-4 py-2 md:hover:text-blue-700 md:p-0 font-medium flex items-center justify-between w-full md:w-auto">
-        Nos vins
-        </button>
-      <div className={!isFamilyOpen ? `hidden` : `bg-white text-base z-10 list-none divide-y divide-gray-100 rounded shadow my-4 w-44`}>
-        <ul>
-          {family.map((family) => (
-            <li key={family.id}>
-              <div onClick={() => handleFamilyChange(family.id)}>
-                {family.name}
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="py-1">
-          <a href={"/listingProducts"} className="text-sm hover:bg-gray-100 text-gray-700 block px-4 py-2">Tout nos vins</a>
+    <>
+    <Listbox value={selectedFamily} onChange={handleChange}>
+      {({ open }) => (
+        <div className="relative w-32">
+          <Listbox.Button
+            className={""}
+            {...rest}
+          >
+              <span className="p-1">{selectedFamily ? selectedNameFamily : "Filtres"}</span>
+            <span className="absolute inset-y-0 right-0 flex items-center pr-2">
+                <ChevronUpDownIcon className="h-5 w-5" aria-hidden="true" />
+              </span>
+          </Listbox.Button>
+
+          <Transition
+            show={open}
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options className="absolute border-2 border-zinc-800 z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 sm:text-sm">
+              {family.map((family) => (
+                <Listbox.Option
+                  key={family.id}
+                  value={family}
+                >
+                <span className="p-1 cursor-pointer">
+                  {family.name}
+                </span>
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
         </div>
-      </div>
-
-    </div>
+      )}
+    </Listbox>
+      <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={(() => {
+        setSelectedFamily(undefined);
+        setSelectedNameFamily(undefined);
+        onFamilyChange(undefined);
+      })}/>
+    </>
   )
-
 }

@@ -1,5 +1,4 @@
 "use client"
-import { Account } from "../../services/types/types";
 import Button from "../extras/button";
 import { getAddresses, Logout } from "../../services/api/user/userService";
 import { useRouter } from "next/navigation";
@@ -15,16 +14,20 @@ interface address {
   street: string
 }
 
-export default function User({ userData }: { userData: Account }) {
+// @ts-ignore
+export default function User({ userData }) {
   const router = useRouter();
   const [account, setAccount] = useState({});
   const [address, setAddress] = useState<address>();
+  const [isLoading, setIsLoading] = useState(true);
   const [openSelectedQuoteModal, setOpenSelectedQuoteModal] = useState(false);
 
   useEffect(() => {
     const accountString = localStorage.getItem('account');
     if (accountString !== null) {
       setAccount(JSON.parse(accountString));
+    } else {
+      setIsLoading(false);
     }
   }, []);
 
@@ -35,8 +38,11 @@ export default function User({ userData }: { userData: Account }) {
       getAddresses(account.state.account.addressId)
         .then(r => setAddress(r))
         .catch(error => console.error("Une erreur s'est produite lors de la récupération des adresses:", error));
+      setIsLoading(false);
     }
   }, [account]);
+
+  if (isLoading) return (<Loading/>);
 
   return (
   <>
@@ -77,7 +83,7 @@ export default function User({ userData }: { userData: Account }) {
                 <Button text="Ajouter une adresse" onClick={(() => {
                   router.push('/account/address/new');
                 })}/>
-              ) : <p> {`${address?.street} ${address?.city} ${address?.country}`} </p>}
+              ) : <p>{`${address?.street} ${address?.city} ${address?.country}`}</p>}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -88,7 +94,7 @@ export default function User({ userData }: { userData: Account }) {
               })}/>
             </dd>
           </div>
-          <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <div className="px-2 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900"></dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               <Button onClick={() => setOpenSelectedQuoteModal(true)} text="Se déconnecter"/></dd>

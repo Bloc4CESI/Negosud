@@ -4,7 +4,7 @@ import Header from "../../../modules/layout/header";
 export default function About() {
   return (
     <>
-    <Header style={undefined}/>
+    <Header/>
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md my-16 rounded-md">
       <h1 className="text-3xl font-bold mb-6">À Propos de NégoSud Vin</h1>
         <section className="mb-8">

@@ -3,13 +3,15 @@ import { getProductByID } from "../../../services/api/products/productService";
 import { ProductType } from "../../../services/types/types";
 import { useAccount } from "../../../services/api/user/useAccount";
 import { postOrderClientLine } from "../../../services/api/products/cart";
+import { useRouter } from "next/navigation";
 
 export const FormProduct = ({ id }: { id: number }) => {
+  const router = useRouter();
     const [product, setProduct] = useState<ProductType | null>(null);
     const { account} = useAccount();
     const [selectedOption, setSelectedOption] = useState<string>("unitaire"); // État pour stocker la valeur sélectionnée
     const [finalPrice, setFinalPrice] = useState<number | null>(null); // État pour stocker le prix final
-    const [quantity, setQuantity] = useState<number | null>(null); // État pour stocker le prix final
+    const [quantity, setQuantity] = useState<number>(1); // État pour stocker le prix final
 
   useEffect(() => {
       const fetchData = async () => {
@@ -26,8 +28,13 @@ export const FormProduct = ({ id }: { id: number }) => {
     fetchData();
   }, [id]);
 
+  console.log(account);
   const handleAddToCart = () => {
-        postOrderClientLine(product?.id,account.id,quantity,finalPrice)  
+    if (account == null) {
+      router.push('/login')
+    } else {
+        postOrderClientLine(product?.id,account?.id,quantity,finalPrice)
+    }
   }
 
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {

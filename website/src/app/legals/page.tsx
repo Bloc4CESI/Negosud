@@ -5,7 +5,7 @@ import "../globals.css";
 export default function Legals() {
   return (
     <>
-    <Header style={undefined} />
+    <Header />
     <div className="max-w-3xl mx-auto p-6 bg-white shadow-md my-16 rounded-md">
       <h1 className="text-3xl font-bold mb-6">Mentions Légales</h1>
       <section className="mb-8">

@@ -1,5 +1,5 @@
-import { AddressType } from "../../services/types/types";
-import Arrow from "../svg/arrowRight.svg";
+import { AddressType } from "../../../services/types/types";
+import Arrow from "../../svg/arrowRight.svg";
 
 
 export default function Address({ addresses }: {addresses: AddressType[]}) {
