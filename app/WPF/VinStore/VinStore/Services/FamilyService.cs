@@ -31,18 +31,14 @@ namespace VinStore.Services
                 return null;
             }
         }
-
-
         public static async Task<int> GetFamilyIdByNameAsync(string familyName)
         {
             try
             {
                 // Obtenez la liste complète des familles
                 List<Family> familyList = await GetFamily();
-
                 // Recherchez l'ID associé au nom
-                Family matchingFamily = familyList.FirstOrDefault(f => f.Name == familyName);
-
+                var matchingFamily = familyList.FirstOrDefault(f => f.Name == familyName);
                 // Vérifiez si une famille correspondante a été trouvée
                 if (matchingFamily != null)
                 {
@@ -59,100 +55,85 @@ namespace VinStore.Services
             }
         }
 
-
-        public static async Task<bool> PostFamily(string familyName)
+        public static async Task<(bool Success, string Message)> DeleteFamily(int familyId)
         {
             try
             {
-                // Créez un objet HttpClient
-                using (HttpClient client = new HttpClient())
+                // Construire l'URL de votre API pour la suppression
+                string apiUrl = $"https://localhost:7281/api/Family/{familyId}";
+                HttpResponseMessage response = await ApiConnexion.ApiClient.DeleteAsync(apiUrl);
+                if (response.IsSuccessStatusCode)
                 {
-                    // URL de votre API
-                    string apiUrl = "https://localhost:7281/api/Family";
-
-                    // Créez les données à envoyer (vous pouvez ajuster cela en fonction de votre API)
-                    var data = new { Name = familyName };
-                    string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
-
-                    // Convertissez les données en bytes
-                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
-                    // Effectuez la requête POST
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
-                    // Vérifiez si la requête a réussi
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // Traitez la réponse ici si nécessaire
-                        return true;
-                    }
-                    else
-                    {
-                        // Affichez un message d'erreur si la requête échoue
-                        MessageBox.Show($"Erreur de la requête: {response.StatusCode}");
-                        return false;
-                    }
+                    return (true, "La famille a été supprimée avec succès.");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    string message = await response.Content.ReadAsStringAsync();
+                    return (false, "La famille ne peut pas être supprimée car elle est utilisée par au moins un produit.");
+                }
+                else
+                {
+                    return (false, $"La suppression de la famille a échoué avec le code d'erreur : {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite lors de la suppression : {ex.Message}");
             }
         }
-
-        public static async Task<bool> DeleteFamily(int familyId)
+        public static async Task<(bool Success, string Message)> PostFamily(string familyName)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                string apiUrl = "https://localhost:7281/api/Family";
+                var data = new { Name = familyName };
+                string jsonData = Newtonsoft.Json.JsonConvert.SerializeObject(data);
+                var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response =  await ApiConnexion.ApiClient.PostAsync(apiUrl, content);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    // Construisez l'URL de votre API pour la suppression
-                    string apiUrl = $"https://localhost:7281/api/Family/{familyId}";
-
-                    // Effectuez la requête DELETE
-                    HttpResponseMessage response = await client.DeleteAsync(apiUrl);
-
-                    // Vérifiez si la requête a réussi
-                    return response.IsSuccessStatusCode;
+                    return (true, "Famille ajoutée avec succès!");
                 }
+                else
+                {
+                    // Lisez le contenu de la réponse pour obtenir le message d'erreur
+                    string errorMessage = await response.Content.ReadAsStringAsync();
+                    return (false, $"Erreur lors de l'ajout de la famille: {errorMessage}");
+                }               
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite lors de la suppression : {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite: {ex.Message}");
             }
         }
-        public static async Task<bool> PutFamily(int familyId, string familyNameNew)
+        public static async Task<(bool Success, string Message)> PutFamily(int familyId, string familyNameNew)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                var jsonData = new { Id = familyId, Name = familyNameNew };
+                string jsonString = JsonConvert.SerializeObject(jsonData);
+                string apiUrl = $"https://localhost:7281/api/Family/{familyId}";
+                HttpResponseMessage response = await ApiConnexion.ApiClient.PutAsJsonAsync(apiUrl, jsonData);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    // Utilisez la classe anonyme pour faciliter la sérialisation en JSON
-                    var jsonData = new { Id = familyId, Name = familyNameNew };
-
-                    // Utilisez une bibliothèque de sérialisation JSON (par exemple, Newtonsoft.Json)
-                    string jsonString = JsonConvert.SerializeObject(jsonData);
-                    // Construisez l'URL de votre API pour la modification en utilisant l'ID
-                    string apiUrl = $"https://localhost:7281/api/Family/{familyId}";
-
-                    // Effectuez la requête PUT avec les données mises à jour
-                    HttpResponseMessage response = await client.PutAsJsonAsync(apiUrl, jsonData);
-
-                    // Vérifiez si la requête a réussi
-                    return response.IsSuccessStatusCode;
+                    return (true, $"La famille '{familyNameNew}' a été modifiée avec succès!");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    var conflictResponse = await response.Content.ReadAsStringAsync();
+                    return (false, conflictResponse); // Utilisez le message de conflit retourné par le serveur
+                }
+                else
+                {
+                    return (false, "Une erreur s'est produite lors de la mise à jour.");
                 }
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite lors de la modification : {ex.Message}");
             }
-
         }
 
     }

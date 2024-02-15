@@ -12,75 +12,203 @@
              TextElement.FontWeight="Regular"
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
-             TextOptions.TextRenderingMode="Auto">   
-
-    
-
+             TextOptions.TextRenderingMode="Auto">
     <ScrollViewer  x:Name="myScroll2" VerticalScrollBarVisibility="Auto"  >
-       
-        
-        
         <Grid>
-
             <Border  Margin="10" Background="#F2F5F8" CornerRadius="0 0 0 5" >
-
                 <Grid x:Name="MyGrid" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="100" />
                         <RowDefinition Height="600"/>
                         <RowDefinition Height="0"/>
                     </Grid.RowDefinitions>
-
                     <materialDesign:ColorZone Padding="14" materialDesign:ElevationAssist.Elevation="Dp4" CornerRadius="3" Background="#f5f4ea" Height="99" VerticalAlignment="Center">
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                             <TextBlock  Grid.Row="0" Text="Liste des Produits" Foreground="Black" FontSize="48" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
-                            <TextBlock x:Name="textBlockVariable" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
                         </StackPanel>
-                       
-
                     </materialDesign:ColorZone>
-                    
-
-                    <DataGrid Margin="15,15,15,15" Grid.Row="1" x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*"  GridLinesVisibility="None" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" TextBlock.FontSize="16" SelectionChanged="productDataGrid_SelectionChanged" >
-
-                        
-
-
+                    <DataGrid Margin="15,15,15,15" Grid.Row="1" x:Name="productDataGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*"  GridLinesVisibility="None" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" TextBlock.FontSize="16" >
                         <DataGrid.Columns>
-                            <!-- Colonne Image -->
                             <DataGridTemplateColumn Header="Image"  MinWidth="140" MaxWidth="200" >
-                                <DataGridTemplateColumn.CellTemplate   >
+                                <DataGridTemplateColumn.HeaderTemplate>
                                     <DataTemplate>
+                                        <TextBlock Text="Image" TextWrapping="Wrap" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTemplateColumn.HeaderStyle>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate >
                                         <Image Source="{Binding Image}" Stretch="Fill" Width="90" Height="120" MouseLeftButtonDown="UpdateImageButton_Click"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-
-                            <!-- Colonne Nom -->
-                            <DataGridTextColumn Header="Nom" Binding="{Binding Name}" MinWidth="100" MaxWidth="150" >
+                            <DataGridTextColumn IsReadOnly="False"  Binding="{Binding Name}" MinWidth="100" MaxWidth="150">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Nom" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" >
                                         <Setter Property="TextTrimming" Value="None"/>
                                         <Setter Property="TextWrapping" Value="Wrap"/>
                                         <Setter Property="TextBlock.Background" Value="White"/>
-                                      
-                                        
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                                 <DataGridTextColumn.EditingElementStyle>
                                     <Style TargetType="TextBox">
                                         <Setter Property="Background" Value="White"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
                                         <Setter Property="BorderBrush" Value="DarkRed"/>
                                         <Setter Property="BorderThickness" Value="1"/>
                                         <Setter Property="Foreground" Value="DarkRed"/>
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
-                          
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Binding="{Binding Description}" IsReadOnly="False"  Width="*" MaxWidth="170">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Description" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="TextBlock.Background" Value="White"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="DarkRed"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="true"  Binding="{Binding DateProduction}" MaxWidth="170">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Date de Production" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="False"  Binding="{Binding NbProductBox}"  MaxWidth="170"  >
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Quantité carton" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="TextBlock.Background" Value="White"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="DarkRed"/>
+                                        <EventSetter Event="PreviewTextInput" Handler="TextBox_IntegerInput" />
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
 
-                            <!-- Colonne Nom -->
-                            <DataGridTextColumn Header="Description" Binding="{Binding Description}" Width="*">
+                            <DataGridTextColumn IsReadOnly="False" Binding="{Binding Home}" MaxWidth="170">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Maison" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="TextBlock.Background" Value="White"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="DarkRed"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="true" Binding="{Binding Family.Name}" MaxWidth="170" >
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Famille" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="true"  Binding="{Binding Provider.Name}" MaxWidth="170">
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Fournisseur" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn  Binding="{Binding Price}" x:Name="priceField" MaxWidth="120"  >
+                                <DataGridTextColumn.Header>
+                                    <TextBlock Text="Prix unitaire" TextWrapping="Wrap"/>
+                                </DataGridTextColumn.Header>
+                                <DataGridTextColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </DataGridTextColumn.HeaderStyle>
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextTrimming" Value="None"/>
@@ -93,113 +221,40 @@
                                         <Setter Property="Background" Value="White"/>
                                         <Setter Property="BorderBrush" Value="DarkRed"/>
                                         <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
                                         <Setter Property="Foreground" Value="DarkRed"/>
+                                        <EventSetter Event="PreviewTextInput" Handler="TextBox_DecimalInput" />
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
-
-                            <!-- Colonne Nom -->
-                            <DataGridTextColumn IsReadOnly="true" Header="Date de Production" Binding="{Binding DateProduction}" MaxWidth="200">
-                                
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                            <DataGridTemplateColumn MinWidth="200" >
+                                <DataGridTemplateColumn.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="Actions" TextWrapping="Wrap" TextAlignment="Center"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.HeaderTemplate>
+                                <DataGridTemplateColumn.HeaderStyle>
+                                    <Style TargetType="DataGridColumnHeader">
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                     </Style>
-                                </DataGridTextColumn.ElementStyle>
-                               
-                            </DataGridTextColumn>
-
-                            <!-- Colonne Quantité -->
-                            <DataGridTextColumn Header="Quantité du carton" Binding="{Binding Price}"  MaxWidth="120"  >
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                        <Setter Property="TextBlock.Background" Value="White"/>
-
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="Background" Value="White"/>
-                                        <Setter Property="BorderBrush" Value="DarkRed"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                        <Setter Property="Foreground" Value="DarkRed"/>
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <DataGridTextColumn IsReadOnly="true" Header="Maison" Binding="{Binding Home}" MaxWidth="170">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-
-                            <DataGridTextColumn IsReadOnly="true" Header="Famille" Binding="{Binding Family.Name}" MaxWidth="170" >
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-
-                            <DataGridTextColumn IsReadOnly="true" Header="Fournisseur" Binding="{Binding Provider.Name}" MaxWidth="170">
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                            </DataGridTextColumn>
-
-                            <DataGridTextColumn Header="Prix unitaire" Binding="{Binding Price}"  MaxWidth="120"  >
-                                <DataGridTextColumn.ElementStyle>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="TextTrimming" Value="None"/>
-                                        <Setter Property="TextWrapping" Value="Wrap"/>
-                                        <Setter Property="TextBlock.Background" Value="White"/>
-                                       
-                                    </Style>
-                                </DataGridTextColumn.ElementStyle>
-                                <DataGridTextColumn.EditingElementStyle>
-                                    <Style TargetType="TextBox">
-                                        <Setter Property="Background" Value="White"/>
-                                        <Setter Property="BorderBrush" Value="DarkRed"/>
-                                        <Setter Property="BorderThickness" Value="1"/>
-                                        <Setter Property="Foreground" Value="DarkRed"/>
-                                    </Style>
-                                </DataGridTextColumn.EditingElementStyle>
-                            </DataGridTextColumn>
-
-                            <!-- Colonne Actions -->
-                            <DataGridTemplateColumn  MinWidth="200" >
+                                </DataGridTemplateColumn.HeaderStyle>
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <!-- Bouton d'édition -->
                                             <Button  Click="EditProduct_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <materialDesign:PackIcon Kind="ContentSave" Width="Auto" Height="Auto" />
-
-                                            </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <materialDesign:PackIcon Kind="ContentSave" Width="Auto" Height="Auto" />
+                                                </StackPanel>
                                             </Button>
-                                            <!-- Bouton de suppression -->
                                             <Button Click="DeleteProduct_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="15,5,0,5">
                                                 <StackPanel Orientation="Horizontal">
                                                     <materialDesign:PackIcon Kind="Delete" Width="Auto" Height="Auto" />
-                                                    
                                                 </StackPanel>
                                             </Button>
                                         </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
-
                         </DataGrid.Columns>
                         <DataGrid.CellStyle>
                             <Style TargetType="DataGridCell">
@@ -207,7 +262,6 @@
                                 <Setter Property="VerticalAlignment" Value="Center"/>
                                 <Setter Property="BorderThickness" Value="10,0,10,0"/>
                                 <Setter Property="BorderBrush" Value="#f5f4ea" />
-
                                 <Style.Triggers>
                                     <Trigger Property="IsSelected" Value="True">
                                         <Setter Property="Background" Value="#f5f4ea"/>
@@ -232,3 +286,4 @@
     </ScrollViewer>
 
 </UserControl>
+

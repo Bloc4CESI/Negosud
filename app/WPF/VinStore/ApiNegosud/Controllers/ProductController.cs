@@ -26,52 +26,52 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                var products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
                 if (idFamily.HasValue)
                 {
-                    Products = Products.Where(p => p.FamilyId == idFamily.Value);
+                    products = products.Where(p => p.FamilyId == idFamily.Value);
                 }
                 if (!string.IsNullOrEmpty(Home))
                 {
-                    Products = Products.Where(c => c.Home.ToLower() == Home.Trim().ToLower());
+                    products = products.Where(c => c.Home.ToLower() == Home.Trim().ToLower());
                 }
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    Products = Products.Where(c => c.Name.ToLower() == Name.Trim().ToLower());
+                    products = products.Where(c => c.Name.ToLower().Contains(Name.Trim().ToLower()));
                 }
                 if (dateProduction.HasValue)
                 {
-                    Products = Products.Where(c => c.DateProduction == dateProduction.Value);
+                    products = products.Where(c => c.DateProduction == dateProduction.Value);
                 }
                 if (Price.HasValue)
                 {
-                    Products = Products.Where(c => c.Price == Price.Value);
+                    products = products.Where(c => c.Price == Price.Value);
                 }
 
                 switch (sortOrder)
                 {
                     case "price_asc":
-                        Products = Products.OrderBy(c => c.Price);
+                        products = products.OrderBy(c => c.Price);
                         break;
                     case "price_desc":
-                        Products = Products.OrderByDescending(c => c.Price);
+                        products = products.OrderByDescending(c => c.Price);
                         break;
                     default:
-                        Products = Products.OrderByDescending(c => c.Id);
+                        products = products.OrderByDescending(c => c.Id);
                         break;
                 }
                 if (page.HasValue && pageSize.HasValue)
                 {
-                    Products = Products.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+                    products = products.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
                 }
-                var FiltredProducts = Products.ToList();
-                if (FiltredProducts.Count == 0)
+                var filtredProducts = products.ToList();
+                if (filtredProducts.Count == 0)
                 {
                     return NotFound("Aucun produit trouvé avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FiltredProducts);
+                    return Ok(filtredProducts);
                 }
             }
             catch (Exception ex)

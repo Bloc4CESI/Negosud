@@ -236,6 +236,31 @@ namespace ApiNegosud.Controllers
                 return BadRequest($"Erreur lors de la mise à jour de la commande: {ex.Message}");
             }
         }
+        [HttpGet("GetOrderClientById/{idOrderClient}")]
+        public IActionResult GetOrderClientById(int idOrderClient)
+        {
+            try
+            {
+                var clientOrder = _context.ClientOrder
+                    .Include(co => co.Client!)
+                        .ThenInclude(c => c.Address)
+                    .Include(co => co.ClientOrderLines!)
+                        .ThenInclude(line => line.Product)
+                            .ThenInclude(p => p.Stock)
+                    .FirstOrDefault(co => co.Id == idOrderClient); 
+                if (clientOrder == null)
+                {
+                    return NotFound($"Commande avec l'ID {idOrderClient} non trouvée.");
+                }
 
+                return Ok(clientOrder);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erreur lors de la récupération de la commande : {ex.Message}");
+            }
+        }
     }
+    
+
 }

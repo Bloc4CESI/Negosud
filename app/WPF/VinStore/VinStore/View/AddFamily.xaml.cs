@@ -27,6 +27,7 @@ namespace VinStore.View
     /// </summary>
     public partial class AddFamily : UserControl
     {
+        private bool isPopupOpen = false;
         public AddFamily()
         {
             InitializeComponent();
@@ -35,29 +36,20 @@ namespace VinStore.View
 
         private async void LoadFamily()
         {
-
             var family = await FamilyService.GetFamily();
             FamilyName.ItemsSource = family.Select(f => f.Name).ToList();
-            //FamilyName.ItemsSource = family;
-
-
         }
-        private bool isPopupOpen = false;
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             // Ouvrir le Popup
             textBoxInput.Text = "";
             myPopup.IsOpen = true;
         }
-
-
         private async void OKButtonPost_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 bool isDataValid = true;
-                // Récupérez la valeur de la zone de texte
                 string userInput = textBoxInput.Text;
                 if (string.IsNullOrWhiteSpace(userInput))
                 {
@@ -66,77 +58,66 @@ namespace VinStore.View
                 }
                 if (isDataValid)
                 {
-                    bool success = await FamilyService.PostFamily(userInput);
-
-                    // Vérifiez si la famille a été ajoutée avec succès avant de fermer le Popup
+                    var (success, message) = await FamilyService.PostFamily(userInput);
+                    MessageBox.Show(message);
                     if (success)
                     {
-                        MessageBox.Show("Famille ajoutée avec succès!");
-                        // Fermez le Popup
+                        // Fermez le Popup et rafraîchissez si nécessaire
                         myPopup.IsOpen = false;
-
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
                 MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
             }
         }
-
         private void myPopup_Closed(object sender, EventArgs e)
         {
             LoadFamily();
         }
-
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            // Fermer le Popup
             myPopup.IsOpen = false;
         }
-
         private void CancelButtonPut_Click(object sender, RoutedEventArgs e)
         {
             myPopupPut.IsOpen = false;
         }
-
         private void ModifyButton_Click(object sender, RoutedEventArgs e)
         {
             // Ouvrir le Popup Put
-
-            Button ModifyButton = sender as Button;
-            string FamilyName = ModifyButton.DataContext as string;
-            textBlockInputPutOld.Text = FamilyName;
-            textBoxInputPutNew.Text = FamilyName;
-            myPopupPut.IsOpen = true;
+            var ModifyButton = sender as Button;
+            if( ModifyButton != null)
+            {
+                string FamilyName = ModifyButton.DataContext as string;
+                textBlockInputPutOld.Text = FamilyName;
+                textBoxInputPutNew.Text = FamilyName;
+                myPopupPut.IsOpen = true;
+            }
         }
-
         private async void OKButtonPut_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                // Obtenez l'objet associé à l'élément ListBox à partir du DataContext du bouton
                 string FamilyNameOld = textBlockInputPutOld.Text;
                 string FamilyNameNew = textBoxInputPutNew.Text;
-                // Obtenez l'ID de la famille en utilisant une méthode appropriée dans votre service
                 int FamilyId = await FamilyService.GetFamilyIdByNameAsync(FamilyNameOld);
-                // Obtenir les nouvelles informations pour la famille 
-                if (FamilyNameNew != null)
+                bool isDataValid = true;
+                if (string.IsNullOrWhiteSpace(FamilyNameNew))
                 {
-                    bool success = await FamilyService.PutFamily(FamilyId, FamilyNameNew);
+                    MessageBox.Show("Veuillez entrer le nom de la famille.");
+                    isDataValid = false;
+                }
+                if (isDataValid && FamilyNameNew != null)
+                {
+                    var (success, message) = await FamilyService.PutFamily(FamilyId, FamilyNameNew);
                     myPopupPut.IsOpen = false;
+                    MessageBox.Show(message); // Affiche le message de succès ou d'erreur (incluant le conflit)
                     if (success)
                     {
-                        MessageBox.Show($"La famille '{FamilyNameNew}' a été modifiée avec succès!");
                         // Rafraîchir la liste après la modification
                         LoadFamily();
-                    }
-                    else
-                    {
-                        MessageBox.Show($"La modification de la famille '{FamilyNameNew}' a échoué.");
                     }
                 }
             }
@@ -151,27 +132,31 @@ namespace VinStore.View
             try
             {
                 // Obtener le bouton cliqué
-                Button DeleteButton = sender as Button;
-                // Obtener l'objet associé à l'élément ListBox à partir du DataContext du bouton
-                string FamilyName = DeleteButton.DataContext as string;
-                // Obtener l'ID de la famille
-                int familyId = await FamilyService.GetFamilyIdByNameAsync(FamilyName);
-                MessageBoxResult result = MessageBox.Show($"Voulez-vous vraiment supprimer la famille '{FamilyName}' ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                var deleteButton = sender as Button;
+                if (deleteButton != null)
                 {
-                    // Appel la méthode pour la suppression via l'API
-                    bool success = await FamilyService.DeleteFamily(familyId);
+                    // Obtener l'objet associé à l'élément ListBox à partir du DataContext du bouton
+                    var familyName = deleteButton.DataContext as string;
+                    if (familyName != null)
+                    {
+                        // Obtener l'ID de la famille
+                        int familyId = await FamilyService.GetFamilyIdByNameAsync(familyName);
+                        MessageBoxResult result = MessageBox.Show($"Voulez-vous vraiment supprimer la famille '{familyName}' ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            var (Success, Message) = await FamilyService.DeleteFamily(familyId);
+                            if (Success)
+                            {
+                                MessageBox.Show("La famille a été supprimée avec succès!", "Suppression Réussie", MessageBoxButton.OK, MessageBoxImage.Information);
+                                LoadFamily();
+                            }
+                            else
+                            {
+                                MessageBox.Show(Message, "Suppression Impossible", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }                           
+                        }
+                    }
 
-                    if (success)
-                    {
-                        MessageBox.Show($"La famille '{FamilyName}' a été supprimée avec succès!");
-                        // Rafraîchissez la liste après la suppression
-                        LoadFamily();
-                    }
-                    else
-                    {
-                        MessageBox.Show($"La suppression de la famille '{FamilyName}' a échoué.");
-                    }
                 }
             }
             catch (Exception ex)
@@ -180,12 +165,6 @@ namespace VinStore.View
             }
         }
 
-        private async Task<Family> ShowModifyFamilyDialog(string familyName)
-        {
-            return new Family { Name = familyName };
-        }
-
-
-
     }
+
 }

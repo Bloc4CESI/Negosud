@@ -26,11 +26,7 @@ namespace VinStore.View
     /// </summary>
     public partial class StockView : UserControl
     {
-
         private ObservableCollection<Stock> stocks;
-
-        
-
         public StockView()
         {
             InitializeComponent();
@@ -41,43 +37,35 @@ namespace VinStore.View
         {
             // Créez une liste de stock
             List<Stock> stockList = await StockService.GetAllStock();
-
-
             // Assigne la liste à la propriété ItemsSource du DataGrid
             StockDataGrid.ItemsSource = stockList;
             Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
 
         }
-
+        private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)
+        {
+            // Vérifier si le texte est un entier
+            if (!int.TryParse(e.Text, out _))
+            {
+                MessageBox.Show("Veuillez entrer un nombre entier valide.");
+                e.Handled = true; // Ignorer si pas un entier
+            }
+        }
         private async void ButtonEdite_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-
-
-                // Terminer l'édition pour s'assurer que les modifications sont prises en compte
-                //StockDataGrid.CommitEdit();
-                //StockDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
-                //StockDataGrid.CommitEdit(DataGridEditingUnit.Row, true);
                 StockDataGrid.CommitEdit();
-                //StockDataGrid.SelectAll();
                 // Récupérer l'objet Product associé à la ligne sélectionnée
-                Stock selectedStock = StockDataGrid.SelectedItem as Stock;
-
-                // Obtenez les nouvelles informations pour la famille (par exemple, à partir d'une boîte de dialogue)
-                //StockDataGrid.SelectionUnit = DataGridSelectionUnit.Cell;
-
+                var selectedStock = StockDataGrid.SelectedItem as Stock;
                 if (selectedStock != null)
                 {
                     // Appelez la méthode pour effectuer la modification via l'API
                     bool success = await StockService.PutStock(selectedStock.Id, selectedStock);
-
                     if (success)
                     {
-
                         MessageBox.Show($"Le stock '{selectedStock.Product.Name}' a été modifiée avec succès!");
                         // Rafraîchissez la liste après la modification
-
                         InitializeDataStock();
                     }
                     else
@@ -90,54 +78,30 @@ namespace VinStore.View
             {
                 MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
             }
-
-
         }
         private void myCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            //StockDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
-            //StockDataGrid.CommitEdit(DataGridEditingUnit.Row, true);
-            //StockDataGrid.CommitEdit();
-            //StockDataGrid.SelectAll();
             // Récupérer l'objet Product associé à la ligne sélectionnée
-            var selectedRow = StockDataGrid.SelectedItem as Stock; // Remplacez "VotreClasse" par le nom de votre classe de modèle de données
-
-            // Obtenez les nouvelles informations pour la famille (par exemple, à partir d'une boîte de dialogue)
-            //StockDataGrid.SelectionUnit = DataGridSelectionUnit.Cell;
-
+            var selectedRow = StockDataGrid.SelectedItem as Stock; 
             // Vérifiez si une ligne est sélectionnée
             if (selectedRow != null)
             {
                 // Mettez à jour la propriété "Minimum" de votre modèle avec la valeur 10
-                selectedRow.AutoOrder = true;
-
-                
-              
+                selectedRow.AutoOrder = true;              
             }
         }
 
         private void myCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
 
-            //StockDataGrid.SelectionUnit = DataGridSelectionUnit.FullRow;
-           // StockDataGrid.CommitEdit(DataGridEditingUnit.Row, true);
             StockDataGrid.CommitEdit();
-            //StockDataGrid.SelectAll();
             // Récupérer l'objet Product associé à la ligne sélectionnée
-            var selectedRow = StockDataGrid.SelectedItem as Stock; // Remplacez "VotreClasse" par le nom de votre classe de modèle de données
-
-            // Obtenez les nouvelles informations pour la famille (par exemple, à partir d'une boîte de dialogue)
-            //StockDataGrid.SelectionUnit = DataGridSelectionUnit.Cell;
-
-            
-
+            var selectedRow = StockDataGrid.SelectedItem as Stock; 
             // Vérifiez si une ligne est sélectionnée
             if (selectedRow != null)
             {
                 // Mettez à jour la propriété "Minimum" de votre modèle avec la valeur 10
                 selectedRow.AutoOrder = false;
-
-                // Rafraîchissez la vue pour refléter les changements dans le DataGrid
 
             }
 
