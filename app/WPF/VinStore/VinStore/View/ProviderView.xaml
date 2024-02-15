@@ -50,7 +50,7 @@
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
-                        <DataGridTextColumn IsReadOnly="true" Header="Adress Mail" Binding="{Binding Email}" MaxWidth="250" >
+                        <DataGridTextColumn IsReadOnly="true" Header="Email" Binding="{Binding Email}" MaxWidth="250" >
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="TextTrimming" Value="None"/>
@@ -136,43 +136,43 @@
                 <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
                     <StackPanel Margin="10" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
-                            <TextBlock Text="Nouveau Provider" Margin="10" FontSize="20" FontWeight="Bold"/>
+                            <TextBlock Text="Nouveau Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Name :" Margin="10" Width="120" FontSize="16" />
+                            <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
                             <TextBox Name="NewProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Phone Number :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="NewProviderPhoneNumber" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            <TextBlock Text="Téléphone :" Margin="10" Width="120" FontSize="16" />
+                            <TextBox Name="NewProviderPhoneNumber" PreviewTextInput="TextBox_IntegerInput" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
                             <TextBlock Text="Email :" Margin="10" Width="120" FontSize="16" />
                             <TextBox Name="NewProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
-                            <TextBlock Text="-- Address -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
+                            <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
-                                <TextBlock Text="Name :" Margin="10,30,0,10" />
+                                <TextBlock Text="Nom :" Margin="10,30,0,10" />
                                 <TextBox Name="NewProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
-                            <TextBlock Text="Street :" Margin="10" />
+                            <TextBlock Text="Rue :" Margin="10" />
                             <TextBox Name="NewProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Post Code :" Margin="10"  />
+                                <TextBlock Text="Code Postal :" Margin="10"  />
                                 <TextBox  Name="NewProviderAdressnumber" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="City :" Margin="10" />
+                                <TextBlock Text="Ville :" Margin="10" />
                                 <TextBox Name="NewProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Country :" Margin="10" />
+                                <TextBlock Text="Pays :" Margin="10" />
                                 <TextBox Name="NewProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                         </StackPanel>
@@ -189,16 +189,16 @@
                 <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
                     <StackPanel Margin="10" >
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
-                            <TextBlock Text="Modification Provider" Margin="10" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Name="ProviderId" Text="Modification Provider" Width="0" Visibility="Hidden" />
-                            <TextBlock Name="ProviderAdressId" Text="Modification Provider" Width="0" Visibility="Hidden" />
+                            <TextBlock Text="Modification du Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
+                            <TextBlock Name="ProviderId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
+                            <TextBlock Name="ProviderAdressId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Name :" Margin="10" Width="120" FontSize="16" />
+                            <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
                             <TextBox Name="ProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Phone Number :" Margin="10" Width="120" FontSize="16" />
+                            <TextBlock Text="Téléphone:" Margin="10" Width="120" FontSize="16" />
                             <TextBox Name="ProviderPhoneNumber" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
@@ -206,28 +206,28 @@
                             <TextBox Name="ProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
-                            <TextBlock Text="-- Address -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
+                            <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
-                                <TextBlock Text="Name :" Margin="10,30,0,10" />
+                                <TextBlock Text="Nom :" Margin="10,30,0,10" />
                                 <TextBox Name="ProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
-                            <TextBlock Text="Street :" Margin="10" />
+                            <TextBlock Text="Rue :" Margin="10" />
                             <TextBox Name="ProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock  Text="Post Code :" Margin="10" />
-                                <TextBox   Name="ProviderAdressnumber" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                <TextBlock  Text="Code Postal :" Margin="10" />
+                                <TextBox   Name="ProviderAdressnumber" PreviewTextInput="TextBox_IntegerInput" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="City :" Margin="10" />
+                                <TextBlock Text="Ville :" Margin="10" />
                                 <TextBox Name="ProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Country :" Margin="10" />
+                                <TextBlock Text="Pays :" Margin="10" />
                                 <TextBox Name="ProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
                             </StackPanel>
                         </StackPanel>

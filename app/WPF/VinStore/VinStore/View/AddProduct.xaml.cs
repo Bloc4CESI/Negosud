@@ -38,7 +38,6 @@ namespace VinStore.View
             LoadProviders();
             LoadFamily();
         }
-
         private async void LoadProviders()
         {
             try
@@ -95,8 +94,6 @@ namespace VinStore.View
 
         private async Task CreateProductOnServer(Product updatedProduct)
         {
-
-
             var settings = new JsonSerializerSettings
             {
                 ContractResolver = new DefaultContractResolver
@@ -121,24 +118,21 @@ namespace VinStore.View
                 e.Handled = true; // Ignorer si pas un entier
             }
         }
-
+        private bool IsDecimalAllowed(string input)
+        {
+            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.][0-9]*)?$");
+            return regex.IsMatch(input);
+        }
         private void TextBox_DecimalInput(object sender, TextCompositionEventArgs e)
         {
             if (!IsDecimalAllowed(e.Text))
             {
-                MessageBox.Show("Veuillez entrer un nombre décimal valide dans le prix.");
-                e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec , ou .
+                MessageBox.Show("Veuillez entrer un nombre décimal valide séparé par un '.' dans le prix.");
+                e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec  .
             }
         }
-        private bool IsDecimalAllowed(string input)
-        {
-            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.,][0-9]*)?$");
-            return regex.IsMatch(input);
-        }
-
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
-
             string image = "";
 
             if (ImagePreview.Source != null)
@@ -207,7 +201,6 @@ namespace VinStore.View
                 if (isFormValid)
                 {
                     // Le formulaire est valide, procédez avec le reste du code
-
                     string nom = txtName.Text;
                     decimal prix = Convert.ToDecimal(txtPrice.Text);
                     string description = txtDescription.Text;
@@ -216,7 +209,6 @@ namespace VinStore.View
                     string maison = txtHome.Text;
                     Family famille = FamilyName.SelectedItem as Family;
                     Provider fournisseur = ProvidersName.SelectedItem as Provider;
-
                     Product createdProduct = new Product
                     {
                         Name = nom,
@@ -228,31 +220,15 @@ namespace VinStore.View
                         FamilyId = famille?.Id ?? 0, // Utilisez l'Id de la famille si elle n'est pas nulle, sinon 0
                         ProviderId = fournisseur?.Id ?? 0, // Utilisez l'Id du fournisseur s'il n'est pas nul, sinon 0
                         Image = image
-
-
-
                     };
-
                     createdProduct.Stock = new Stock 
                     { 
                         Quantity = 0,
                         Minimum = 0,
                         Maximum = 0,
-                        AutoOrder = false
-                    
+                        AutoOrder = false                    
                     };
-
-                   
-
-
                     await CreateProductOnServer(createdProduct);
-
-                    // Effectuez le traitement nécessaire avec ces valeurs
-                    // ...
-
-                    // Vous pouvez également afficher un message avec ces valeurs
-                    // MessageBox.Show($"Nom: {nom}\nPrix: {prix}\nDescription: {description}\nDate de production: {dateProduction}\nNombre de produits dans le pack: {nbProductBox}\nMaison: {maison}\nFamille: {famille}\nFournisseur: {fournisseur}");
-
                     // Réinitialisez les champs du formulaire si nécessaire
                     ResetFormFields();
                 }
@@ -261,7 +237,10 @@ namespace VinStore.View
                     // Affichez le message d'erreur indiquant les champs manquants
                     MessageBox.Show(errorMessage);
                 }
-
+            }
+            else
+            {
+                MessageBox.Show("Veuillez remplir l'image du produit ");
             }
         }
 
@@ -281,10 +260,8 @@ namespace VinStore.View
 
         private string postImgurImg(string selectedpath, string imagename)
         {
-
             // Remplacez "VOTRE_CLE_API" par votre clé API Imgur
             string apiKey = "f8e21651c328f2f";
-
             // Appel de la méthode pour charger l'image sur Imgur et obtenir le lien
             string imgurLink = UploadImageToImgur(selectedpath, apiKey, imagename);
 
@@ -297,24 +274,18 @@ namespace VinStore.View
         {
             // Charger le fichier image en bytes
             byte[] imageData = File.ReadAllBytes(imagePath);
-
             // Créer une demande à l'API Imgur
             var client = new RestClient("https://api.imgur.com/3");
             var request = new RestRequest("image", Method.Post);
-
             // Ajouter l'image en tant que fichier à la demande
             request.AddFile("image", imageData, filename);
-
             // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
             request.AddHeader("Authorization", $"Client-ID {apiKey}");
-
             // Exécuter la demande
             RestResponse response = client.Execute(request);
-
             // Analyser la réponse JSON pour obtenir le lien Imgur
             dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
             string imgurLink = jsonResponse.data.link;
-
             return imgurLink;
         }
 

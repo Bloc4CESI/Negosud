@@ -91,10 +91,6 @@ namespace VinStore.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-
-
-                
-
                     var settings = new JsonSerializerSettings
                     {
                         ContractResolver = new DefaultContractResolver
@@ -102,28 +98,16 @@ namespace VinStore.Services
                             NamingStrategy = new CamelCaseNamingStrategy()
                         }
                     };
-
-                    
-               
-
-                    
                     var jsonData = JsonConvert.SerializeObject(new
-                    {
-                        
+                    {                        
                         NewProvider.Name,
                         NewProvider.PhoneNumber,
                         NewProvider.Email,
                         NewProvider.Address,
-                        
-
                     });
-
                     string apiUrl = $"https://localhost:7281/api/Provider/PostWithAddress";
-
                     var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
                     HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-
                     if (response.IsSuccessStatusCode)
                     {
                         // La requête a réussi
@@ -136,7 +120,6 @@ namespace VinStore.Services
                         Console.WriteLine($"Erreur {response.StatusCode}: {errorResponse}");
                         return false;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -154,10 +137,6 @@ namespace VinStore.Services
             {
                 using (HttpClient client = new HttpClient())
                 {
-
-
-
-
                     var settings = new JsonSerializerSettings
                     {
                         ContractResolver = new DefaultContractResolver
@@ -165,32 +144,19 @@ namespace VinStore.Services
                             NamingStrategy = new CamelCaseNamingStrategy()
                         }
                     };
-
-
-
-
-
                     var jsonData = JsonConvert.SerializeObject(new
                     {
-
                         putProvider.Id,
                         putProvider.Name,
                         putProvider.PhoneNumber,
                         putProvider.Email,
                         putProvider.Address,
-
-
                     },settings);
-
                     string apiUrl = $"https://localhost:7281/api/Provider/{providerId}";
-
                     var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-
                     HttpResponseMessage response = await client.PutAsync(apiUrl, content);
-
                     if (response.IsSuccessStatusCode)
                     {
-                        // La requête a réussi
                         return true;
                     }
                     else
@@ -200,7 +166,6 @@ namespace VinStore.Services
                         Console.WriteLine($"Erreur {response.StatusCode}: {errorResponse}");
                         return false;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -209,7 +174,6 @@ namespace VinStore.Services
                 MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
                 return false;
             }
-
         }
 
 

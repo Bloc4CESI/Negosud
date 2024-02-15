@@ -48,15 +48,15 @@ namespace VinStore.View
         }
         private bool IsDecimalAllowed(string input)
         {
-            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.,][0-9]*)?$");
+            var regex = new System.Text.RegularExpressions.Regex(@"^[0-9]*(?:[\.][0-9]*)?$");
             return regex.IsMatch(input);
         }
         private void TextBox_DecimalInput(object sender, TextCompositionEventArgs e)
         {
             if (!IsDecimalAllowed(e.Text))
             {
-                MessageBox.Show("Veuillez entrer un nombre décimal valide dans le prix.");
-                e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec , ou .
+                MessageBox.Show("Veuillez entrer un nombre décimal valide séparé par un '.' dans le prix.");
+                e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec  .
             }
         }
         private void TextBox_QuantityChanged(object sender, RoutedEventArgs e)
