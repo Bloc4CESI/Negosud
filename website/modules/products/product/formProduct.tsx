@@ -28,7 +28,6 @@ export const FormProduct = ({ id }: { id: number }) => {
     fetchData();
   }, [id]);
 
-  console.log(account);
   const handleAddToCart = () => {
     if (account == null) {
       router.push('/login')
@@ -59,7 +58,6 @@ export const FormProduct = ({ id }: { id: number }) => {
     year: "numeric",
     month: "long",
   }) : '';
-  console.log(product);
 
 return (
     <section className="overflow-hidden bg-white py-11 font-poppins">
