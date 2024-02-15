@@ -8,7 +8,6 @@ export default function New() {
   return (
     <>
       <Header />
-      <div> Nouvelle Adresse</div>
       <AddressForm/>
       <Footer />
     </>
