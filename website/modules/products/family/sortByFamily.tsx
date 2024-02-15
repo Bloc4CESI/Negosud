@@ -77,7 +77,7 @@ export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByF
         </div>
       )}
     </Listbox>
-      <XMarkIcon className="h-6 w-6 cursor-pointer" onClick={(() => {
+      <XMarkIcon className="h-6 w-6 cursor-pointer hover:scale-110" onClick={(() => {
         setSelectedFamily(undefined);
         setSelectedNameFamily(undefined);
         onFamilyChange(undefined);

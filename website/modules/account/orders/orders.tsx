@@ -25,7 +25,7 @@ return (
     {orders.map((order) => (
       order.orderStatus === 4 ? null :
       <li key={order.id} onClick={(() => {router.push(`/account/order/${order.id}`)})}
-          className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
+          className="transition duration-300 ease-in-out hover:scale-105 sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md">
         <div className="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
             <h5
               className="block mb-2 ml-5 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">

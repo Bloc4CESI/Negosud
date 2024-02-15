@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from "react";
 import logo from '../../src/app/images/logo.png';
 import Cart from "../../public/img/cart.svg";
-import User from "../../public/img/user.svg";
-import Burger from "../../public/img/burger.svg";
 import { GiWineBottle } from "react-icons/gi";
+import { FiUser } from "react-icons/fi";
+import { HiOutlineShoppingCart } from "react-icons/hi";
 
-const Header = ({ style } : { style?: string }) => {
+const Header = ({ style, stroke } : { style?: string, stroke?: string; }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [connected, setConnected] = useState(false);
 
@@ -35,14 +35,14 @@ const Header = ({ style } : { style?: string }) => {
               </a>
             </li>
             <li>
-              <a href={`${connected ? '/account' : '/login'}`} className="block py-2 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
-                <User className="h-8 w-8"/>
+              <a href={`${connected ? '/account' : '/login'}`}>
+                <FiUser className="h-7 w-7" />
               </a>
             </li>
             {connected ? (
             <li>
-              <a href={"/account/cart"} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-500 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
-                <Cart className="h-8 w-8 "/>
+              <a href={"/account/cart"}>
+                <HiOutlineShoppingCart  className="h-7 w-7"/>
               </a>
             </li>)
             : null}

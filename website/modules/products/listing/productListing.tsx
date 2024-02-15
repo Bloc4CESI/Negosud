@@ -104,7 +104,7 @@ export const ProductListing = () => {
           <li onClick={(() => {
             router.push(`listingProducts/product/${product.id}`);
           })}
-              className="sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
+              className="transition duration-300 ease-in-out hover:scale-105 sm:w-1/2 md:w-1/3 lg:w-1/4 relative m-5 flex w-full cursor-pointer max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
               key={product.id}>
           <img className="object-cover w-full h-full" src={product.image} alt="product image" />
         <div className="mt-4 px-5 pb-5">

@@ -5,6 +5,7 @@ export type Account = {
   phoneNumber: string;
   email: string;
   addressId: number;
+  address: AddressType;
 }
 
 export type AddressType = {
@@ -39,12 +40,13 @@ export type OrderType = {
   price: number;
   orderStatus: OrderStatus;
   clientId: number;
+  client: Account;
+  clientOrderLines: OrderLineType[];
 }
 
 export type OrderLineType = {
   id: number;
   quantity: number;
-  price: number;
   order: OrderType;
   product: ProductType;
 }
