@@ -10,6 +10,30 @@
 *.userosscache
 *.sln.docstates
 
+# Ignorer les fichiers et répertoires spécifiques dans app/WPF/VinStore
+
+# Fichiers et répertoires dans .vs/
+app/WPF/VinStore/.vs/ProjectEvaluation/vinstore.metadata.v7.bin
+app/WPF/VinStore/.vs/ProjectEvaluation/vinstore.projects.v7.bin
+app/WPF/VinStore/.vs/VinStore/DesignTimeBuild/.dtbcache.v2
+app/WPF/VinStore/.vs/VinStore/v17/.futdcache.v2
+app/WPF/VinStore/.vs/VinStore/v17/.suo
+
+# Fichiers binaires compilés
+app/WPF/VinStore/ApiNegosud/bin/Debug/net7.0/ApiNegosud.dll
+app/WPF/VinStore/ApiNegosud/bin/Debug/net7.0/ApiNegosud.exe
+app/WPF/VinStore/ApiNegosud/bin/Debug/net7.0/ApiNegosud.pdb
+
+# Fichiers objets compilés
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ApiNegosud.AssemblyInfo.cs
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ApiNegosud.AssemblyInfoInputs.cache
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ApiNegosud.dll
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ApiNegosud.pdb
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ApiNegosud.sourcelink.json
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/apphost.exe
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/ref/ApiNegosud.dll
+app/WPF/VinStore/ApiNegosud/obj/Debug/net7.0/refint/ApiNegosud.dll
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
