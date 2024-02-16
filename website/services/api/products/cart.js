@@ -69,5 +69,5 @@ export async function putOrderClient(data){
   if (!response.ok) {
     throw new Error('Erreur lors de la mise à jour de la commande');
   }
-  return await response.json();
+  return await response.text();
 }

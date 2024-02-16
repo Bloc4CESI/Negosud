@@ -5,9 +5,11 @@ import React, { useEffect, useState } from "react";
 import {getOrderClient, deleteOrderClientLine, putOrderClient } from "../../../services/api/products/cart";
 import {OrderLineType } from "../../../services/types/types";
 import Loading from "../../extras/loading";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
+import Button from "../../extras/button";
 
 export default function Cart() {
+  const router = useRouter();
   const { account} = useAccount();
   const [ordersline, setOrdersline] = useState<OrderLineType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -39,21 +41,7 @@ export default function Cart() {
     }
 };
 
-const handleModifyOrder = async () => {
-  try {
-    const data = {
-      id:ordersline[0]?.clientOrder?.id,
-      date: new Date(),
-      price: total,
-      orderStatus: "VALIDE"
-    } 
-    console.log(data)
-    await putOrderClient(data);
-  } catch (error) {
-    console.error('Error deleting order line:', error);
-}
-  
-}
+
 
   const total = ordersline.reduce((acc, orderline) => acc + orderline.price, 0);
 
@@ -114,7 +102,7 @@ const handleModifyOrder = async () => {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleModifyOrder()}
+                  onClick={(() => {router.push('/account/cart/delivery');})}
                   className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
                   Commander
                 </button>

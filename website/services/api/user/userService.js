@@ -120,3 +120,17 @@ export async function getOrders(id) {
   }
   return await response.json();
 }
+
+export async function modifyAddressClient(data, id){
+  const response = await fetch(`${API_BASE_URL}/Address/${id}`,{
+    method: 'PUT',
+    headers : {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Erreur lors de la mise à jour de la commande');
+  }
+  return await response.text();
+}
