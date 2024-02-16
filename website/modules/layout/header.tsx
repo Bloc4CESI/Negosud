@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import logo from '../../src/app/images/logo.png';
-import Cart from "../../public/img/cart.svg";
 import { GiWineBottle } from "react-icons/gi";
 import { FiUser } from "react-icons/fi";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { getOrderClient } from "../../services/api/products/cart";
 import { useAccount } from "../../services/api/user/useAccount";
-import { OrderLineType } from "../../services/types/types";
 
 const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -14,6 +12,7 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
   const [ordersLine, setOrderLine] = useState([]);
   const { account } = useAccount();
 
+  console.log(ordersLine);
   useEffect(() => {
     const fetchData = async () => {
       if (localStorage.getItem('connected') !== null) {
@@ -27,7 +26,7 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
       }
     };
     fetchData();
-  }, [ordersLine]);
+  }, []);
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);
@@ -55,21 +54,15 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
             </li>
             {connected ? (
                 <li>
-                  {ordersLine.length !== 0 ?  (
                   <div className="relative">
-                    <div className="t-0 absolute left-3">
+                    <div className={`t-0 absolute left-3 ${ordersLine.length == 0 ? 'hidden' : ""}`}>
                       <p
-                        className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">{ordersLine.length}</p>
+                        className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">{ordersLine?.length}</p>
                     </div>
                     <a href={"/account/cart"}>
                       <HiOutlineShoppingCart className="h-7 w-7" />
                     </a>
                   </div>
-                  ) : (
-                    <a href={"/account/cart"}>
-                      <HiOutlineShoppingCart className="h-7 w-7" />
-                    </a>
-                  )}
                 </li>)
               : null}
           </ul>

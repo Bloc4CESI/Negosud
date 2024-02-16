@@ -4,6 +4,8 @@ import { ProductType } from "../../../services/types/types";
 import { useAccount } from "../../../services/api/user/useAccount";
 import { postOrderClientLine } from "../../../services/api/products/cart";
 import { useRouter } from "next/navigation";
+import LoadingButton from "../../extras/buttonLoading";
+import toast, { Toaster } from "react-hot-toast";
 
 export const FormProduct = ({ id }: { id: number }) => {
   const router = useRouter();
@@ -12,6 +14,7 @@ export const FormProduct = ({ id }: { id: number }) => {
     const [selectedOption, setSelectedOption] = useState<string>("unitaire"); // État pour stocker la valeur sélectionnée
     const [finalPrice, setFinalPrice] = useState<number | null>(null); // État pour stocker le prix final
     const [quantity, setQuantity] = useState<number>(1); // État pour stocker le prix final
+    const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
       const fetchData = async () => {
@@ -29,13 +32,16 @@ export const FormProduct = ({ id }: { id: number }) => {
   }, [id]);
 
   const handleAddToCart = () => {
+    setIsLoading(true);
     if (account == null) {
       router.push('/login')
     } else {
-        postOrderClientLine(product?.id,account?.id,quantity,finalPrice)
+    postOrderClientLine(product?.id,account?.id,quantity,finalPrice);
+    toast.success('Produit ajouté au panier');
+    setIsLoading(false);
     }
   }
-
+console.log(isLoading);
   const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value; // Récupère la valeur de l'option sélectionnée
     setSelectedOption(value); // Met à jour la valeur sélectionnée
@@ -56,11 +62,14 @@ export const FormProduct = ({ id }: { id: number }) => {
 
   const dateFr = product?.dateProduction ? new Date(product.dateProduction).toLocaleDateString('fr-FR', {
     year: "numeric",
-    month: "long",
   }) : '';
 
 return (
     <section className="overflow-hidden bg-white py-11 font-poppins">
+      <Toaster
+        position="top-center"
+        reverseOrder={true}
+      />
         <div className="max-w-6xl px-4 py-4 mx-auto lg:py-8 md:px-6">
             <div className="flex flex-wrap -mx-4">
                 <div className="w-full px-4 md:w-1/2 ">
@@ -76,11 +85,10 @@ return (
                         <div className="mb-8 ">
                             <span className="flex items-center mb-3">
                             <h2 className=" max-w-xl text-2xl font-bold dark:text-gray-800 md:text-4xl">
-                                {product?.name} - </h2>
-                                <p className="mt-2 ml-2 text-sm font-bold dark:text-gray-800">{dateFr}</p>
+                              {product?.name}</h2>
                             </span>
                             <p className="text-base font-bold max-w-md mb-4 dark:text-gray-600">
-                            {product?.family.name} signé {product?.home}     
+                            {product?.family.name} de {dateFr}
                             </p>
                             <p className="max-w-md mb-8 text-gray-700 dark:text-gray-600">
                             {product?.description}    
@@ -136,10 +144,12 @@ return (
                         </div>
                         <div className="flex flex-wrap items-center -mx-4 ">
                             <div className="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
+                              {isLoading ? <LoadingButton className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300"/> : (
                                 <button
-                                    onClick={handleAddToCart} className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
+                                  onClick={handleAddToCart} className="flex items-center justify-center w-full p-4 text-blue-500 border border-blue-500 rounded-md dark:text-gray-200 dark:border-blue-600 hover:bg-blue-600 hover:border-blue-600 hover:text-gray-100 dark:bg-blue-600 dark:hover:bg-blue-700 dark:hover:border-blue-700 dark:hover:text-gray-300">
                                     Ajouter au panier
                                 </button>
+                                )}
                             </div>
                         </div>
                     </div>

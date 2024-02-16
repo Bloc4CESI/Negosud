@@ -5,7 +5,6 @@ export const API_BASE_URL = 'https://localhost:7281/api';
 export async function Logout() {
   localStorage.removeItem('connected');
   localStorage.removeItem('account');
-  window.location.reload();
 }
 
 export async function createUser(data) {
@@ -53,6 +52,10 @@ export async function createAddress(data, userData) {
   const addressId = firstAddress.id
   const clientId = userData.id;
   userData.addressId = addressId
+  userData.address = firstAddress;
+  userData.address.client = userData;
+  debugger;
+  console.log(userData);
   const addAddressToClient = await fetch(`${API_BASE_URL}/Client/${clientId}`, {
     method: 'PUT',
     headers: {
