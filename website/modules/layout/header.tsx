@@ -27,7 +27,7 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
       }
     };
     fetchData();
-  }, [ordersLine]);
+  }, []);
 
   const handleMenuToggle = () => {
     setMenuOpen(!isMenuOpen);

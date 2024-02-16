@@ -21,7 +21,7 @@ export default function Account() {
   const { authenticate } = useAuth();
   const router = useRouter();
   const [connected, setConnected] = useState(false);
-
+ console.log(account)
   useEffect( () => {
     if (localStorage.getItem('connected') === null) {
       router.push('/login');
@@ -31,7 +31,6 @@ export default function Account() {
       authenticate(account?.email);
     }
   }, []);
-
 
   return (
     <>
