@@ -36,37 +36,37 @@ namespace VinStore.Pages
         }
         private bool ValidateFields()
         {
-            bool IsValid = true;
+            bool isValid = true;
             if (string.IsNullOrWhiteSpace(txtUsername.Text))
             {
                 // Afficher un message d'erreur ou prendre d'autres mesures appropriées
                 MessageBox.Show("Veuillez saisir le mail.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-                IsValid = false;
+                isValid = false;
             }
             if (string.IsNullOrWhiteSpace(txtPassword.Password))
             {
                 MessageBox.Show("Veuillez saisir Votre Mot de passe.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-                IsValid = false;
+                isValid = false;
             }
             if (!Regex.IsMatch(txtUsername.Text, @"^[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*@[a-zA-Z0-9]+(?:\.[a-zA-Z0-9]+)*$"))
             {
                 MessageBox.Show("Veuillez saisir une adresse email valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
-                IsValid = false;
+                isValid = false;
             }
-            return IsValid;
+            return isValid;
         }
 
         private async void ConnexionClick(object sender, RoutedEventArgs e)
         {
             if (ValidateFields())
             {
-                var Mail = txtUsername.Text.Trim();
-                var Mdp = txtPassword.Password.Trim();
-                var Employee = await EmployeeService.GetEmployeeByMail(Mail);
-                if (Employee != null && BCrypt.Net.BCrypt.Verify(Mdp, Employee.Password))
+                var mail = txtUsername.Text.Trim();
+                var mdp = txtPassword.Password.Trim();
+                var employee = await EmployeeService.GetEmployeeByMail(mail);
+                if (employee != null && BCrypt.Net.BCrypt.Verify(mdp, employee.Password))
                 {
                     _context.InitializeComponent();
-                    _context.MainFrame.Navigate(new Navbar());
+                    _context.MainFrame.Navigate(new Navbar(_context));
                 }
                 else
                 {

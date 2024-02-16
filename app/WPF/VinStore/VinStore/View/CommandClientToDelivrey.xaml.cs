@@ -25,17 +25,16 @@ namespace VinStore.View
         private Grid _mainGrid;
         public CommandClientToDelivrey(Grid mainGrid)
         {
-
             InitializeComponent();
             _mainGrid = mainGrid;
             LoadCommandClientToValidate();
         }
         private async void SearchCommandClientByDate(object sender, RoutedEventArgs e)
         {
-            var SelectedDateCommand = OrderDate.SelectedDate;
-            if (SelectedDateCommand.HasValue)
+            var selectedDateCommand = OrderDate.SelectedDate;
+            if (selectedDateCommand.HasValue)
             {
-                var commands = await CommandClientService.GetClientOrderByStatus(OrderStatus.VALIDE, SelectedDateCommand);
+                var commands = await CommandClientService.GetClientOrderByStatus(OrderStatus.VALIDE, selectedDateCommand);
                 if (commands != null)
                 {
                     foreach (var order in commands)
@@ -48,18 +47,22 @@ namespace VinStore.View
                     CommandClientToDelivryGrid.ItemsSource = commands;
                 }
             }
+            else
+            {
+                LoadCommandClientToValidate();
+            }
         }
         private async void LoadCommandClientToValidate()
         {
-            var CommandsToValidate = await CommandClientService.GetClientOrderByStatus(OrderStatus.VALIDE);
-            foreach (var order in CommandsToValidate)
+            var commandsToValidate = await CommandClientService.GetClientOrderByStatus(OrderStatus.VALIDE);
+            foreach (var order in commandsToValidate)
             {
                 if (order.ClientOrderLines != null)
                 {
                     order.ProductNames = string.Join(", ", order.ClientOrderLines.Select(line => line.Product?.Name));
                 }
             }
-            CommandClientToDelivryGrid.ItemsSource = CommandsToValidate;
+            CommandClientToDelivryGrid.ItemsSource = commandsToValidate;
         }
         private async void DelivryCommand(object sender, RoutedEventArgs e)
         {
@@ -74,7 +77,7 @@ namespace VinStore.View
                     if (Message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
-                        _mainGrid.Children.Add(new CommandClientToDelivrey(_mainGrid));
+                        _mainGrid.Children.Add(new LivredCommandClient(_mainGrid));
                     }
                 }
                 else
@@ -85,10 +88,10 @@ namespace VinStore.View
         }
         private async void RefuseCommand(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ClientOrder ClientOrder)
+            if (DataContext is ClientOrder clientOrder)
             {
-                ClientOrder.OrderStatus = OrderStatus.REFUSE;              
-                var updateOrder = await CommandClientService.UpdateClientOrder(ClientOrder);
+                clientOrder.OrderStatus = OrderStatus.REFUSE;              
+                var updateOrder = await CommandClientService.UpdateClientOrder(clientOrder);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
                     var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -108,12 +111,12 @@ namespace VinStore.View
         private void ShowCommandDetails_Click(object sender, RoutedEventArgs e)
         {
             var selectedOrderClient = ((FrameworkElement)sender).DataContext as ClientOrder;
-            var DetailScreen = new DetailCommandClient();
+            var detailScreen = new DetailCommandClient();
             if (selectedOrderClient != null)
             {
-                DetailScreen.DetailClientOrder(selectedOrderClient);
+                detailScreen.DetailClientOrder(selectedOrderClient);
                 _mainGrid.Children.Clear();
-                _mainGrid.Children.Add(DetailScreen);
+                _mainGrid.Children.Add(detailScreen);
             }
         }
     }

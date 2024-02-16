@@ -31,31 +31,35 @@ namespace VinStore.View
         }
         private async void LoadOrderProvierToDelivry()
         {
-            var ProviderOrdersToDelivry = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.VALIDE);
-            foreach (var order in ProviderOrdersToDelivry)
+            var providerOrdersToDelivry = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.VALIDE);
+            foreach (var order in providerOrdersToDelivry)
             {
                 if (order.Provider != null && order.ProviderOrderLines != null)
                 {
                     order.ProductNames = string.Join(", ", order.ProviderOrderLines.Select(line => line.Product?.Name));
                 }
             }
-            CommanToDelivryGrid.ItemsSource = ProviderOrdersToDelivry;
+            CommanToDelivryGrid.ItemsSource = providerOrdersToDelivry;
         }
         private async void SearchCommandWithProviderName(object sender, RoutedEventArgs e)
         {
-            var ProviderName = ProviderNameTextBox.Text;
+            var providerName = ProviderNameTextBox.Text;
 
-            if (!string.IsNullOrEmpty(ProviderName))
+            if (!string.IsNullOrEmpty(providerName))
             {
-                var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION, ProviderName);
-                foreach (var order in ProviderOrdersToValidate)
+                var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION, providerName);
+                foreach (var order in providerOrdersToValidate)
                 {
                     if (order.Provider != null && order.ProviderOrderLines != null)
                     {
                         order.ProductNames = string.Join(", ", order.ProviderOrderLines.Select(line => line.Product?.Name));
                     }
                 }
-                CommanToDelivryGrid.ItemsSource = ProviderOrdersToValidate;
+                CommanToDelivryGrid.ItemsSource = providerOrdersToValidate;
+            }
+            else
+            {
+                LoadOrderProvierToDelivry();
             }
         }
         private async void DelivryCommand(object sender, RoutedEventArgs e)
@@ -71,7 +75,7 @@ namespace VinStore.View
                     if (Message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
-                        _mainGrid.Children.Add(new LivredCommandClient(_mainGrid));
+                        _mainGrid.Children.Add(new DelivredCommand(_mainGrid));
                     }
                 }
                 else
@@ -83,12 +87,12 @@ namespace VinStore.View
         private void ShowCommandDetails_Click(object sender, RoutedEventArgs e)
         {
             var selectedOrderProvider = ((FrameworkElement)sender).DataContext as ProviderOrder;
-            var DetailScreen = new DetailCommand();
+            var detailScreen = new DetailCommand();
             if (selectedOrderProvider != null)
             {
-                DetailScreen.DetailProviderOrder(selectedOrderProvider);
+                detailScreen.DetailProviderOrder(selectedOrderProvider);
                 _mainGrid.Children.Clear();
-                _mainGrid.Children.Add(DetailScreen);
+                _mainGrid.Children.Add(detailScreen);
 
             }
         }

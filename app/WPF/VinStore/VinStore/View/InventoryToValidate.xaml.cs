@@ -32,31 +32,34 @@ namespace VinStore.View
         }
         private async void LoadInventoriesToValidate()
         {
-            var InventoriesToValidate = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION);
-            InventoryValidatGrid.ItemsSource = InventoriesToValidate;
+            var inventoriesToValidate = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION);
+            InventoryValidatGrid.ItemsSource = inventoriesToValidate;
         }
         private void EditInventory(object sender, RoutedEventArgs e)
         {
-            var SelectedInventory = ((FrameworkElement)sender).DataContext as Inventory;
+            var selectedInventory = ((FrameworkElement)sender).DataContext as Inventory;
             var EditScreen = new EditInventory(_mainGrid);
-            if (SelectedInventory != null)
+            if (selectedInventory != null)
             {
-                EditScreen.UpdateInventory(SelectedInventory);
+                EditScreen.UpdateInventory(selectedInventory);
                 _mainGrid.Children.Clear();
                 _mainGrid.Children.Add(EditScreen);
-
             }
         }
         private async void SearchInventoryByDate(object sender, RoutedEventArgs e)
         {
-            var SelectedInventoryDate = OrderDate.SelectedDate;
-            if (SelectedInventoryDate.HasValue)
+            var selectedInventoryDate = OrderDate.SelectedDate;
+            if (selectedInventoryDate.HasValue)
             {
-                var inventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION, SelectedInventoryDate);
+                var inventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION, selectedInventoryDate);
                 if (inventories != null)
                 {
                     InventoryValidatGrid.ItemsSource = inventories;
                 }
+            }
+            else
+            {
+                LoadInventoriesToValidate();
             }
         }
         private async void RemoveInventory(object sender, RoutedEventArgs e)
@@ -64,8 +67,8 @@ namespace VinStore.View
             var selectedInventory = ((FrameworkElement)sender).DataContext as Inventory;
             if (selectedInventory != null)
             {
-                var Message = MessageBox.Show($"Êtes-vous sûr de supprimer l'inventaire ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (Message == MessageBoxResult.Yes)
+                var message = MessageBox.Show($"Êtes-vous sûr de supprimer l'inventaire ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (message == MessageBoxResult.Yes)
                 {
                     await InventoryService.DeleteInventory(selectedInventory.Id);
                     LoadInventoriesToValidate();

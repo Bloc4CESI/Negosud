@@ -32,7 +32,6 @@ namespace VinStore.View
             InitializeComponent();
             products = new ObservableCollection<Product>();
             InitializeData(loadAlertProducts);
-            InitScroll();
         }
         private async void InitializeData(bool loadAlertProducts = false)
         {
@@ -50,19 +49,6 @@ namespace VinStore.View
             productDataGrid.ItemsSource = loadedProducts;
             Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
-        private void InitScroll()
-        {
-            double nouvelleHauteur = SystemParameters.PrimaryScreenHeight * 0.75;
-            double nouvelleHauteurDeuxiemeLigne = nouvelleHauteur; // Ajustez selon vos besoins
-                                                                   // Assurez-vous que la nouvelle hauteur de la deuxième ligne est positive
-            if (nouvelleHauteurDeuxiemeLigne < 0)
-            {
-                nouvelleHauteurDeuxiemeLigne = 0;
-            }
-            // Mettez à jour la hauteur de la deuxième ligne
-            MyGrid.RowDefinitions[1].Height = new GridLength(nouvelleHauteurDeuxiemeLigne);
-        }
-
 
         private async void EditProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -103,9 +89,14 @@ namespace VinStore.View
                     string fileName = System.IO.Path.GetFileName(selectedImagePath);
                     string uniqueFileName = System.IO.Path.Combine(DateTime.Now.ToString("yyyyMMddHHmmssfff") + fileName);
                     //string targetFilePath = System.IO.Path.Combine(relativeFolderPath, uniqueFileName);
-
-                    selectedProduct.Image = postImgurImg(selectedImagePath, uniqueFileName);
-
+                    if (!selectedImagePath.StartsWith("http"))
+                    {
+                        selectedProduct.Image = postImgurImg(selectedImagePath, uniqueFileName);
+                    }
+                    else
+                    {
+                        selectedProduct.Image = selectedProduct.Image;
+                    }
                     // Copier l'image sélectionnée vers le dossier cible
                     //File.Copy(selectedImagePath, targetFilePath, true);
                 }
@@ -232,23 +223,24 @@ namespace VinStore.View
             return imgurLink;
         }
 
-        static string UploadImageToImgur(string imagePath, string apiKey, string filename)
+        private string UploadImageToImgur(string imagePath, string apiKey, string filename)
         {
             // Charger le fichier image en bytes
-            byte[] imageData = File.ReadAllBytes(imagePath);
-            // Créer une demande à l'API Imgur
-            var client = new RestClient("https://api.imgur.com/3");
-            var request = new RestRequest("image", Method.Post);
-            // Ajouter l'image en tant que fichier à la demande
-            request.AddFile("image", imageData, filename);
-            // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
-            request.AddHeader("Authorization", $"Client-ID {apiKey}");
-            // Exécuter la demande
-            RestResponse response = client.Execute(request);
-            // Analyser la réponse JSON pour obtenir le lien Imgur
-            dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
-            string imgurLink = jsonResponse.data.link;
-            return imgurLink;
+               
+                byte[] imageData = File.ReadAllBytes(imagePath);
+                // Créer une demande à l'API Imgur
+                var client = new RestClient("https://api.imgur.com/3");
+                var request = new RestRequest("image", Method.Post);
+                // Ajouter l'image en tant que fichier à la demande
+                request.AddFile("image", imageData, filename);
+                // Ajouter l'en-tête d'autorisation avec votre clé API Imgur
+                request.AddHeader("Authorization", $"Client-ID {apiKey}");
+                // Exécuter la demande
+                RestResponse response = client.Execute(request);
+                // Analyser la réponse JSON pour obtenir le lien Imgur
+                dynamic jsonResponse = JsonConvert.DeserializeObject(response.Content);
+                string imgurLink = jsonResponse.data.link;
+                return imgurLink;                           
         }
 
         public async Task LoadAlertProducts()
@@ -279,6 +271,23 @@ namespace VinStore.View
             {
                 MessageBox.Show("Veuillez entrer un nombre décimal valide séparé par un '.' dans le prix.");
                 e.Handled = true; // Bloquer la saisie si ce n'est pas un nombre décimal avec  .
+            }
+        }
+        private async void SearchProductWithName(object sender, RoutedEventArgs e)
+        {
+            var productName = ProductNameTextBox.Text;
+
+            if (!string.IsNullOrEmpty(productName))
+            {
+                var products = await ProductService.GetAllProducts(productName);
+
+                productDataGrid.ItemsSource = products;
+            }
+            else
+            {
+                var products = await ProductService.GetAllProducts();
+
+                productDataGrid.ItemsSource = products;
             }
         }
 

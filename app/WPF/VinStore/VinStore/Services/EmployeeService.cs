@@ -17,9 +17,9 @@ namespace VinStore.Services
         {
             try
             {
-                var Response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Employee/GetByEmail/{mail}");
-                var Employee = JsonConvert.DeserializeObject<Employee>(Response);
-                return Employee;
+                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Employee/GetByEmail/{mail}");
+                var employee = JsonConvert.DeserializeObject<Employee>(response);
+                return employee;
             }
             catch (Exception ex)
             {

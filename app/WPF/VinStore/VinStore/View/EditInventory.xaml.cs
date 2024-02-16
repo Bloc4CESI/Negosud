@@ -44,20 +44,20 @@ namespace VinStore.View
         }
         private async void UpdateInventory(object sender, RoutedEventArgs e)
         {
-            if (DataContext is Inventory Inventory)
+            if (DataContext is Inventory inventory)
             {
-                if (Inventory.InventoryLignes!.Any(InventoryLigne => InventoryLigne.QuantityInventory <= 0 || string.IsNullOrEmpty(InventoryLigne.QuantityInventory.ToString())))
+                if (inventory.InventoryLignes!.Any(InventoryLigne => InventoryLigne.QuantityInventory <= 0 || string.IsNullOrEmpty(InventoryLigne.QuantityInventory.ToString())))
                 {
                     MessageBox.Show("Veuillez entrer une quantité valide (supérieure à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
-                Inventory.StatusInventory = Inventory.InventoryEnum.VALIDE;
-                var UpdateInventory = await InventoryService.UpdateInventory(Inventory);
-                if (!string.IsNullOrEmpty(UpdateInventory))
+                inventory.StatusInventory = Inventory.InventoryEnum.VALIDE;
+                var updateInventory = await InventoryService.UpdateInventory(inventory);
+                if (!string.IsNullOrEmpty(updateInventory))
                 {
-                    var Message = MessageBox.Show(UpdateInventory, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    if (Message == MessageBoxResult.OK)
+                    var message = MessageBox.Show(updateInventory, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
                         _mainGrid.Children.Add(new ValidateInventory(_mainGrid));
@@ -71,15 +71,15 @@ namespace VinStore.View
         }
         private async void RefuseInventory(object sender, RoutedEventArgs e)
         {
-            if (DataContext is Inventory Inventory)
+            if (DataContext is Inventory inventory)
             {
-                if (Inventory.InventoryLignes!.Any(InventoryLigne => InventoryLigne.QuantityInventory <= 0 || string.IsNullOrEmpty(InventoryLigne.QuantityInventory.ToString())))
+                if (inventory.InventoryLignes!.Any(InventoryLigne => string.IsNullOrEmpty(InventoryLigne.QuantityInventory.ToString())))
                 {
-                    MessageBox.Show("Veuillez entrer une quantité valide (supérieure à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Veuillez entrer une quantité valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                Inventory.StatusInventory = Inventory.InventoryEnum.REFUSE;
-            var UpdatedInventory = await InventoryService.UpdateInventory(Inventory);
+                inventory.StatusInventory = Inventory.InventoryEnum.REFUSE;
+            var UpdatedInventory = await InventoryService.UpdateInventory(inventory);
                 if (!string.IsNullOrEmpty(UpdatedInventory))
                 {
                     var Message = MessageBox.Show(UpdatedInventory, "Information", MessageBoxButton.OK, MessageBoxImage.Information);

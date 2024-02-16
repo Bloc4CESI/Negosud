@@ -36,7 +36,7 @@
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="BottleWineOutline" Foreground="White" Margin="0,0,8,0" />
-                            <TextBlock Text="Article" Foreground="White" />
+                            <TextBlock Text="Produit" Foreground="White" />
                         </StackPanel>
                     </MenuItem.Header>
                     <MenuItem Header="Ajouter un produit" Foreground="Black" Click="AddProduct_Click"/>
@@ -64,7 +64,7 @@
                     <MenuItem.Header  >
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="CartArrowUp" Foreground="White" Margin="0,0,8,0" />
-                            <TextBlock Text="Commande Fournisseur" Foreground="White"/>
+                            <TextBlock Text="Commandes Fournisseurs" Foreground="White"/>
                         </StackPanel>
                     </MenuItem.Header>
                     <MenuItem Header="Création Commande"  Click="AddProviderOrder"  Foreground="Black"/>

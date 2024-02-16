@@ -19,22 +19,22 @@ namespace ApiNegosud.Controllers
         }
 
         [HttpGet("GetOrdersByClient/{ClientId}")]
-        public IActionResult GetOrdersByClient(int ClientId)
+        public IActionResult GetOrdersByClient(int clientId)
         {
             try
             {           
-                var OrdersClient = _context.ClientOrder.Include(co => co.ClientOrderLines!)
+                var ordersClient = _context.ClientOrder.Include(co => co.ClientOrderLines!)
                     .ThenInclude(line => line.Product)
                            .ThenInclude(p => p.Stock)
-                    .Where(co => co.ClientId == ClientId).ToList();
+                    .Where(co => co.ClientId == clientId).ToList();
 
-                if (OrdersClient == null)
+                if (ordersClient == null)
                 {
                     return NotFound($"Aucune commande trouvée pour le client.");
                 }
                 else
                 {
-                    return Ok(OrdersClient);
+                    return Ok(ordersClient);
                 }
             }
             catch (Exception ex)
@@ -43,30 +43,30 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("Order/{ClientId}")]
-        public IActionResult Order(int ClientId)
+        public IActionResult Order(int clientId)
         {
             try
             {
-                var ClientOrder = _context.ClientOrder
+                var clientOrder = _context.ClientOrder
                     .Include(co => co.ClientOrderLines)
-                    .SingleOrDefault(co => co.ClientId == ClientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
+                    .SingleOrDefault(co => co.ClientId == clientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
 
-                if (ClientOrder == null)
+                if (clientOrder == null)
                 {
-                    return NotFound($"Aucune commande trouvée pour le client avec l'ID {ClientId}.");
+                    return NotFound($"Aucune commande trouvée pour le client avec l'ID {clientId}.");
                 }
 
                 // mettre à jour le prix total de la commande en fonction des lignes de commande
-                ClientOrder.Price = ClientOrder.ClientOrderLines.Sum(col => col.Price);
+                clientOrder.Price = clientOrder.ClientOrderLines.Sum(col => col.Price);
 
                 // Changer le statut de la commande à "VALIDE" après avoir commandé
-                ClientOrder.OrderStatus = OrderStatus.VALIDE;
+                clientOrder.OrderStatus = OrderStatus.VALIDE;
                 // Sauvegarder les changements dans la base de données
                 _context.SaveChanges();
                 // Utiliser un Dictionary pour stocker les informations de quantité manquante par fournisseur
                 var quantityMissingByProvider = new Dictionary<int, (int QuantityMissing, List<int> ProductIds)>();
                 // Mettre à jour la quantité des produits dans le stock
-                foreach (var clientOrderLine in ClientOrder.ClientOrderLines)
+                foreach (var clientOrderLine in clientOrder.ClientOrderLines)
                 {
                     var product = _context.Product
                         .Include(p => p.Stock)
@@ -193,27 +193,27 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateOrder(ClientOrder UpdatedClientOrder)
+        public IActionResult UpdateOrder(ClientOrder updatedClientOrder)
         {
             try
             {
                 // Rechercher la commande existante par ID
                 var existingOrder = _context.ClientOrder
                     .Include(co => co.ClientOrderLines)
-                    .FirstOrDefault(co => co.Id == UpdatedClientOrder.Id);
+                    .FirstOrDefault(co => co.Id == updatedClientOrder.Id);
 
                 if (existingOrder == null)
                 {
                     // Si aucune commande existante n'est trouvée avec cet ID, retourner un NotFound
-                    return NotFound($"Commande avec ID {UpdatedClientOrder.Id} non trouvée.");
+                    return NotFound($"Commande avec ID {updatedClientOrder.Id} non trouvée.");
                 }
 
                 // Mettre à jour les champs de la commande existante avec ceux de UpdatedClientOrder
-                existingOrder.OrderStatus = UpdatedClientOrder.OrderStatus;
-                existingOrder.Price = UpdatedClientOrder.Price;
-                if (UpdatedClientOrder.ClientOrderLines != null)
+                existingOrder.OrderStatus = updatedClientOrder.OrderStatus;
+                existingOrder.Price = updatedClientOrder.Price;
+                if (updatedClientOrder.ClientOrderLines != null)
                 {
-                    foreach (var updatedLine in UpdatedClientOrder.ClientOrderLines)
+                    foreach (var updatedLine in updatedClientOrder.ClientOrderLines)
                     {
                         var existingLine = existingOrder.ClientOrderLines!
                             .FirstOrDefault(col => col.Id == updatedLine.Id);
@@ -229,7 +229,7 @@ namespace ApiNegosud.Controllers
                 }
                 _context.SaveChanges();
 
-                return Ok($"Commande avec ID {UpdatedClientOrder.Id} mise à jour avec succès.");
+                return Ok($"Commande avec ID {updatedClientOrder.Id} mise à jour avec succès.");
             }
             catch (Exception ex)
             {

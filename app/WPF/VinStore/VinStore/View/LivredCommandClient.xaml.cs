@@ -31,10 +31,10 @@ namespace VinStore.View
         }
         private async void SearchCommandClientByDate(object sender, RoutedEventArgs e)
         {
-            var SelectedDateCommand = OrderDate.SelectedDate;
-            if (SelectedDateCommand.HasValue)
+            var selectedDateCommand = OrderDate.SelectedDate;
+            if (selectedDateCommand.HasValue)
             {
-                var commands = await CommandClientService.GetClientOrderByStatus(OrderStatus.LIVRE, SelectedDateCommand);
+                var commands = await CommandClientService.GetClientOrderByStatus(OrderStatus.LIVRE, selectedDateCommand);
                 if (commands != null)
                 {
                     foreach (var order in commands)
@@ -47,29 +47,33 @@ namespace VinStore.View
                     LivredCommandClientGrid.ItemsSource = commands;
                 }
             }
+            else
+            {
+                LoadLivredCommandClient();
+            }
         }
         private async void LoadLivredCommandClient()
         {
-            var LivredCommands = await CommandClientService.GetClientOrderByStatus(OrderStatus.LIVRE);
-            foreach (var order in LivredCommands)
+            var livredCommands = await CommandClientService.GetClientOrderByStatus(OrderStatus.LIVRE);
+            foreach (var order in livredCommands)
             {
                 if (order.ClientOrderLines != null)
                 {
                     order.ProductNames = string.Join(", ", order.ClientOrderLines.Select(line => line.Product?.Name));
                 }
             }
-            LivredCommandClientGrid.ItemsSource = LivredCommands;
+            LivredCommandClientGrid.ItemsSource = livredCommands;
         }
 
         private void ShowCommandDetails_Click(object sender, RoutedEventArgs e)
         {
             var selectedOrderClient = ((FrameworkElement)sender).DataContext as ClientOrder;
-            var DetailScreen = new DetailCommandClient();
+            var detailScreen = new DetailCommandClient();
             if (selectedOrderClient != null)
             {
-                DetailScreen.DetailClientOrder(selectedOrderClient);
+                detailScreen.DetailClientOrder(selectedOrderClient);
                 _mainGrid.Children.Clear();
-                _mainGrid.Children.Add(DetailScreen);
+                _mainGrid.Children.Add(detailScreen);
             }
         }
     }

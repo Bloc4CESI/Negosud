@@ -26,8 +26,6 @@ namespace VinStore.View
             OrderDate.SelectedDate= DateTime.Now;
             LoadProviders();
             DeleteProduct0.Visibility= Visibility.Collapsed;
-            
-
         }
         private async void LoadProviders()
         {
@@ -36,7 +34,6 @@ namespace VinStore.View
                 var providers = await ProviderService.GetProviders();
                 ProvidersName.ItemsSource= providers;
                 ProvidersName.DisplayMemberPath = "Name";
-                
             }
             catch (Exception ex)
             {
@@ -54,7 +51,7 @@ namespace VinStore.View
             int currentRow = ProductLigneGrid.RowDefinitions.Count - 1;
 
             // Ajouter les contrôles à la nouvelle ligne
-            ComboBox ComboxProduct = new ComboBox
+            ComboBox comboxProduct = new ComboBox
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
@@ -63,27 +60,27 @@ namespace VinStore.View
                 Name = "ProductsComboBox_" + productComboBoxIndex
             };
             // Enregistrez le nom du ComboBox
-            RegisterName(ComboxProduct.Name, ComboxProduct);
-            Grid.SetColumn(ComboxProduct, 0);
-            Grid.SetColumnSpan(ComboxProduct, 2);
-            Grid.SetRow(ComboxProduct, currentRow);
+            RegisterName(comboxProduct.Name, comboxProduct);
+            Grid.SetColumn(comboxProduct, 0);
+            Grid.SetColumnSpan(comboxProduct, 2);
+            Grid.SetRow(comboxProduct, currentRow);
 
             if (ProvidersName.SelectedItem is Provider selectedProvider)
             {
-                ComboxProduct.ItemsSource = await ProductService.GetProductByProvider(selectedProvider.Id);
-                ComboxProduct.DisplayMemberPath = "Name";
+                comboxProduct.ItemsSource = await ProductService.GetProductByProvider(selectedProvider.Id);
+                comboxProduct.DisplayMemberPath = "Name";
             }
             // Configurer les propriétés Material Design
-            HintAssist.SetHint(ComboxProduct, "Nom de l'article");
-            TextFieldAssist.SetUnderlineBrush(ComboxProduct, Brushes.Black);
-            HintAssist.SetHintOpacity(ComboxProduct, 0.26);
-            HintAssist.SetForeground(ComboxProduct, Brushes.Black);
-            ComboxProduct.MaxHeight = 50;
-            ComboxProduct.Foreground = Brushes.Black;
-            ComboxProduct.IsEditable = true;
+            HintAssist.SetHint(comboxProduct, "Nom de l'article");
+            TextFieldAssist.SetUnderlineBrush(comboxProduct, Brushes.Black);
+            HintAssist.SetHintOpacity(comboxProduct, 0.26);
+            HintAssist.SetForeground(comboxProduct, Brushes.Black);
+            comboxProduct.MaxHeight = 50;
+            comboxProduct.Foreground = Brushes.Black;
+            comboxProduct.IsEditable = true;
             // ajouter un evennt listener à chaque combox 
-            ComboxProduct.SelectionChanged += ProductNewComboBox_SelectionChanged;
-            TextBox TextBoxQuantityStock = new TextBox
+            comboxProduct.SelectionChanged += ProductNewComboBox_SelectionChanged;
+            TextBox textBoxQuantityStock = new TextBox
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
@@ -92,17 +89,17 @@ namespace VinStore.View
                 Style = (Style)FindResource("MaterialDesignFilledTextBox"),
                 Name = "StockQuantity" + productComboBoxIndex
             };
-            Grid.SetColumn(TextBoxQuantityStock, 2);
-            Grid.SetRow(TextBoxQuantityStock, currentRow);
-            RegisterName(TextBoxQuantityStock.Name, TextBoxQuantityStock);
-            HintAssist.SetHint(TextBoxQuantityStock, "Quantité stock");
-            TextFieldAssist.SetUnderlineBrush(TextBoxQuantityStock, Brushes.Black);
-            HintAssist.SetForeground(TextBoxQuantityStock, Brushes.Black);
-            HintAssist.SetHintOpacity(TextBoxQuantityStock, 0.26);
-            TextBoxQuantityStock.MaxHeight = 50;
-            TextBoxQuantityStock.Foreground = Brushes.Black;
+            Grid.SetColumn(textBoxQuantityStock, 2);
+            Grid.SetRow(textBoxQuantityStock, currentRow);
+            RegisterName(textBoxQuantityStock.Name, textBoxQuantityStock);
+            HintAssist.SetHint(textBoxQuantityStock, "Quantité stock");
+            TextFieldAssist.SetUnderlineBrush(textBoxQuantityStock, Brushes.Black);
+            HintAssist.SetForeground(textBoxQuantityStock, Brushes.Black);
+            HintAssist.SetHintOpacity(textBoxQuantityStock, 0.26);
+            textBoxQuantityStock.MaxHeight = 50;
+            textBoxQuantityStock.Foreground = Brushes.Black;
 
-            TextBox TextBoxQuantityLigne = new TextBox
+            TextBox textBoxQuantityLigne = new TextBox
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
@@ -110,19 +107,19 @@ namespace VinStore.View
                 Style = (Style)FindResource("MaterialDesignFilledTextBox"),
                 Name = "QuantityLigneOrder" + productComboBoxIndex
             };
-            TextBoxQuantityLigne.PreviewTextInput += TextBox_IntegerInput;
-            TextBoxQuantityLigne.TextChanged += TextBox_QuantityChanged;
-            Grid.SetColumn(TextBoxQuantityLigne, 3);
-            Grid.SetRow(TextBoxQuantityLigne, currentRow);
-            RegisterName(TextBoxQuantityLigne.Name, TextBoxQuantityLigne);
-            HintAssist.SetHint(TextBoxQuantityLigne, "Quantité à commander");
-            TextFieldAssist.SetUnderlineBrush(TextBoxQuantityLigne, Brushes.Black);
-            HintAssist.SetHintOpacity(TextBoxQuantityLigne, 0.26);
-            HintAssist.SetForeground(TextBoxQuantityLigne, Brushes.Black);
-            TextBoxQuantityLigne.MaxHeight = 50;
-            TextBoxQuantityLigne.Foreground = Brushes.Black;
+            textBoxQuantityLigne.PreviewTextInput += TextBox_IntegerInput;
+            textBoxQuantityLigne.TextChanged += TextBox_QuantityChanged;
+            Grid.SetColumn(textBoxQuantityLigne, 3);
+            Grid.SetRow(textBoxQuantityLigne, currentRow);
+            RegisterName(textBoxQuantityLigne.Name, textBoxQuantityLigne);
+            HintAssist.SetHint(textBoxQuantityLigne, "Quantité à commander");
+            TextFieldAssist.SetUnderlineBrush(textBoxQuantityLigne, Brushes.Black);
+            HintAssist.SetHintOpacity(textBoxQuantityLigne, 0.26);
+            HintAssist.SetForeground(textBoxQuantityLigne, Brushes.Black);
+            textBoxQuantityLigne.MaxHeight = 50;
+            textBoxQuantityLigne.Foreground = Brushes.Black;
 
-            TextBox TextBoxPriceLigne = new TextBox
+            TextBox textBoxPriceLigne = new TextBox
             {
                 Margin = new Thickness(20),
                 Background = Brushes.White,
@@ -131,19 +128,19 @@ namespace VinStore.View
                 Name = "PriceLigneOrder" + productComboBoxIndex
 
             };
-            TextBoxPriceLigne.PreviewTextInput += TextBox_DecimalInput;
-            TextBoxPriceLigne.TextChanged += TextBox_PriceChanged;
-            Grid.SetColumn(TextBoxPriceLigne, 4);
-            Grid.SetRow(TextBoxPriceLigne, currentRow);
-            RegisterName(TextBoxPriceLigne.Name, TextBoxPriceLigne);
-            HintAssist.SetHint(TextBoxPriceLigne, "Prix article unitaire");
-            TextFieldAssist.SetUnderlineBrush(TextBoxPriceLigne, Brushes.Black);
-            HintAssist.SetHintOpacity(TextBoxPriceLigne, 0.26);
-            HintAssist.SetForeground(TextBoxPriceLigne, Brushes.Black);
-            TextBoxPriceLigne.MaxHeight = 50;
-            TextBoxPriceLigne.Foreground = Brushes.Black;
+            textBoxPriceLigne.PreviewTextInput += TextBox_DecimalInput;
+            textBoxPriceLigne.TextChanged += TextBox_PriceChanged;
+            Grid.SetColumn(textBoxPriceLigne, 4);
+            Grid.SetRow(textBoxPriceLigne, currentRow);
+            RegisterName(textBoxPriceLigne.Name, textBoxPriceLigne);
+            HintAssist.SetHint(textBoxPriceLigne, "Prix article unitaire");
+            TextFieldAssist.SetUnderlineBrush(textBoxPriceLigne, Brushes.Black);
+            HintAssist.SetHintOpacity(textBoxPriceLigne, 0.26);
+            HintAssist.SetForeground(textBoxPriceLigne, Brushes.Black);
+            textBoxPriceLigne.MaxHeight = 50;
+            textBoxPriceLigne.Foreground = Brushes.Black;
 
-            TextBox TextBoxPriceLigneTotal = new TextBox
+            TextBox textBoxPriceLigneTotal = new TextBox
             {
                 Margin = new Thickness(20),
                 IsEnabled = false,
@@ -153,15 +150,15 @@ namespace VinStore.View
                 Name = "PriceTotalLigne" + productComboBoxIndex
 
             };
-            Grid.SetColumn(TextBoxPriceLigneTotal, 5);
-            Grid.SetRow(TextBoxPriceLigneTotal, currentRow);
-            RegisterName(TextBoxPriceLigneTotal.Name, TextBoxPriceLigneTotal);
-            HintAssist.SetHint(TextBoxPriceLigneTotal, "Prix article total");
-            TextFieldAssist.SetUnderlineBrush(TextBoxPriceLigneTotal, Brushes.Black);
-            HintAssist.SetHintOpacity(TextBoxPriceLigneTotal, 0.26);
-            HintAssist.SetForeground(TextBoxPriceLigneTotal, Brushes.Black);
-            TextBoxPriceLigneTotal.MaxHeight = 50;
-            TextBoxPriceLigneTotal.Foreground = Brushes.Black;
+            Grid.SetColumn(textBoxPriceLigneTotal, 5);
+            Grid.SetRow(textBoxPriceLigneTotal, currentRow);
+            RegisterName(textBoxPriceLigneTotal.Name, textBoxPriceLigneTotal);
+            HintAssist.SetHint(textBoxPriceLigneTotal, "Prix article total");
+            TextFieldAssist.SetUnderlineBrush(textBoxPriceLigneTotal, Brushes.Black);
+            HintAssist.SetHintOpacity(textBoxPriceLigneTotal, 0.26);
+            HintAssist.SetForeground(textBoxPriceLigneTotal, Brushes.Black);
+            textBoxPriceLigneTotal.MaxHeight = 50;
+            textBoxPriceLigneTotal.Foreground = Brushes.Black;
 
             Button addButton = new Button
             {
@@ -188,11 +185,11 @@ namespace VinStore.View
             Grid.SetColumn(deleteButton, 7);
             Grid.SetRow(deleteButton, currentRow);
             deleteButton.Click += DeleteProductRow;
-            ProductLigneGrid.Children.Add(ComboxProduct);
-            ProductLigneGrid.Children.Add(TextBoxQuantityStock);
-            ProductLigneGrid.Children.Add(TextBoxQuantityLigne);
-            ProductLigneGrid.Children.Add(TextBoxPriceLigne);
-            ProductLigneGrid.Children.Add(TextBoxPriceLigneTotal);
+            ProductLigneGrid.Children.Add(comboxProduct);
+            ProductLigneGrid.Children.Add(textBoxQuantityStock);
+            ProductLigneGrid.Children.Add(textBoxQuantityLigne);
+            ProductLigneGrid.Children.Add(textBoxPriceLigne);
+            ProductLigneGrid.Children.Add(textBoxPriceLigneTotal);
             ProductLigneGrid.Children.Add(addButton);
             ProductLigneGrid.Children.Add(deleteButton);
             productComboBoxIndex++;
@@ -227,36 +224,35 @@ namespace VinStore.View
         }
         private void TotalCommand()
         {
-            decimal TotalPrice = 0;
+            decimal totalPrice = 0;
 
             for (int i = 0; i < ProductLigneGrid.RowDefinitions.Count; i++)
             {
-                var QuantityTextBox = ProductLigneGrid.FindName("QuantityLigneOrder" + i) as TextBox;
-                var PriceTextBox = ProductLigneGrid.FindName("PriceLigneOrder" + i) as TextBox;
-                var PriceTextBoxLigne = ProductLigneGrid.FindName("PriceTotalLigne" + i) as TextBox;
-
-                if (QuantityTextBox != null && PriceTextBox != null)
+                var quantityTextBox = ProductLigneGrid.FindName("QuantityLigneOrder" + i) as TextBox;
+                var priceTextBox = ProductLigneGrid.FindName("PriceLigneOrder" + i) as TextBox;
+                var priceTextBoxLigne = ProductLigneGrid.FindName("PriceTotalLigne" + i) as TextBox;
+                if (quantityTextBox != null && priceTextBox != null)
                 {
                     // Essayez d'abord avec la virgule comme séparateur décimal
-                    if (int.TryParse(QuantityTextBox.Text, out var QuantityLigne) &&
-                        Decimal.TryParse(PriceTextBox.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out var PriceLigne))
+                    if (int.TryParse(quantityTextBox.Text, out var quantityLigne) &&
+                        Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.CurrentCulture, out var priceLigne))
                     {
-                        decimal TotalPriceLigne = QuantityLigne * PriceLigne;
-                        PriceTextBoxLigne.Text = TotalPriceLigne.ToString();
-                        TotalPrice += TotalPriceLigne;
+                        decimal totalPriceLigne = quantityLigne * priceLigne;
+                        priceTextBoxLigne!.Text = totalPriceLigne.ToString();
+                        totalPrice += totalPriceLigne;
                     }
                     // Ensuite, essayez avec le point comme séparateur décimal
-                    else if (int.TryParse(QuantityTextBox.Text, out QuantityLigne) &&
-                             Decimal.TryParse(PriceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out PriceLigne))
+                    else if (int.TryParse(quantityTextBox.Text, out quantityLigne) &&
+                             Decimal.TryParse(priceTextBox.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out priceLigne))
                     {
-                        decimal TotalPriceLigne = QuantityLigne * PriceLigne;
-                        PriceTextBoxLigne.Text = TotalPriceLigne.ToString();
-                        TotalPrice += TotalPriceLigne;
+                        decimal totalPriceLigne = quantityLigne * priceLigne;
+                        priceTextBoxLigne!.Text = totalPriceLigne.ToString();
+                        totalPrice += totalPriceLigne;
                     }
                 }
             }
 
-            TotalOrder.Text = $"Total commande: {TotalPrice}";
+            TotalOrder.Text = $"Total commande: {totalPrice}";
         }
         private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)
         {
@@ -293,16 +289,15 @@ namespace VinStore.View
                 return;
             }
             if (ProvidersName.SelectedItem is Provider selectedProvider)
-            {
-                
-                var Products = await ProductService.GetProductByProvider(selectedProvider.Id);
+            {                
+                var products = await ProductService.GetProductByProvider(selectedProvider.Id);
                 for (int i = 0; i < productComboBoxIndex; i++)
                 {
                     var comboBoxName = "ProductsComboBox_" + i;
                     ComboBox? existingComboBox = ProductLigneGrid.FindName(comboBoxName) as ComboBox;
                     if (existingComboBox != null)
                     {
-                        existingComboBox.ItemsSource = Products;
+                        existingComboBox.ItemsSource = products;
                         existingComboBox.DisplayMemberPath = "Name";
                     }
                 }
@@ -311,38 +306,38 @@ namespace VinStore.View
         }
         private async void ProductNewComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (sender is ComboBox ComboBox)
+            if (sender is ComboBox comboBox)
             {
-                if (ComboBox.SelectedItem is Product selectedProduct)
+                if (comboBox.SelectedItem is Product selectedProduct)
                 {
-                    var ProductDetails = await ProductService.GetProductById(selectedProduct.Id);
+                    var productDetails = await ProductService.GetProductById(selectedProduct.Id);
                     // Trouver le nom du TextBox associé à cette ComboBox
-                    var TextBoxName = "StockQuantity" + ComboBox.Name.Substring("ProductsComboBox_".Length);
-                    var PriceProduct = "PriceLigneOrder" + ComboBox.Name.Substring("ProductsComboBox_".Length);
+                    var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
                     // Utiliser FindName pour récupérer le TextBox quantité + prix
-                    TextBox? QuantityTextBox = ProductLigneGrid.FindName(TextBoxName) as TextBox;
-                    TextBox? PriceTextBox = ProductLigneGrid.FindName(PriceProduct) as TextBox;
-                    if (QuantityTextBox != null && PriceTextBox != null)
+                    TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
+                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
+                    if (quantityTextBox != null && priceTextBox != null)
                     {
                         // Mettre à jour le texte du TextBox
-                        QuantityTextBox.Text = ProductDetails.Stock?.Quantity.ToString() ?? "N/A";
-                        PriceTextBox.Text= Math.Round((ProductDetails.Price/ 3),2).ToString();
+                        quantityTextBox.Text = productDetails.Stock?.Quantity.ToString() ?? "N/A";
+                        priceTextBox.Text= Math.Round((productDetails.Price/ 3),2).ToString();
                     }
                 }
                 else
                 {
                     // Si aucun article n'est sélectionné, effacer la valeur du TextBox
-                    var TextBoxName = "StockQuantity" + ComboBox.Name.Substring("ProductsComboBox_".Length);
-                    var PriceProduct = "PriceLigneOrder" + ComboBox.Name.Substring("ProductsComboBox_".Length);
-                    var PriceProductLigne = "PriceTotalLigne" + ComboBox.Name.Substring("ProductsComboBox_".Length);
-                    TextBox? QuantityTextBox = ProductLigneGrid.FindName(TextBoxName) as TextBox;
-                    TextBox? PriceTextBox = ProductLigneGrid.FindName(PriceProduct) as TextBox;
-                    TextBox? PriceLigneTextBox = ProductLigneGrid.FindName(PriceProductLigne) as TextBox;
-                    if (QuantityTextBox != null && PriceTextBox != null)
+                    var textBoxName = "StockQuantity" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    var priceProduct = "PriceLigneOrder" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    var priceProductLigne = "PriceTotalLigne" + comboBox.Name.Substring("ProductsComboBox_".Length);
+                    TextBox? quantityTextBox = ProductLigneGrid.FindName(textBoxName) as TextBox;
+                    TextBox? priceTextBox = ProductLigneGrid.FindName(priceProduct) as TextBox;
+                    TextBox? priceLigneTextBox = ProductLigneGrid.FindName(priceProductLigne) as TextBox;
+                    if (quantityTextBox != null && priceTextBox != null)
                     {
-                        QuantityTextBox.Text = string.Empty;
-                        PriceTextBox.Text =string.Empty;
-                        PriceLigneTextBox.Text = string.Empty;
+                        quantityTextBox.Text = string.Empty;
+                        priceTextBox.Text =string.Empty;
+                        priceLigneTextBox.Text = string.Empty;
                     }
                 }
             }
@@ -418,7 +413,6 @@ namespace VinStore.View
                         {
                             selectedProductId = selectedProduct.Id;
                         }
-
                     }
                     // Vérifier si le produit existe déjà dans la liste
                     if (orderDataList.Any(data => (int)data["ProductId"] == selectedProductId))
@@ -522,8 +516,8 @@ namespace VinStore.View
                 var updateOrder = await CommandProviderService.UpdateProviderOrder(createdOrder);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
-                    var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    if (Message == MessageBoxResult.OK)
+                    var message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
                         _mainGrid.Children.Add(new ProviderOrderToDelivery(_mainGrid));

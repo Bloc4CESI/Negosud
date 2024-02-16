@@ -31,11 +31,11 @@ namespace VinStore.View
             _mainGrid = mainGrid;
             DataContext = new ProviderOrder();
         }
-        public void UpdateProviderOrder(ProviderOrder ProviderOrder)
+        public void UpdateProviderOrder(ProviderOrder providerOrder)
         {
-            DataContext = ProviderOrder;
+            DataContext = providerOrder;
   
-            TotalOrder.Text = $"Total commande: {ProviderOrder.Price}";
+            TotalOrder.Text = $"Total commande: {providerOrder.Price}";
         }
         private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)
         {
@@ -77,7 +77,6 @@ namespace VinStore.View
                 }
             }
         }
-
         private void TextBox_PriceChanged(object sender, RoutedEventArgs e)
         {
             if (sender is TextBox priceTextBox)
@@ -112,39 +111,39 @@ namespace VinStore.View
         }
         private void TotalCommand()
         {
-            decimal TotalPrice = 0;
+            decimal totalPrice = 0;
 
             foreach (ProviderOrderLine orderLine in ProviderOrderLinesDataGrid.ItemsSource)
             {
                 decimal TotalPriceLigne = orderLine.Quantity * orderLine.Price;
-                TotalPrice += TotalPriceLigne;
+                totalPrice += TotalPriceLigne;
             }
-            TotalOrder.Text = $"Total commande: {TotalPrice}";
+            TotalOrder.Text = $"Total commande: {totalPrice}";
         }
 
         private async void UpdateCommandOrder(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ProviderOrder ProviderOrder)
+            if (DataContext is ProviderOrder providerOrder)
             {
-                if (ProviderOrder.ProviderOrderLines!.Any(orderLine => orderLine.Quantity <= 0 || string.IsNullOrEmpty(orderLine.Quantity.ToString())))
+                if (providerOrder.ProviderOrderLines!.Any(orderLine => orderLine.Quantity <= 0 || string.IsNullOrEmpty(orderLine.Quantity.ToString())))
                 {
                     MessageBox.Show("Veuillez entrer une quantité valide (supérieure à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 // Vérifier que le prix est valide
-                if (ProviderOrder.ProviderOrderLines!.Any(orderLine => orderLine.Price <= 0 || string.IsNullOrEmpty(orderLine.Price.ToString())))
+                if (providerOrder.ProviderOrderLines!.Any(orderLine => orderLine.Price <= 0 || string.IsNullOrEmpty(orderLine.Price.ToString())))
                 {
                     MessageBox.Show("Veuillez entrer un prix valide (supérieur à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                ProviderOrder.ProviderOrderStatus = ProviderOrderStatus.VALIDE;
-                ProviderOrder.Price = ProviderOrder.ProviderOrderLines!.Sum(orderLine => orderLine.Quantity * orderLine.Price);
-                var updateOrder = await CommandProviderService.UpdateProviderOrder(ProviderOrder);
+                providerOrder.ProviderOrderStatus = ProviderOrderStatus.VALIDE;
+                providerOrder.Price = providerOrder.ProviderOrderLines!.Sum(orderLine => orderLine.Quantity * orderLine.Price);
+                var updateOrder = await CommandProviderService.UpdateProviderOrder(providerOrder);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
-                    var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                    if (Message == MessageBoxResult.OK)
+                    var message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
                         _mainGrid.Children.Add(new ProviderOrderToDelivery(_mainGrid));
@@ -158,28 +157,28 @@ namespace VinStore.View
         }
         private async void RefuseOrderCommand(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ProviderOrder ProviderOrder)
+            if (DataContext is ProviderOrder providerOrder)
             {
-                if (ProviderOrder.ProviderOrderLines!.Any(orderLine => orderLine.Quantity <= 0 || string.IsNullOrEmpty(orderLine.Quantity.ToString())))
+                if (providerOrder.ProviderOrderLines!.Any(orderLine => orderLine.Quantity <= 0 || string.IsNullOrEmpty(orderLine.Quantity.ToString())))
                 {
                     MessageBox.Show("Veuillez entrer une quantité valide (supérieure à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
                 // Vérifier que le prix est valide
-                if (ProviderOrder.ProviderOrderLines!.Any(orderLine => orderLine.Price <= 0 || string.IsNullOrEmpty(orderLine.Price.ToString())))
+                if (providerOrder.ProviderOrderLines!.Any(orderLine => orderLine.Price <= 0 || string.IsNullOrEmpty(orderLine.Price.ToString())))
                 {
                     MessageBox.Show("Veuillez entrer un prix valide (supérieur à 0).", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                ProviderOrder.ProviderOrderStatus = ProviderOrderStatus.REFUSE;
-                ProviderOrder.Price = ProviderOrder.ProviderOrderLines!.Sum(orderLine => orderLine.Quantity * orderLine.Price);
-                var updateOrder = await CommandProviderService.UpdateProviderOrder(ProviderOrder);
+                providerOrder.ProviderOrderStatus = ProviderOrderStatus.REFUSE;
+                providerOrder.Price = providerOrder.ProviderOrderLines!.Sum(orderLine => orderLine.Quantity * orderLine.Price);
+                var updateOrder = await CommandProviderService.UpdateProviderOrder(providerOrder);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
-                    var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                    var message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    if (Message == MessageBoxResult.OK)
+                    if (message == MessageBoxResult.OK)
                     {
                         _mainGrid.Children.Clear();
                         _mainGrid.Children.Add(new RefusedOrderProvider(_mainGrid));

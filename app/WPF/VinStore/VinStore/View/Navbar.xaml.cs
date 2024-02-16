@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ApiNegosud.Models;
+using VinStore.Pages;
 using VinStore.Services;
 using static ApiNegosud.Models.Inventory;
 
@@ -23,7 +24,8 @@ namespace VinStore.View
     /// </summary>
     public partial class Navbar : UserControl
     {
-        public Navbar()
+        MainWindow _context;
+        public Navbar(MainWindow context)
         {
             InitializeComponent();
             LoadOrderProvierToValidate();
@@ -37,7 +39,7 @@ namespace VinStore.View
             LoadValidatedCommandClient();
             LoadDelivredCommandClient();
             GridMain.Children.Add(new Home(GridMain));
-
+            _context = context;
         }
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         { 
@@ -125,7 +127,7 @@ namespace VinStore.View
         
         private void DeconnxionClick(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            _context.MainFrame.Navigate(new LogIn(_context));
         }
         private void HomePageClick(object sender, RoutedEventArgs e)
         {

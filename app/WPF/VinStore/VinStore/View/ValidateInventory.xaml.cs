@@ -32,30 +32,34 @@ namespace VinStore.View
         }
         private async void LoadValidateInventory()
         {
-            var ValidatedInventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.VALIDE);
-            InventoryValidatGrid.ItemsSource = ValidatedInventories;
+            var calidatedInventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.VALIDE);
+            InventoryValidatGrid.ItemsSource = calidatedInventories;
         }
         private async void SearchInventoryByDate(object sender, RoutedEventArgs e)
         {
-            var SelectedInventoryDate = OrderDate.SelectedDate;
-            if (SelectedInventoryDate.HasValue)
+            var selectedInventoryDate = OrderDate.SelectedDate;
+            if (selectedInventoryDate.HasValue)
             {
-                var inventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION, SelectedInventoryDate);
+                var inventories = await InventoryService.GetInventoriesByStatus(InventoryEnum.ENCOURSDEVALIDATION, selectedInventoryDate);
                 if (inventories != null)
                 {
                     InventoryValidatGrid.ItemsSource = inventories;
                 }
             }
+            else
+            {
+                LoadValidateInventory();
+            }
         }
         private void ShowCommandDetails_Click(object sender, RoutedEventArgs e)
         {
-            var SelectedInventory = ((FrameworkElement)sender).DataContext as Inventory;
-            var DetailScreen = new DetailInventory();
-            if (SelectedInventory != null)
+            var selectedInventory = ((FrameworkElement)sender).DataContext as Inventory;
+            var detailScreen = new DetailInventory();
+            if (selectedInventory != null)
             {
-                DetailScreen.DetailInventoryGrid(SelectedInventory);
+                detailScreen.DetailInventoryGrid(selectedInventory);
                 _mainGrid.Children.Clear();
-                _mainGrid.Children.Add(DetailScreen);
+                _mainGrid.Children.Add(detailScreen);
 
             }
         }

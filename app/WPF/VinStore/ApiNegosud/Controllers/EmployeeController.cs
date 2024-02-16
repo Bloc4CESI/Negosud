@@ -22,33 +22,33 @@ namespace ApiNegosud.Controllers
             try
             {
                 // Filtrer les employés en fonction des paramètres fournis en castant to lower case
-                var Employees = _context.Employee.AsQueryable();
+                var employees = _context.Employee.AsQueryable();
 
                 if (!string.IsNullOrEmpty(firstName))
                 {
-                    Employees = Employees.Where(e => e.FirstName.ToLower() == firstName.ToLower());
+                    employees = employees.Where(e => e.FirstName.ToLower() == firstName.ToLower());
                 }
 
                 if (!string.IsNullOrEmpty(lastName))
                 {
-                    Employees = Employees.Where(e => e.LastName.ToLower() == lastName.ToLower());
+                    employees = employees.Where(e => e.LastName.ToLower() == lastName.ToLower());
                 }
 
                 if (!string.IsNullOrEmpty(email))
                 {
-                    Employees = Employees.Where(e => e.Email.ToLower() == email.ToLower());
+                    employees = employees.Where(e => e.Email.ToLower() == email.ToLower());
                 }
-                Employees = Employees.OrderByDescending(e => e.Id);
+                employees = employees.OrderByDescending(e => e.Id);
                 // Récupérer la liste filtrée des employés
-                var FilteredEmployees = Employees.ToList();
+                var filteredEmployees = employees.ToList();
 
-                if (FilteredEmployees.Count == 0)
+                if (filteredEmployees.Count == 0)
                 {
                     return NotFound("Aucun employé trouvé avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FilteredEmployees);
+                    return Ok(filteredEmployees);
                 }
             }
             catch (Exception ex)
@@ -61,14 +61,14 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Employee = _context.Employee.Find(id);
-                if (Employee == null)
+                var employee = _context.Employee.Find(id);
+                if (employee == null)
                 {
-                    return NotFound($"L'employé avec l'email  {Employee.Email} est non trouvé");
+                    return NotFound($"L'employé avec l'email  {employee.Email} est non trouvé");
                 }
                 else
                 {
-                    return Ok(Employee);
+                    return Ok(employee);
                 }
             }
             catch (Exception ex)
@@ -77,31 +77,31 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Employee Employee)
+        public IActionResult Post(Employee employee)
         {
             try
             {
 
-                if (!string.IsNullOrEmpty(Employee.FirstName))
+                if (!string.IsNullOrEmpty(employee.FirstName))
                 {
-                    Employee.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Employee.FirstName);
+                    employee.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(employee.FirstName);
                 }
 
-                if (!string.IsNullOrEmpty(Employee.LastName))
+                if (!string.IsNullOrEmpty(employee.LastName))
                 {
-                    Employee.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Employee.LastName);
+                    employee.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(employee.LastName);
                 }
                 // Hasher le mot de passe avant de l'enregistrer
-                Employee.Password = BCrypt.Net.BCrypt.HashPassword(Employee.Password);
+                employee.Password = BCrypt.Net.BCrypt.HashPassword(employee.Password);
 
                 // Vérifier si l'adresse e-mail est unique
-                if (_context.Employee.Any(e => e.Email == Employee.Email))
+                if (_context.Employee.Any(e => e.Email == employee.Email))
                 {
                     return BadRequest("L'adresse e-mail est déjà utilisée.");
                 }
 
                 // Ajouter l'employé au contexte
-                _context.Add(Employee);
+                _context.Add(employee);
 
                 // Enregistrer les modifications dans la base de données
                 _context.SaveChanges();
@@ -115,18 +115,18 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("GetByEmail/{Email}")]
-        public IActionResult GetByEmail(string Email)
+        public IActionResult GetByEmail(string email)
         {
             try
             {
-                var Employee = _context.Employee.SingleOrDefault(e => e.Email == Email);
-                if (Employee == null)
+                var employee = _context.Employee.SingleOrDefault(e => e.Email == email);
+                if (employee == null)
                 {
-                    return NotFound($"Aucun employé trouvé avec cette adresse  {Employee.Email} ");
+                    return NotFound($"Aucun employé trouvé avec cette adresse  {employee.Email} ");
                 }
                 else
                 {
-                    return Ok(Employee);
+                    return Ok(employee);
                 }
             }
             catch (Exception ex)
@@ -135,49 +135,49 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("{id}")]
-        public IActionResult Put(Employee UpdatedEmployee)
+        public IActionResult Put(Employee updatedEmployee)
         {
             try
             {
-                if (UpdatedEmployee == null)
+                if (updatedEmployee == null)
                 {
                     return BadRequest("Les données de mise à jour de l'employé sont invalides");
                 }
 
-                var ExistingEmployee = _context.Employee.Find(UpdatedEmployee.Id);
+                var existingEmployee = _context.Employee.Find(updatedEmployee.Id);
 
-                if (ExistingEmployee == null)
+                if (existingEmployee == null)
                 {
-                    return NotFound($"L'employé avec l'ID {UpdatedEmployee.Id} n'a pas été trouvé");
+                    return NotFound($"L'employé avec l'ID {updatedEmployee.Id} n'a pas été trouvé");
                 }
 
                 // Vérifier si l'e-mail mis à jour est utilisé par un autre employé
-                var IsEmailTaken = _context.Employee.Any(e => e.Id != UpdatedEmployee.Id && e.Email == UpdatedEmployee.Email);
+                var isEmailTaken = _context.Employee.Any(e => e.Id != updatedEmployee.Id && e.Email == updatedEmployee.Email);
 
-                if (IsEmailTaken)
+                if (isEmailTaken)
                 {
-                    return BadRequest($"L'e-mail {UpdatedEmployee.Email} est déjà utilisé par un autre employé.");
+                    return BadRequest($"L'e-mail {updatedEmployee.Email} est déjà utilisé par un autre employé.");
                 }
                 // Mettre à jour les propriétés de l'employé existant avec capital lettre FirstName +LastName
-                if (!string.IsNullOrEmpty(UpdatedEmployee.FirstName))
+                if (!string.IsNullOrEmpty(updatedEmployee.FirstName))
                 {
-                    ExistingEmployee.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedEmployee.FirstName);
+                    existingEmployee.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedEmployee.FirstName);
                 }
 
-                if (!string.IsNullOrEmpty(UpdatedEmployee.LastName))
+                if (!string.IsNullOrEmpty(updatedEmployee.LastName))
                 {
-                    ExistingEmployee.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedEmployee.LastName);
+                    existingEmployee.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedEmployee.LastName);
                 }
                
-                ExistingEmployee.Email = UpdatedEmployee.Email;
+                existingEmployee.Email = updatedEmployee.Email;
 
                 // Vérifier si le mot de passe a été modifié
-                if (!string.IsNullOrEmpty(UpdatedEmployee.Password))
+                if (!string.IsNullOrEmpty(updatedEmployee.Password))
                 {
                     // Hasher le nouveau mot de passe avec BCrypt
-                    ExistingEmployee.Password = BCrypt.Net.BCrypt.HashPassword(UpdatedEmployee.Password);
+                    existingEmployee.Password = BCrypt.Net.BCrypt.HashPassword(updatedEmployee.Password);
                 }
-                else { ExistingEmployee.Password = ExistingEmployee.Password; }
+                else { existingEmployee.Password = existingEmployee.Password; }
                 _context.SaveChanges();
 
                 return Ok("Mise à jour réussie");
@@ -193,12 +193,12 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Employee = _context.Employee.Find(id);
-                if (Employee == null)
+                var employee = _context.Employee.Find(id);
+                if (employee == null)
                 {
                     return BadRequest("L'employé non trouvé");
                 }
-                _context.Employee.Remove(Employee);
+                _context.Employee.Remove(employee);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }

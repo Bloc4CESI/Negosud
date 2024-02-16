@@ -84,18 +84,16 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
-                Products = Products.Where(p => p.Stock != null &&
-                                      (p.Stock.Minimum.HasValue ? p.Stock.Quantity < p.Stock.Minimum.Value : p.Stock.Quantity < 4));
-
-                var FiltredProducts = Products.ToList();
-                if (FiltredProducts.Count == 0)
+                var products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                products = products.Where(p => p.Stock != null &&( p.Stock.Quantity < p.Stock.Minimum!.Value ));
+                var filtredProducts = products.ToList();
+                if (filtredProducts.Count == 0)
                 {
                     return NotFound("Aucun produit trouvé avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FiltredProducts);
+                    return Ok(filtredProducts);
                 }
             }
             catch (Exception ex)
@@ -109,19 +107,19 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Product = _context.Product
+                var product = _context.Product
                     .Include(p => p.Family)
                     .Include(p => p.Stock)
                     .Include(p => p.Provider)
                     .SingleOrDefault(p => p.Id == id);
 
-                if (Product == null)
+                if (product == null)
                 {
                     return NotFound($"Le produit avec l'ID {id} est non trouvé");
                 }
                 else
                 {
-                    return Ok(Product);
+                    return Ok(product);
                 }
             }
             catch (Exception ex)
@@ -130,19 +128,19 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Product Product)
+        public IActionResult Post(Product product)
         {
             try
             {
                 // Capitaliser la première lettre des noms
-                Product.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Product.Name.Trim());
-                Product.Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Product.Home.Trim());
-                if (Product.FamilyId > 0)
+                product.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(product.Name.Trim());
+                product.Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(product.Home.Trim());
+                if (product.FamilyId > 0)
                 {
-                    var ExistingFamily = _context.Family.Find(Product.FamilyId);
-                    if (ExistingFamily != null )
+                    var existingFamily = _context.Family.Find(product.FamilyId);
+                    if (existingFamily != null )
                     {
-                        Product.Family = ExistingFamily;
+                        product.Family = existingFamily;
                     }
                     else
                     {
@@ -151,35 +149,35 @@ namespace ApiNegosud.Controllers
                 }
                 else 
                 {
-                    if(Product.Family!= null)
+                    if(product.Family!= null)
                     {
                         // verifier si la famille existe déja ( name famille unique)
-                        var ExistingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == Product.Family.Name.Trim().ToLower());
-                        if (ExistingFamily != null)
+                        var existingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == product.Family.Name.Trim().ToLower());
+                        if (existingFamily != null)
                         {
                             // si elle existe on utilise le me nom sans ajouter
-                            Product.Family = ExistingFamily;
+                            product.Family = existingFamily;
                         }
                         else
                         {
                             //sinon on va creer une nouvelle famille par l'jout du produit
-                            var NewFamily = new Family
+                            var newFamily = new Family
                             {
-                                Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Product.Family.Name.Trim())
+                                Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(product.Family.Name.Trim())
                             };
-                            _context.Family.Add(NewFamily);
-                            Product.Family = NewFamily;
+                            _context.Family.Add(newFamily);
+                            product.Family = newFamily;
                         }
                     }
                    
                 }
-                if(Product.Stock != null) {
+                if(product.Stock != null) {
                     var stock = new Stock
                     {
-                        Quantity = Product.Stock.Quantity,
-                        AutoOrder = Product.Stock.AutoOrder,
-                        Minimum = Product.Stock.Minimum,
-                        Maximum = Product.Stock.Maximum
+                        Quantity = product.Stock.Quantity,
+                        AutoOrder = product.Stock.AutoOrder,
+                        Minimum = product.Stock.Minimum,
+                        Maximum = product.Stock.Maximum
                     };
                     //  pour AutoOrder => max et min soient obligatoires
                     if (stock.AutoOrder && (stock.Minimum == null || stock.Maximum == null || stock.Maximum == 0 || stock.Minimum == 0))
@@ -188,7 +186,7 @@ namespace ApiNegosud.Controllers
                     }
 
                 }
-                _context.Add(Product);
+                _context.Add(product);
                 _context.SaveChanges();
 
                 return Ok("Le produit est ajouté avec succès!");
@@ -290,20 +288,20 @@ namespace ApiNegosud.Controllers
             try
             {
 
-                var Product = _context.Product
+                var product = _context.Product
                     .Include(p => p.Stock)
                     .FirstOrDefault(p => p.Id == id);
 
-                if (Product == null)
+                if (product == null)
                 {
                     return BadRequest("Produit non trouvé");
                 }
                 // si on supprime un produit on supprime son stock aussi
-                if (Product.Stock != null)
+                if (product.Stock != null)
                 {
-                    _context.Stock.Remove(Product.Stock);
+                    _context.Stock.Remove(product.Stock);
                 }
-                _context.Product.Remove(Product);
+                _context.Product.Remove(product);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }
@@ -313,20 +311,20 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("GetProductByProvider/{ProviderId}")]
-        public IActionResult GetProductByProvider(int ProviderId)
+        public IActionResult GetProductByProvider(int providerId)
         {
             try
             {
-                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
-                Products = Products.Where(p => p.ProviderId == ProviderId);
-                var ProductsList = Products.ToList();
-                if (ProductsList.Count == 0)
+                var products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                products = products.Where(p => p.ProviderId == providerId);
+                var productsList = products.ToList();
+                if (productsList.Count == 0)
                 {
                     return NotFound("Aucun produit trouvé pour ce fournisseur.");
                 }
                 else
                 {
-                    return Ok(ProductsList);
+                    return Ok(productsList);
                 }
             }
             catch (Exception ex)
@@ -341,45 +339,45 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
+                var products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
                 // Filter products by family
-                Products = Products.Where(p => p.FamilyId == familyId);
+                products = products.Where(p => p.FamilyId == familyId);
                 //les filtres (home /nom / date /annéé de production)
                 if (!string.IsNullOrEmpty(Home))
                 {
-                    Products = Products.Where(c => c.Home.ToLower() == Home.Trim().ToLower());
+                    products = products.Where(c => c.Home.ToLower() == Home.Trim().ToLower());
                 }
                 if (!string.IsNullOrEmpty(Name))
                 {
-                    Products = Products.Where(c => c.Name.ToLower() == Name.Trim().ToLower());
+                    products = products.Where(c => c.Name.ToLower() == Name.Trim().ToLower());
                 }
                 if (dateProduction.HasValue)
                 {
-                    Products = Products.Where(c => c.DateProduction.Year >= dateProduction.Value.Year);
+                    products = products.Where(c => c.DateProduction.Year >= dateProduction.Value.Year);
                 }
                 if (Price.HasValue)
                 {
-                    Products = Products.Where(c => c.Price == Price.Value);
+                    products = products.Where(c => c.Price == Price.Value);
                 }
                 // pour le tri selon le prix sinon desc par id (par defaut)
                 switch (sortOrder)
                 {
                     case "price_asc":
-                        Products = Products.OrderBy(c => c.Price);
+                        products = products.OrderBy(c => c.Price);
                         break;
                     case "price_desc":
-                        Products = Products.OrderByDescending(c => c.Price);
+                        products = products.OrderByDescending(c => c.Price);
                         break;
                     default:
-                        Products = Products.OrderByDescending(c => c.Id);
+                        products = products.OrderByDescending(c => c.Id);
                         break;
                 }
                 // pour pagination 
                 if (page.HasValue && pageSize.HasValue)
                 {
-                    Products = Products.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
+                    products = products.Skip((page.Value - 1) * pageSize.Value).Take(pageSize.Value);
                 }
-                var FiltredProducts = Products.ToList();
+                var FiltredProducts = products.ToList();
                 if (FiltredProducts.Count == 0)
                 {
                     return NotFound("Aucun produit trouvé avec les paramètres fournis.");
