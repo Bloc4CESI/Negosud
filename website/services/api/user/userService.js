@@ -5,7 +5,6 @@ export const API_BASE_URL = 'https://localhost:7281/api';
 export async function Logout() {
   localStorage.removeItem('connected');
   localStorage.removeItem('account');
-  window.location.reload();
 }
 
 export async function createUser(data) {
@@ -53,6 +52,9 @@ export async function createAddress(data, userData) {
   const addressId = firstAddress.id
   const clientId = userData.id;
   userData.addressId = addressId
+  userData.address = firstAddress;
+  userData.address.client = userData;
+  console.log(userData);
   const addAddressToClient = await fetch(`${API_BASE_URL}/Client/${clientId}`, {
     method: 'PUT',
     headers: {
@@ -116,4 +118,18 @@ export async function getOrders(id) {
     throw new Error('Erreur lors de la récupération des commandes');
   }
   return await response.json();
+}
+
+export async function modifyAddressClient(data, id){
+  const response = await fetch(`${API_BASE_URL}/Address/${id}`,{
+    method: 'PUT',
+    headers : {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+  if (!response.ok) {
+    throw new Error('Erreur lors de la mise à jour de la commande');
+  }
+  return await response.text();
 }

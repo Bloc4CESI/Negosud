@@ -20,9 +20,8 @@ export default function User({ userData }) {
   const [address, setAddress] = useState<address>();
   const [isLoading, setIsLoading] = useState(true);
   const [openSelectedQuoteModal, setOpenSelectedQuoteModal] = useState(false);
-
   useEffect(() => {
-    if (userData?.addressId !== null) {
+    if (userData?.addressId) {
       getAddresses(userData?.addressId)
         .then(r => setAddress(r))
         .catch(error => console.error("Une erreur s'est produite lors de la récupération des adresses:", error));
@@ -42,6 +41,7 @@ export default function User({ userData }) {
       visible={openSelectedQuoteModal}
       onAccept={async () => {
         await Logout()
+        router.push('/login');
       }}
       onCancel={() => setOpenSelectedQuoteModal(false)}
     />
@@ -65,13 +65,13 @@ export default function User({ userData }) {
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.phoneNumber}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">Mes adresses</dt>
+            <dt className="text-sm font-medium leading-6 text-gray-900">Mon addresse</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               {address == null ? (
                 <Button text="Ajouter une adresse" onClick={(() => {
                   router.push('/account/address/new');
                 })}/>
-              ) : <p>{`${address?.street} ${address?.city} ${address?.country}`}</p>}
+              ) : <p>{`${address?.street}, ${address?.city} ${address?.country}`}</p>}
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">

@@ -1,3 +1,4 @@
+"use client";
 import "../globals.css";
 import Footer from "../../../modules/layout/footer";
 import Header from "../../../modules/layout/header";

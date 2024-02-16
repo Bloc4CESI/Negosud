@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 const API_BASE_URL = 'https://localhost:7281/api';
 
 export async function getProducts() {
@@ -43,6 +45,20 @@ export async function getFamily() {
 
     return await response.json();
   }
+
+export async function getProductByName(data) {
+  const response = await fetch(`${API_BASE_URL}/Product/?Name=${data}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    toast.error('Aucun produits dans la séléction');
+  }
+
+  return await response.json();
+}
     
 export async function getFamilyById(id) {
   const response = await fetch(`${API_BASE_URL}/Product/GetProductByFamily/${id}`, {

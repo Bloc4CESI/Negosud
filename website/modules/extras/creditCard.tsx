@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const CreditCardForm = () => {
+const CreditCardForm = ({handlePaymentClick} : {handlePaymentClick:any}) => {
   const [showBackCard, setShowBackCard] = useState(false);
   const [cardNumber, setCardNumber] = useState();
   const [cardName, setCardName] = useState();
@@ -88,6 +88,11 @@ const CreditCardForm = () => {
                 required
               />
             </div>
+            <div className="mb-4 flex items-end justify-center">
+              <button onClick={handlePaymentClick} className="bg-[url(https://i.ibb.co/LPLv5MD/Payment-Card-01.jpg)] bg-cover text-white px-2 py-1.5 rounded-lg border-2 border-white hover:border-gray-500 transition duration-300 ease-in-out">
+                  Payer
+              </button> 
+          </div>
           </div>
         </div>
         <div className="w-full lg:w-1/2 lg:pl-8">
@@ -211,7 +216,7 @@ const CreditCardForm = () => {
         </div>
       </div>
     </form>
-</div>
+    </div>
 )
   ;
 };

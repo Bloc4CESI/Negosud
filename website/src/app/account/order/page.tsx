@@ -33,7 +33,6 @@ return (
   <>
     <Header/>
     {loading ? (<Loading/>) : (<Orders orders={orders}/>) }
-    <Footer/>
   </>
 )
 }

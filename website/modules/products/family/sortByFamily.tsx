@@ -10,14 +10,14 @@ interface Family {
 
 interface SortByFamilyProps {
   onFamilyChange: (familyId: number | undefined) => void;
+  handleReset: () => void;
   error?: string;
 }
 
-export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByFamilyProps) {
+export default function SortByFamily({ onFamilyChange, handleReset, error, ...rest }: SortByFamilyProps) {
   const [family, setFamily] = useState<Family[]>([]);
   const [selectedFamily, setSelectedFamily] = useState();
   const [selectedNameFamily, setSelectedNameFamily] = useState();
-  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -25,9 +25,8 @@ export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByF
       try {
         const familyData = await getFamily();
         setFamily(familyData);
-        setLoading(false);
       } catch (error) {
-        setLoading(false);
+        console.log(error);
       }
     };
     fetchData();
@@ -61,13 +60,13 @@ export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByF
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute border-2 border-zinc-800 z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 sm:text-sm">
+            <Listbox.Options className="absolute border-2 pl-2 border-zinc-800 z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 sm:text-sm">
               {family.map((family) => (
                 <Listbox.Option
                   key={family.id}
                   value={family}
                 >
-                <span className="p-1 cursor-pointer">
+                <span className="pt-2 pb-2 cursor-pointer">
                   {family.name}
                 </span>
                 </Listbox.Option>
@@ -81,6 +80,7 @@ export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByF
         setSelectedFamily(undefined);
         setSelectedNameFamily(undefined);
         onFamilyChange(undefined);
+        handleReset();
       })}/>
     </>
   )
