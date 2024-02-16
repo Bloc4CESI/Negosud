@@ -18,11 +18,17 @@ namespace VinStore.Services
 {
     public static class StockService
     {
-        public static async Task<List<Stock>> GetAllStock()
+        public static async Task<List<Stock>> GetAllStock(string productName = null)
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/stock/");
+                string url = $"https://localhost:7281/api/Stock/";
+                // Ajoute le filtre par nom dans l'URL si nécessaire
+                if (!string.IsNullOrEmpty(productName))
+                {
+                    url += $"?Name={Uri.EscapeDataString(productName)}";
+                }
+                var response = await ApiConnexion.ApiClient.GetStringAsync(url);
                 if (string.IsNullOrEmpty(response))
                 {
                     Console.WriteLine("Aucun produit trouvé");
@@ -41,7 +47,6 @@ namespace VinStore.Services
                 return null;
             }
         }
-
 
         public static async Task<bool> PutStock(int StockId, Stock selectedStock)
         {

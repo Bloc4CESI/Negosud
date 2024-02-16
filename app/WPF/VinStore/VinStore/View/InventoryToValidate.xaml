@@ -13,19 +13,19 @@
              TextOptions.TextRenderingMode="Auto">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Height="800">
-        <Grid>
-            <TextBlock Grid.Row="0" Text="Liste des inventaires à valider" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
-            <materialDesign:ColorZone  Grid.Row="1" Margin="0,50,0,0" Padding="8,4,8,4" Panel.ZIndex="1"
-          materialDesign:ElevationAssist.Elevation="Dp1" CornerRadius="2" Mode="Standard">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
+            <Grid>
+                <TextBlock Grid.Row="0" Text="Liste des inventaires à valider" Margin="10" Foreground="#a70303" FontWeight="Bold" FontSize="18" TextDecorations="Underline"  HorizontalAlignment="Center"/>
+                <materialDesign:ColorZone  Grid.Row="1" Margin="0,50,0,0" Padding="8,4,8,4" Panel.ZIndex="1"
+        materialDesign:ElevationAssist.Elevation="Dp1" CornerRadius="2" Mode="Standard">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
                         <DatePicker Grid.Column="1"  Background="#F5F5F5" materialDesign:CalendarAssist.SelectionForegroundColor="Beige"
-                              materialDesign:HintAssist.Hint="Date de la commande" BorderBrush="Black" x:Name="OrderDate"
-                               materialDesign:TextFieldAssist.UnderlineBrush="Black">
+                            materialDesign:HintAssist.Hint="Date de la commande" BorderBrush="Black" x:Name="OrderDate"
+                            materialDesign:TextFieldAssist.UnderlineBrush="Black">
                             <DatePicker.CalendarStyle>
                                 <Style TargetType="Calendar" BasedOn="{StaticResource MaterialDesignCalendarPortrait}">
                                     <Style.Resources>
@@ -35,31 +35,31 @@
                             </DatePicker.CalendarStyle>
                         </DatePicker>
                         <Button Margin="8,0,0,0" Click="SearchInventoryByDate" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}">
-                        <materialDesign:PackIcon Kind="Search" Grid.Column="2" />
-                    </Button>
+                            <materialDesign:PackIcon Kind="Search" Grid.Column="2" />
+                        </Button>
                         <Button Margin="20,0,0,0" Grid.Column="2" Content="Rechercher par Date" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}" Click="SearchInventoryByDate" />
-                </Grid>
-            </materialDesign:ColorZone>
-            <DataGrid Margin="0,90,0,0" x:Name="InventoryValidatGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" IsReadOnly="True">
-                <DataGrid.Columns>
+                    </Grid>
+                </materialDesign:ColorZone>
+                <DataGrid Margin="0,90,0,0" x:Name="InventoryValidatGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" IsReadOnly="True">
+                    <DataGrid.Columns>
                         <DataGridTextColumn Header="Date inventaire" Foreground="Black" Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}" />
                         <DataGridTemplateColumn  Header="Actions">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" >
-                                    <Button  Click="EditInventory" Foreground="White" Background="#a70303">
-                                        <materialDesign:PackIcon Kind="ClipboardEditOutline"/>
-                                    </Button>
-                                    <Button Click="RemoveInventory"  Foreground="White" Background="#a70303">
-                                        <materialDesign:PackIcon Kind="DeleteForever"/>
-                                    </Button>
-                                </StackPanel>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-    </ScrollViewer>
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal" >
+                                        <Button  Click="EditInventory" Foreground="White" Background="#a70303">
+                                            <materialDesign:PackIcon Kind="ClipboardEditOutline"/>
+                                        </Button>
+                                        <Button Click="RemoveInventory"  Foreground="White" Background="#a70303">
+                                            <materialDesign:PackIcon Kind="DeleteForever"/>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </ScrollViewer>
    </Grid>
 </UserControl>

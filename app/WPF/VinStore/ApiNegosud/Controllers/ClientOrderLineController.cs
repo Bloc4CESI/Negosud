@@ -21,7 +21,7 @@ namespace ApiNegosud.Controllers
      
 
         [HttpGet("GetClientCart/{ClientId}")]
-        public IActionResult GetClientCart(int ClientId)
+        public IActionResult GetClientCart(int clientId)
         {
             try
             {
@@ -29,12 +29,12 @@ namespace ApiNegosud.Controllers
                     .Include(co =>co.ClientOrder)
                     .Include(col => col.Product)
                      .ThenInclude(p => p.Stock)
-                    .Where(col => col.ClientOrder.ClientId == ClientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
+                    .Where(col => col.ClientOrder.ClientId == clientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
                     .ToList();
 
                 if (clientCart == null || !clientCart.Any())
                 {
-                    return NotFound($"Aucun produit trouvé dans le panier du client avec l'ID {ClientId}.");
+                    return NotFound($"Aucun produit trouvé dans le panier du client avec l'ID {clientId}.");
                 }
                 else
                 {
@@ -43,52 +43,52 @@ namespace ApiNegosud.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Une erreur s'est produite lors de la récupération du panier du client avec l'ID {ClientId}. Détails de l'erreur : {ex.Message}");
+                return BadRequest($"Une erreur s'est produite lors de la récupération du panier du client avec l'ID {clientId}. Détails de l'erreur : {ex.Message}");
             }
         }
         [HttpPost("AddProductToCart")]
-        public IActionResult AddProductToCart(int ProductId, int ClientId, int Quantity, Decimal Price)
+        public IActionResult AddProductToCart(int productId, int clientId, int quantity, Decimal price)
         {
             try
             {
                 // Vérifier si la commande du client existe
-                var ClientOrder = _context.ClientOrder.FirstOrDefault(co => co.ClientId == ClientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
-                if (ClientOrder == null)
+                var clientOrder = _context.ClientOrder.FirstOrDefault(co => co.ClientId == clientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
+                if (clientOrder == null)
                 {
                     // Si la commande n'existe pas, créez une nouvelle commande pour le client
-                    ClientOrder = new ClientOrder
+                    clientOrder = new ClientOrder
                     {
-                        ClientId = ClientId,
+                        ClientId = clientId,
                         Date = DateTime.Now,
                         // la primere fois c'est le prix de la ligne => Ps: n'oubliez pas à multiplier * NbProductBox -20% en cas de paquet
-                        Price = Price,
+                        Price = price,
                         OrderStatus = OrderStatus.ENCOURSDEVALIDATION
                     };
 
-                    _context.ClientOrder.Add(ClientOrder);
+                    _context.ClientOrder.Add(clientOrder);
                     _context.SaveChanges();
                 }
                     // Vérifier si le produit existe déjà dans la commande
                     var existingOrderLine = _context.ClientOrderLine
-                        .FirstOrDefault(col => col.ClientOrderId == ClientOrder.Id && col.ProductId == ProductId);
+                        .FirstOrDefault(col => col.ClientOrderId == clientOrder.Id && col.ProductId == productId);
 
                     if (existingOrderLine != null)
                     {
                         // Si le produit existe déjà, mettez à jour la quantité
-                        existingOrderLine.Quantity += Quantity;
-                        existingOrderLine.Price += Price; // Update the total price if needed
+                        existingOrderLine.Quantity += quantity;
+                        existingOrderLine.Price += price; // Update the total price if needed
                     }
                     else
                     {
                         // Ajouter le produit à la ligne de commande du client
                         var clientOrderLine = new ClientOrderLine
                         {
-                        ClientOrder = ClientOrder,
-                        ClientOrderId = ClientOrder.Id,
-                        ProductId = ProductId,
+                        ClientOrder = clientOrder,
+                        ClientOrderId = clientOrder.Id,
+                        ProductId = productId,
                         // Ps: n'oubliez pas à multiplier * NbProductBox en cas de paquet (front)
-                        Quantity = Quantity,
-                        Price = Price
+                        Quantity = quantity,
+                        Price = price
                         };   
                         _context.ClientOrderLine.Add(clientOrderLine);
                     }
@@ -104,16 +104,16 @@ namespace ApiNegosud.Controllers
         }
 
     [HttpPut("UpdateCartProductQuantity")]
-    public  IActionResult UpdateCartProductQuantity(int ClientOrderLineId, int NewQuantity, int NewPrice)
+    public  IActionResult UpdateCartProductQuantity(int clientOrderLineId, int newQuantity, int newPrice)
     {
         try
         {
-            var clientOrderLine = _context.ClientOrderLine.Find(ClientOrderLineId);
+            var clientOrderLine = _context.ClientOrderLine.Find(clientOrderLineId);
 
             if (clientOrderLine != null)
             {
-                clientOrderLine.Quantity = NewQuantity;
-                clientOrderLine.Price = NewPrice;
+                clientOrderLine.Quantity = newQuantity;
+                clientOrderLine.Price = newPrice;
                 _context.SaveChanges();
             }
             return Ok("La quantité et le prix de l'article sont modifiés!");
@@ -126,11 +126,11 @@ namespace ApiNegosud.Controllers
     }
 
         [HttpDelete("RemoveProductFromCart/{ClientOrderLineId}")]
-        public IActionResult RemoveProductFromCart(int ClientOrderLineId)
+        public IActionResult RemoveProductFromCart(int clientOrderLineId)
         {
             try
             {
-                var clientOrderLine = _context.ClientOrderLine.Find(ClientOrderLineId);
+                var clientOrderLine = _context.ClientOrderLine.Find(clientOrderLineId);
 
                 if (clientOrderLine != null)
                 {
@@ -151,7 +151,7 @@ namespace ApiNegosud.Controllers
                     return Ok("Suppression réussie!");
                 }else
                 {
-                    return NotFound($"Aucune ligne de commande trouvée avec l'ID {ClientOrderLineId}.");
+                    return NotFound($"Aucune ligne de commande trouvée avec l'ID {clientOrderLineId}.");
                 }
             }
             catch (Exception ex)

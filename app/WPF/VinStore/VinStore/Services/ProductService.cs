@@ -61,28 +61,34 @@ namespace VinStore.Services
             }
         }
 
-        public static async Task<List<Product>> GetAllProducts()
+        public static async Task<List<Product>> GetAllProducts(string productName = null)
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Product/");
+                string url = $"https://localhost:7281/api/Product/";
+                // Ajoute le filtre par nom dans l'URL si nécessaire
+                if (!string.IsNullOrEmpty(productName))
+                {
+                    url += $"?Name={Uri.EscapeDataString(productName)}";
+                }
+                var response = await ApiConnexion.ApiClient.GetStringAsync(url);
                 if (string.IsNullOrEmpty(response))
                 {
                     Console.WriteLine("Aucun produit trouvé");
                     MessageBox.Show("Aucun produit trouvé");
-                    return null;
+                    return new List<Product>();
                 }
                 else
                 {
-                    List<Product> products = JsonConvert.DeserializeObject<List<Product>>(response);
+                    var products = JsonConvert.DeserializeObject<List<Product>>(response);
                     return products;
                 }
-
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Une erreur s'est produite lors de la requête : {ex.Message}");
-                return null;
+                MessageBox.Show($"Une erreur s'est produite : {ex.Message}");
+                return new List<Product>();
             }
         }
 

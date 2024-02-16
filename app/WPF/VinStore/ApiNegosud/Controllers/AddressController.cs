@@ -19,43 +19,43 @@ namespace ApiNegosud.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get(string Name = null, string City = null, string Country = null, string Street = null)
+        public IActionResult Get(string name = null, string city = null, string country = null, string street = null)
         {
             try
             {
                 // Filtrer les adresses en fonction des paramètres fournis en castannt to lower case ( pour faire un champ de recherche)
-                var Addresses = _context.Address
+                var addresses = _context.Address
                                 .Include(a => a.Client)
                                 .Include(a => a.Provider)
                                 .AsQueryable();
-                if (!string.IsNullOrEmpty(Name))
+                if (!string.IsNullOrEmpty(name))
                 {
-                    Addresses = Addresses.Where(e => e.Name.ToLower() == Name.ToLower());
+                    addresses = addresses.Where(e => e.Name.ToLower() == name.ToLower());
                 }
 
-                if (!string.IsNullOrEmpty(City))
+                if (!string.IsNullOrEmpty(city))
                 {
-                    Addresses = Addresses.Where(e => e.City.ToLower() == City.ToLower());
+                    addresses = addresses.Where(e => e.City.ToLower() == city.ToLower());
                 }
 
-                if (!string.IsNullOrEmpty(Country))
+                if (!string.IsNullOrEmpty(country))
                 {
-                    Addresses = Addresses.Where(e => e.Country.ToLower() == Country.ToLower());
+                    addresses = addresses.Where(e => e.Country.ToLower() == country.ToLower());
                 }
-                if (!string.IsNullOrEmpty(Street))
+                if (!string.IsNullOrEmpty(street))
                 {
-                    Addresses = Addresses.Where(e => e.Street.ToLower() == Street.ToLower());
+                    addresses = addresses.Where(e => e.Street.ToLower() == street.ToLower());
                 }
-                Addresses = Addresses.OrderByDescending(e => e.Id);
-                var FilteredAddresses = Addresses.ToList();
+                addresses = addresses.OrderByDescending(e => e.Id);
+                var filteredAddresses = addresses.ToList();
 
-                if (FilteredAddresses.Count == 0)
+                if (filteredAddresses.Count == 0)
                 {
                     return NotFound("Aucune  adresse a été trouvé avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FilteredAddresses);
+                    return Ok(filteredAddresses);
                 }
             }
             catch (Exception ex)
@@ -68,14 +68,14 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Address = _context.Address.Find(id);
-                if (Address == null)
+                var address = _context.Address.Find(id);
+                if (address == null)
                 {
                     return NotFound($"Adresse non trouvé");
                 }
                 else
                 {
-                    return Ok(Address);
+                    return Ok(address);
                 }
             }
             catch (Exception ex)
@@ -84,17 +84,17 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Address Address)
+        public IActionResult Post(Address address)
         {
             try
             {
                 // capital first lettre
-                Address.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Address.Name);
-                Address.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Address.Street);
-                Address.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Address.City);
-                Address.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Address.Country);
+                address.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address.Name);
+                address.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address.Street);
+                address.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address.City);
+                address.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(address.Country);
                 // Ajouter l'adresse au contexte
-                _context.Add(Address);
+                _context.Add(address);
 
                 // Enregistrer les modifications dans la base de données
                 _context.SaveChanges();
@@ -108,28 +108,28 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("{id}")]
-        public IActionResult Put(Address UpdatedAddress)
+        public IActionResult Put(Address updatedAddress)
         {
             try
             {
-                if (UpdatedAddress == null)
+                if (updatedAddress == null)
                 {
                     return BadRequest("Les données de mise à jour de l'adresse sont invalides");
                 }
 
-                var ExistingAddress = _context.Address.Find(UpdatedAddress.Id);
+                var existingAddress = _context.Address.Find(updatedAddress.Id);
 
-                if (ExistingAddress == null)
+                if (existingAddress == null)
                 {
-                    return NotFound($"L'adresse avec l'ID {UpdatedAddress.Id} n'a pas été trouvé");
+                    return NotFound($"L'adresse avec l'ID {updatedAddress.Id} n'a pas été trouvé");
                 }
 
                 // Mettre à jour les propriétés de l'adresse
-                ExistingAddress.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedAddress.Name);
-                ExistingAddress.Number = UpdatedAddress.Number;
-                ExistingAddress.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedAddress.Street);
-                ExistingAddress.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedAddress.City);
-                ExistingAddress.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedAddress.Country);
+                existingAddress.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedAddress.Name);
+                existingAddress.Number = updatedAddress.Number;
+                existingAddress.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedAddress.Street);
+                existingAddress.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedAddress.City);
+                existingAddress.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedAddress.Country);
 
                 _context.SaveChanges();
 
@@ -146,8 +146,8 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Address = _context.Address.Find(id);
-                if (Address == null)
+                var address = _context.Address.Find(id);
+                if (address == null)
                 {
                     return BadRequest("L'adresse non trouvé");
                 }
@@ -157,12 +157,11 @@ namespace ApiNegosud.Controllers
 
                 // Vérifier si des clients utilisent cette adresse
                 var clientsWithAddress = _context.Client.Any(c => c.AddressId == id);
-
                 if (providersWithAddress || clientsWithAddress)
                 {
                     return Conflict("L'adresse ne peut pas être supprimée car elle est utilisée par au moins un fournisseur ou client.");
                 }
-                _context.Address.Remove(Address);
+                _context.Address.Remove(address);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }

@@ -37,11 +37,17 @@ namespace VinStore.Services
             }
         }
 
-        public static async Task<List<Provider>> GetProvidersAll()
+        public static async Task<List<Provider>> GetProvidersAll(string name = null)
         {
             try
             {
-                var response = await ApiConnexion.ApiClient.GetStringAsync($"https://localhost:7281/api/Provider");
+                string url = $"https://localhost:7281/api/Provider";
+                // Ajouter le paramètre de requête pour le filtre par nom si non null
+                if (!string.IsNullOrEmpty(name))
+                {
+                    url += $"?name={Uri.EscapeDataString(name)}";
+                }
+                var response = await ApiConnexion.ApiClient.GetStringAsync(url);
                 if (string.IsNullOrEmpty(response))
                 {
                     Console.WriteLine($"Aucun fournisseur trouvé ");
@@ -61,122 +67,110 @@ namespace VinStore.Services
             }
         }
 
-        public static async Task<bool> DeleteProvider(int providerId)
+        public static async Task<(bool Success, string Message)> DeleteProvider(int providerId)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                string apiUrl = $"https://localhost:7281/api/Provider/{providerId}";
+                // Effectuez la requête DELETE
+                HttpResponseMessage response = await ApiConnexion.ApiClient.DeleteAsync(apiUrl);
+                // Vérifiez si la requête a réussi
+
+                if (response.IsSuccessStatusCode)
                 {
-                    // Construisez l'URL de votre API pour la suppression
-                    string apiUrl = $"https://localhost:7281/api/Provider/{providerId}";
-
-                    // Effectuez la requête DELETE
-                    HttpResponseMessage response = await client.DeleteAsync(apiUrl);
-
-                    // Vérifiez si la requête a réussi
-                    return response.IsSuccessStatusCode;
+                    return (true, "Le fournisseur a été supprimée avec succès.");
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                {
+                    string message = await response.Content.ReadAsStringAsync();
+                    return (false, "Le fournisseur a des produits associés. Suppression annulée.");
+                }
+                else
+                {
+                    return (false, $"La suppression du fournisseur a échoué avec le code d'erreur : {response.StatusCode}");
                 }
             }
             catch (Exception ex)
             {
                 // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite lors de la suppression : {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite lors de la suppression : {ex.Message}");
             }
         }
-
-        public static async Task<bool> PostProvider(Provider NewProvider)
+        public static async Task<(bool Success, string Message)> PostProvider(Provider newProvider)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                var settings = new JsonSerializerSettings
                 {
-                    var settings = new JsonSerializerSettings
+                    ContractResolver = new DefaultContractResolver
                     {
-                        ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy()
-                        }
-                    };
-                    var jsonData = JsonConvert.SerializeObject(new
-                    {                        
-                        NewProvider.Name,
-                        NewProvider.PhoneNumber,
-                        NewProvider.Email,
-                        NewProvider.Address,
-                    });
-                    string apiUrl = $"https://localhost:7281/api/Provider/PostWithAddress";
-                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync(apiUrl, content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        // La requête a réussi
-                        return true;
+                        NamingStrategy = new CamelCaseNamingStrategy()
                     }
-                    else
-                    {
-                        // La requête a échoué, examinez les détails de l'erreur si possible
-                        string errorResponse = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Erreur {response.StatusCode}: {errorResponse}");
-                        return false;
-                    }
+                };
+                var jsonData = JsonConvert.SerializeObject(new
+                {
+                    newProvider.Name,
+                    newProvider.PhoneNumber,
+                    newProvider.Email,
+                    newProvider.Address,
+                });
+                string apiUrl = $"https://localhost:7281/api/Provider/PostWithAddress";
+                var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await ApiConnexion.ApiClient.PostAsync(apiUrl, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, "Le fournisseur est ajouté avec succès!");
+                }
+                else
+                {
+                    string errorResponse = await response.Content.ReadAsStringAsync();
+                    return (false, $"Erreur {response.StatusCode}: {errorResponse}");
                 }
             }
             catch (Exception ex)
             {
                 // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite lors de la modification : {ex.Message}");
             }
-
         }
-
-        public static async Task<bool> PutProvider(int providerId, Provider putProvider)
+        public static async Task<(bool Success, string Message)> PutProvider(int providerId, Provider putProvider)
         {
             try
             {
-                using (HttpClient client = new HttpClient())
+                var settings = new JsonSerializerSettings
                 {
-                    var settings = new JsonSerializerSettings
+                    ContractResolver = new DefaultContractResolver
                     {
-                        ContractResolver = new DefaultContractResolver
-                        {
-                            NamingStrategy = new CamelCaseNamingStrategy()
-                        }
-                    };
-                    var jsonData = JsonConvert.SerializeObject(new
-                    {
-                        putProvider.Id,
-                        putProvider.Name,
-                        putProvider.PhoneNumber,
-                        putProvider.Email,
-                        putProvider.Address,
-                    },settings);
-                    string apiUrl = $"https://localhost:7281/api/Provider/{providerId}";
-                    var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync(apiUrl, content);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return true;
+                        NamingStrategy = new CamelCaseNamingStrategy()
                     }
-                    else
-                    {
-                        // La requête a échoué, examinez les détails de l'erreur si possible
-                        string errorResponse = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"Erreur {response.StatusCode}: {errorResponse}");
-                        return false;
-                    }
+                };
+                var jsonData = JsonConvert.SerializeObject(new
+                {
+                    putProvider.Id,
+                    putProvider.Name,
+                    putProvider.PhoneNumber,
+                    putProvider.Email,
+                    putProvider.Address,
+                }, settings);
+                string apiUrl = $"https://localhost:7281/api/Provider/{providerId}";
+                var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await ApiConnexion.ApiClient.PutAsync(apiUrl, content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return (true, "Le fournisseur a été mis à jour avec succès!");
                 }
+                else
+                {
+                    string errorResponse = await response.Content.ReadAsStringAsync();
+                    return (false, $"Erreur {response.StatusCode}: {errorResponse}");
+                }
+
             }
             catch (Exception ex)
             {
-                // Gérez les erreurs ici
-                MessageBox.Show($"Une erreur s'est produite lors de la modification : {ex.Message}");
-                return false;
+                return (false, $"Une erreur s'est produite lors de la modification : {ex.Message}");
             }
         }
-
-
     }
 }
 

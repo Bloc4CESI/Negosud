@@ -26,11 +26,11 @@ namespace VinStore.View
             InitializeComponent();
             DataContext = new ProviderOrder();
         }
-        public void DetailProviderOrder(ProviderOrder ProviderOrder)
+        public void DetailProviderOrder(ProviderOrder providerOrder)
         {
-            DataContext = ProviderOrder;
+            DataContext = providerOrder;
 
-            TotalOrder.Text = $"Total commande: {ProviderOrder.Price}";
+            TotalOrder.Text = $"Total commande: {providerOrder.Price}";
         }
     }
 }

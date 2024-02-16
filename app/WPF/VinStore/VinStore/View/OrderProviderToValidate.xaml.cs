@@ -33,43 +33,46 @@ namespace VinStore.View
         }
         private async void LoadOrderProvierToValidate()
         {
-            var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
-            foreach (var order in ProviderOrdersToValidate)
+            var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
+            foreach (var order in providerOrdersToValidate)
             {
                 if(order.Provider!= null && order.ProviderOrderLines != null)
                 {
                     order.ProductNames = string.Join(", ", order.ProviderOrderLines.Select(line => line.Product?.Name));
                 }              
             }
-            CommanToValidatGrid.ItemsSource = ProviderOrdersToValidate;
+            CommanToValidatGrid.ItemsSource = providerOrdersToValidate;
         }
         private void EditOrderProvider(object sender, RoutedEventArgs e)
         {
             var selectedOrderProvider = ((FrameworkElement)sender).DataContext as ProviderOrder;
-            var EditScreen = new EditOrderProvider(_mainGrid);
+            var editScreen = new EditOrderProvider(_mainGrid);
             if(selectedOrderProvider != null)
             {           
-                EditScreen.UpdateProviderOrder(selectedOrderProvider);
+                editScreen.UpdateProviderOrder(selectedOrderProvider);
                 _mainGrid.Children.Clear();
-                _mainGrid.Children.Add(EditScreen);
-
+                _mainGrid.Children.Add(editScreen);
             }
         }
         private async void SearchCommandWithProviderName(object sender, RoutedEventArgs e)
         {
-            var ProviderName = ProviderNameTextBox.Text;
+            var providerName = ProviderNameTextBox.Text;
 
-            if (!string.IsNullOrEmpty(ProviderName))
+            if (!string.IsNullOrEmpty(providerName))
             {
-                var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION, ProviderName);
-                foreach (var order in ProviderOrdersToValidate)
+                var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION, providerName);
+                foreach (var order in providerOrdersToValidate)
                 {
                     if (order.Provider != null && order.ProviderOrderLines != null)
                     {
                         order.ProductNames = string.Join(", ", order.ProviderOrderLines.Select(line => line.Product?.Name));
                     }
                 }
-                CommanToValidatGrid.ItemsSource = ProviderOrdersToValidate;
+                CommanToValidatGrid.ItemsSource = providerOrdersToValidate;
+            }
+            else
+            {
+                LoadOrderProvierToValidate();
             }
            
         }
@@ -78,8 +81,8 @@ namespace VinStore.View
             var selectedOrderProvider = ((FrameworkElement)sender).DataContext as ProviderOrder;
             if (selectedOrderProvider != null)
             {
-                var Message = MessageBox.Show($"Êtes-vous sûr de supprimer la commande ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (Message == MessageBoxResult.Yes)
+                var message = MessageBox.Show($"Êtes-vous sûr de supprimer la commande ?", "Confirmation de suppression", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (message == MessageBoxResult.Yes)
                 {
                     await CommandProviderService.DeleteProvider(selectedOrderProvider.Id);
                      LoadOrderProvierToValidate();

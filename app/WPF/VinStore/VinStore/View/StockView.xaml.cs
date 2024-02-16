@@ -64,7 +64,7 @@ namespace VinStore.View
                     bool success = await StockService.PutStock(selectedStock.Id, selectedStock);
                     if (success)
                     {
-                        MessageBox.Show($"Le stock '{selectedStock.Product.Name}' a été modifiée avec succès!");
+                        MessageBox.Show($"Le stock '{selectedStock.Product!.Name}' a été modifiée avec succès!");
                         // Rafraîchissez la liste après la modification
                         InitializeDataStock();
                     }
@@ -102,9 +102,23 @@ namespace VinStore.View
             {
                 // Mettez à jour la propriété "Minimum" de votre modèle avec la valeur 10
                 selectedRow.AutoOrder = false;
-
             }
+        }
+        private async void SearchProductWithName(object sender, RoutedEventArgs e)
+        {
+            var productName = ProductNameTextBox.Text;
 
+            if (!string.IsNullOrEmpty(productName))
+            {
+                List<Stock> stockList = await StockService.GetAllStock(productName);
+                // Assigne la liste à la propriété ItemsSource du DataGrid
+                StockDataGrid.ItemsSource = stockList;
+            }
+            else
+            {
+                List<Stock> stockList = await StockService.GetAllStock();
+                StockDataGrid.ItemsSource = stockList;
+            }
         }
     }
 

@@ -19,24 +19,24 @@ namespace ApiNegosud.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get(string Name = null)
+        public IActionResult Get(string name = null)
         {
             try
             {
-                var Stocks = _context.Stock.Include(s => s.Product).ThenInclude(p => p.Family).AsQueryable();
+                var stocks = _context.Stock.Include(s => s.Product).ThenInclude(p => p.Family).AsQueryable();
               
-                if (!string.IsNullOrEmpty(Name))
+                if (!string.IsNullOrEmpty(name))
                 {
-                    Stocks = Stocks.Where(s => s.Product.Name.ToLower() == Name.Trim().ToLower());
+                    stocks = stocks.Where(s => s.Product!.Name.ToLower().Contains(name.Trim().ToLower()));
                 }                
-                var FiltredProducts = Stocks.ToList();
-                if (FiltredProducts.Count == 0)
+                var filtredProducts = stocks.ToList();
+                if (filtredProducts.Count == 0)
                 {
                     return NotFound("Aucun produit trouvé avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FiltredProducts);
+                    return Ok(filtredProducts);
                 }
             }
             catch (Exception ex)
@@ -50,15 +50,14 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Stock = _context.Stock.Include(s => s.Product).SingleOrDefault(s => s.Id == id);
-
-                if (Stock == null)
+                var stock = _context.Stock.Include(s => s.Product).SingleOrDefault(s => s.Id == id);
+                if (stock == null)
                 {
                     return NotFound($"Le stock avec l'ID {id} est non trouvé");
                 }
                 else
                 {
-                    return Ok(Stock);
+                    return Ok(stock);
                 }
             }
             catch (Exception ex)
@@ -71,15 +70,14 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Stock = _context.Stock.Include(s => s.Product).SingleOrDefault(s => s.ProductId == productId);
-
-                if (Stock == null)
+                var stock = _context.Stock.Include(s => s.Product).SingleOrDefault(s => s.ProductId == productId);
+                if (stock == null)
                 {
                     return NotFound($"Le stock avec l'ID {productId} est non trouvé");
                 }
                 else
                 {
-                    return Ok(Stock);
+                    return Ok(stock);
                 }
             }
             catch (Exception ex)
@@ -88,28 +86,28 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Stock Stock)
+        public IActionResult Post(Stock stock)
         {
             try
             {
                 // Ajouter une validation pour AutoOrder, Maximum et Minimum
-                if (Stock.AutoOrder && (Stock.Minimum == null || Stock.Maximum == null || Stock.Maximum ==0 || Stock.Minimum==0))
+                if (stock.AutoOrder && (stock.Minimum == null || stock.Maximum == null || stock.Maximum ==0 || stock.Minimum==0))
                 {
                     return BadRequest("Les valeurs Minimum et Maximum sont obligatoires et différents à 0 lorsque AutoOrder est true");
                 }
-                if (Stock.ProductId > 0)
+                if (stock.ProductId > 0)
                 {
-                    var existingStock = _context.Stock.SingleOrDefault(s => s.ProductId == Stock.ProductId);
+                    var existingStock = _context.Stock.SingleOrDefault(s => s.ProductId == stock.ProductId);
 
                     if (existingStock != null)
                     {
                         return BadRequest("Un stock pour cet article existe déjà. Veuillez le mettre à jour au lieu d'en créer un nouveau.");
                     }
 
-                    var existingProduct = _context.Product.Find(Stock.ProductId);
+                    var existingProduct = _context.Product.Find(stock.ProductId);
                     if (existingProduct != null)
                     {
-                        Stock.Product = existingProduct;
+                        stock.Product = existingProduct;
                     }
                     else
                     {
@@ -118,26 +116,26 @@ namespace ApiNegosud.Controllers
                 }
                 else
                 {
-                    if (Stock.Product != null)
+                    if (stock.Product != null)
                     {
-                        var NewProduct = new Product
+                        var newProduct = new Product
                         {
-                            Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Stock.Product.Name.Trim()),
-                            Price = Stock.Product.Price, 
-                            Image = Stock.Product.Image.Trim(),
-                            Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Stock.Product.Description.Trim()),
-                            DateProduction = Stock.Product.DateProduction,
-                            NbProductBox = Stock.Product.NbProductBox,
-                            Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Stock.Product.Home.Trim()),
-                            FamilyId = Stock.Product.FamilyId, 
-                            ProviderId = Stock.Product.ProviderId,
+                            Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(stock.Product.Name.Trim()),
+                            Price = stock.Product.Price, 
+                            Image = stock.Product.Image.Trim(),
+                            Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(stock.Product.Description.Trim()),
+                            DateProduction = stock.Product.DateProduction,
+                            NbProductBox = stock.Product.NbProductBox,
+                            Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(stock.Product.Home.Trim()),
+                            FamilyId = stock.Product.FamilyId, 
+                            ProviderId = stock.Product.ProviderId,
                         };
-                        _context.Product.Add(NewProduct);
-                        Stock.Product = NewProduct;
+                        _context.Product.Add(newProduct);
+                        stock.Product = newProduct;
               
                     }
                 }
-                _context.Add(Stock);
+                _context.Add(stock);
                 _context.SaveChanges();
 
                 return Ok("Le stock du produit est ajouté avec succès!");
@@ -149,40 +147,40 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("{id}")]
-        public IActionResult Put(Stock UpdatedStock)
+        public IActionResult Put(Stock updatedStock)
         {
             try
             {
-                var ExistingStock = _context.Stock.Include(s => s.Product).FirstOrDefault(s => s.Id == UpdatedStock.Id);
+                var existingStock = _context.Stock.Include(s => s.Product).FirstOrDefault(s => s.Id == updatedStock.Id);
 
-                if (ExistingStock == null)
+                if (existingStock == null)
                 {
-                    return NotFound($"Le stock du produit avec l'ID {UpdatedStock.Id} non trouvé.");
+                    return NotFound($"Le stock du produit avec l'ID {updatedStock.Id} non trouvé.");
                 }
 
-                ExistingStock.Minimum = UpdatedStock.Minimum;
-                ExistingStock.Maximum = UpdatedStock.Maximum;
-                ExistingStock.Quantity = UpdatedStock.Quantity;
-                ExistingStock.AutoOrder = UpdatedStock.AutoOrder;
-                if (ExistingStock.AutoOrder && (ExistingStock.Minimum == null || ExistingStock.Maximum == null || ExistingStock.Minimum==0 || ExistingStock.Maximum == 0))
+                existingStock.Minimum = updatedStock.Minimum;
+                existingStock.Maximum = updatedStock.Maximum;
+                existingStock.Quantity = updatedStock.Quantity;
+                existingStock.AutoOrder = updatedStock.AutoOrder;
+                if (existingStock.AutoOrder && (existingStock.Minimum == null || existingStock.Maximum == null || existingStock.Minimum==0 || existingStock.Maximum == 0))
                 {
                     return BadRequest("Les valeurs Minimum et Maximum sont obligatoires et différents à 0 lorsque AutoOrder est true.");
                 }
                 // Mettre à jour les propriétés du produit associé
-                if (ExistingStock.Product != null && UpdatedStock.Product != null)
+                if (existingStock.Product != null && updatedStock.Product != null)
                 {
-                    ExistingStock.Product.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedStock.Product.Name.Trim());
-                    ExistingStock.Product.Price = UpdatedStock.Product.Price;
-                    ExistingStock.Product.Image = UpdatedStock.Product.Image.Trim();
-                    ExistingStock.Product.Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedStock.Product.Description.Trim());
-                    ExistingStock.Product.DateProduction = UpdatedStock.Product.DateProduction;
-                    ExistingStock.Product.NbProductBox = UpdatedStock.Product.NbProductBox;
-                    ExistingStock.Product.Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedStock.Product.Home.Trim());
+                    existingStock.Product.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedStock.Product.Name.Trim());
+                    existingStock.Product.Price = updatedStock.Product.Price;
+                    existingStock.Product.Image = updatedStock.Product.Image.Trim();
+                    existingStock.Product.Description = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedStock.Product.Description.Trim());
+                    existingStock.Product.DateProduction = updatedStock.Product.DateProduction;
+                    existingStock.Product.NbProductBox = updatedStock.Product.NbProductBox;
+                    existingStock.Product.Home = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedStock.Product.Home.Trim());
   
                 }
                 _context.SaveChanges();
 
-                return Ok(ExistingStock);
+                return Ok(existingStock);
             }
             catch (Exception ex)
             {
@@ -194,13 +192,12 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Stock = _context.Stock.Find(id);
-                if (Stock == null)
+                var stock = _context.Stock.Find(id);
+                if (stock == null)
                 {
                     return BadRequest("Produit non trouvé");
-                }
-                
-                _context.Stock.Remove(Stock);
+                }               
+                _context.Stock.Remove(stock);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }

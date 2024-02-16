@@ -40,8 +40,8 @@ namespace VinStore.View
         }
         private async void LoadOrderProvierToValidate()
         {
-            var ProviderOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
-            int count = ProviderOrdersToValidate.Count;
+            var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
+            int count = providerOrdersToValidate.Count;
             CommandProviderToValidate.Text = count.ToString();
 
         }

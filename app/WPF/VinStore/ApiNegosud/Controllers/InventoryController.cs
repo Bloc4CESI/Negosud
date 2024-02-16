@@ -20,25 +20,25 @@ namespace ApiNegosud.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post(Inventory NewInventory)
+        public IActionResult Post(Inventory inventory)
         {
             try
             {
-                _context.Add(NewInventory);
+                _context.Add(inventory);
                 // Ajouter les lignes inventaires associées
-                if (NewInventory.InventoryLignes != null && NewInventory.InventoryLignes.Any())
+                if (inventory.InventoryLignes != null && inventory.InventoryLignes.Any())
                 {
-                    foreach (var InventoryLigne in NewInventory.InventoryLignes)
+                    foreach (var inventoryLigne in inventory.InventoryLignes)
                     {
-                        InventoryLigne.InventoryId = NewInventory.Id;
+                        inventoryLigne.InventoryId = inventory.Id;
 
-                        _context.InventoryLigne.Add(InventoryLigne);
+                        _context.InventoryLigne.Add(inventoryLigne);
                     }
 
                     _context.SaveChanges();
                 }
                 var newInventory = _context.Inventory.Include(p => p.InventoryLignes)
-                            .FirstOrDefault(p => p.Id == NewInventory.Id);
+                            .FirstOrDefault(p => p.Id == inventory.Id);
                 if (newInventory != null)
                 {
                     return Ok(new { newInventory = newInventory, Message = "L'inventaire est ajoutée avec succès!" });
@@ -55,44 +55,44 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("UpdateInventory")]
-        public IActionResult UpdateInventory(Inventory UpdatedInventory)
+        public IActionResult UpdateInventory(Inventory updatedInventory)
         {
             try
             {
-                var ExistingInventory = _context.Inventory.Include(i => i.InventoryLignes).FirstOrDefault(i => i.Id == UpdatedInventory.Id);
+                var existingInventory = _context.Inventory.Include(i => i.InventoryLignes).FirstOrDefault(i => i.Id == updatedInventory.Id);
 
-                if (ExistingInventory == null)
+                if (existingInventory == null)
                 {
-                    return NotFound($"L'inventaire {UpdatedInventory.Id} n'a pas été trouvé");
+                    return NotFound($"L'inventaire {updatedInventory.Id} n'a pas été trouvé");
                 }
 
                 // Mettre à jour les propriétés de l'inventaire
-                ExistingInventory.StatusInventory = UpdatedInventory.StatusInventory;
-                ExistingInventory.Date = UpdatedInventory.Date;
-                if (UpdatedInventory.InventoryLignes != null && UpdatedInventory.InventoryLignes.Any())
+                existingInventory.StatusInventory = updatedInventory.StatusInventory;
+                existingInventory.Date = updatedInventory.Date;
+                if (updatedInventory.InventoryLignes != null && updatedInventory.InventoryLignes.Any())
                 {
-                    foreach (var UpdatedInventoryLigne in UpdatedInventory.InventoryLignes)
+                    foreach (var updatedInventoryLigne in updatedInventory.InventoryLignes)
                     {
-                        UpdatedInventoryLigne.InventoryId = UpdatedInventory.Id;
+                        updatedInventoryLigne.InventoryId = updatedInventory.Id;
 
-                        var ExistingLigne = ExistingInventory.InventoryLignes!.FirstOrDefault(il => il.Id == UpdatedInventoryLigne.Id);
+                        var ExistingLigne = existingInventory.InventoryLignes!.FirstOrDefault(il => il.Id == updatedInventoryLigne.Id);
 
                         if (ExistingLigne != null)
                         {
-                            ExistingLigne.QuantityInventory = UpdatedInventoryLigne.QuantityInventory;
+                            ExistingLigne.QuantityInventory = updatedInventoryLigne.QuantityInventory;
                         }
                         else
                         {
-                            ExistingInventory.InventoryLignes!.Add(UpdatedInventoryLigne);
+                            existingInventory.InventoryLignes!.Add(updatedInventoryLigne);
                         }
                     }
                 }
                 // si le status est validé on update les quantités des articles selon les inventaires
-                if (UpdatedInventory.StatusInventory == Inventory.InventoryEnum.VALIDE)
+                if (updatedInventory.StatusInventory == Inventory.InventoryEnum.VALIDE)
                 {
-                    if (UpdatedInventory.InventoryLignes != null && UpdatedInventory.InventoryLignes.Any())
+                    if (updatedInventory.InventoryLignes != null && updatedInventory.InventoryLignes.Any())
                     {
-                        foreach (var UpdatedInventoryLigne in UpdatedInventory.InventoryLignes)
+                        foreach (var UpdatedInventoryLigne in updatedInventory.InventoryLignes)
                         {
                             var productStock = _context.Stock.FirstOrDefault(s => s.Id == UpdatedInventoryLigne.StockId);
                             if (productStock != null)
@@ -116,18 +116,18 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var InventoryQuery = _context.Inventory
+                var inventoryQuery = _context.Inventory
                     .Include(i => i.InventoryLignes!)
                         .ThenInclude(il => il.Stock)
                             .ThenInclude(s => s.Product)
                     .Where(po => po.StatusInventory == status);
                 if (date.HasValue)
                 {
-                    InventoryQuery = InventoryQuery.Where(po => po.Date >= date.Value.Date);
+                    inventoryQuery = inventoryQuery.Where(po => po.Date >= date.Value.Date);
                 }
-                var Inventories = InventoryQuery.OrderByDescending(po => po.Id).ToList();
+                var inventories = inventoryQuery.OrderByDescending(po => po.Id).ToList();
 
-                return Ok(Inventories);
+                return Ok(inventories);
             }
             catch (Exception ex)
             {
@@ -139,21 +139,21 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Inventory = _context.Inventory
+                var inventory = _context.Inventory
                     .Include(i => i.InventoryLignes) // Inclure les lignes d'inventaire
                     .SingleOrDefault(i => i.Id == id);
 
-                if (Inventory == null)
+                if (inventory == null)
                 {
                     return BadRequest($"L'inventaire l'ID {id} est non trouvée");
                 }
-                if (Inventory.InventoryLignes != null && Inventory.InventoryLignes.Any())
+                if (inventory.InventoryLignes != null && inventory.InventoryLignes.Any())
                 {
                     // Supprimer toutes les lignes d'inventaire associées
-                    _context.InventoryLigne.RemoveRange(Inventory.InventoryLignes);
+                    _context.InventoryLigne.RemoveRange(inventory.InventoryLignes);
                 }
                 // Supprimer la commande fournisseur elle-même
-                _context.Inventory.Remove(Inventory);
+                _context.Inventory.Remove(inventory);
 
                 _context.SaveChanges();
 

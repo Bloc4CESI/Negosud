@@ -38,17 +38,16 @@ namespace VinStore.View
         {
             try
             {
-                var Products = await ProductService.GetAllProducts();
-
-                if (Products != null)
+                var products = await ProductService.GetAllProducts();
+                if (products != null)
                 {
-                    foreach (var Product in Products)
+                    foreach (var Product in products)
                     {
-                        var NewRow = new RowDefinition();
-                        NewRow.Height = GridLength.Auto;
-                        ProductLigneGrid.RowDefinitions.Add(NewRow);
+                        var newRow = new RowDefinition();
+                        newRow.Height = GridLength.Auto;
+                        ProductLigneGrid.RowDefinitions.Add(newRow);
 /*                        int CurrentRow = ProductLigneGrid.RowDefinitions.Count - 1;*/
-                        var ArticleTextBox = new TextBox
+                        var articleTextBox = new TextBox
                         {
                             Margin = new Thickness(20),
                             Background = Brushes.White,
@@ -57,17 +56,17 @@ namespace VinStore.View
                             Text = Product.Name,
                             Tag = Product.Id
                         };
-                        RegisterName(ArticleTextBox.Name, ArticleTextBox);
-                        Grid.SetColumn(ArticleTextBox, 0);
-                        Grid.SetColumnSpan(ArticleTextBox, 2);
-                        Grid.SetRow(ArticleTextBox, RowCounter);                     
-                        HintAssist.SetHint(ArticleTextBox, "Nom de l'article");
-                        TextFieldAssist.SetUnderlineBrush(ArticleTextBox, Brushes.Black);
-                        HintAssist.SetHintOpacity(ArticleTextBox, 0.26);
-                        ArticleTextBox.MaxHeight = 50;
-                        ArticleTextBox.Foreground = Brushes.Black;
-                        ArticleTextBox.IsReadOnly = true;
-                        TextBox TextBoxQuantityStock = new TextBox
+                        RegisterName(articleTextBox.Name, articleTextBox);
+                        Grid.SetColumn(articleTextBox, 0);
+                        Grid.SetColumnSpan(articleTextBox, 2);
+                        Grid.SetRow(articleTextBox, RowCounter);                     
+                        HintAssist.SetHint(articleTextBox, "Nom de l'article");
+                        TextFieldAssist.SetUnderlineBrush(articleTextBox, Brushes.Black);
+                        HintAssist.SetHintOpacity(articleTextBox, 0.26);
+                        articleTextBox.MaxHeight = 50;
+                        articleTextBox.Foreground = Brushes.Black;
+                        articleTextBox.IsReadOnly = true;
+                        TextBox textBoxQuantityStock = new TextBox
                         {
                             Margin = new Thickness(20),
                             Background = Brushes.White,
@@ -76,33 +75,33 @@ namespace VinStore.View
                             Name = "StockQuantity" + RowCounter,
                             Text = Product.Stock?.Quantity.ToString() ?? "N/A"
                         };
-                        Grid.SetColumn(TextBoxQuantityStock, 2);
-                        Grid.SetRow(TextBoxQuantityStock, RowCounter);
-                        RegisterName(TextBoxQuantityStock.Name, TextBoxQuantityStock);
-                        HintAssist.SetHint(TextBoxQuantityStock, "Quantité stock");
-                        TextFieldAssist.SetUnderlineBrush(TextBoxQuantityStock, Brushes.Black);
-                        HintAssist.SetHintOpacity(TextBoxQuantityStock, 0.26);
-                        TextBoxQuantityStock.MaxHeight = 50;
-                        TextBoxQuantityStock.Foreground = Brushes.Black;
-                        TextBox TextBoxQuantityInventory = new TextBox
+                        Grid.SetColumn(textBoxQuantityStock, 2);
+                        Grid.SetRow(textBoxQuantityStock, RowCounter);
+                        RegisterName(textBoxQuantityStock.Name, textBoxQuantityStock);
+                        HintAssist.SetHint(textBoxQuantityStock, "Quantité stock");
+                        TextFieldAssist.SetUnderlineBrush(textBoxQuantityStock, Brushes.Black);
+                        HintAssist.SetHintOpacity(textBoxQuantityStock, 0.26);
+                        textBoxQuantityStock.MaxHeight = 50;
+                        textBoxQuantityStock.Foreground = Brushes.Black;
+                        TextBox textBoxQuantityInventory = new TextBox
                         {
                             Margin = new Thickness(20),
                             Background = Brushes.White,
                             Padding = new Thickness(10),
                             Name = "QuantityInventory" + RowCounter
                         };
-                        TextBoxQuantityInventory.PreviewTextInput += TextBox_IntegerInput;                      
-                        Grid.SetColumn(TextBoxQuantityInventory, 3);
-                        Grid.SetRow(TextBoxQuantityInventory, RowCounter);
-                        RegisterName(TextBoxQuantityInventory.Name, TextBoxQuantityInventory);
-                        HintAssist.SetHint(TextBoxQuantityInventory, "Quantité Inventaire");
-                        TextFieldAssist.SetUnderlineBrush(TextBoxQuantityInventory, Brushes.Black);
-                        HintAssist.SetHintOpacity(TextBoxQuantityInventory, 0.26);
-                        TextBoxQuantityInventory.MaxHeight = 50;
-                        TextBoxQuantityInventory.Foreground = Brushes.Black;
-                        ProductLigneGrid.Children.Add(ArticleTextBox);
-                        ProductLigneGrid.Children.Add(TextBoxQuantityStock);
-                        ProductLigneGrid.Children.Add(TextBoxQuantityInventory);
+                        textBoxQuantityInventory.PreviewTextInput += TextBox_IntegerInput;                      
+                        Grid.SetColumn(textBoxQuantityInventory, 3);
+                        Grid.SetRow(textBoxQuantityInventory, RowCounter);
+                        RegisterName(textBoxQuantityInventory.Name, textBoxQuantityInventory);
+                        HintAssist.SetHint(textBoxQuantityInventory, "Quantité Inventaire");
+                        TextFieldAssist.SetUnderlineBrush(textBoxQuantityInventory, Brushes.Black);
+                        HintAssist.SetHintOpacity(textBoxQuantityInventory, 0.26);
+                        textBoxQuantityInventory.MaxHeight = 50;
+                        textBoxQuantityInventory.Foreground = Brushes.Black;
+                        ProductLigneGrid.Children.Add(articleTextBox);
+                        ProductLigneGrid.Children.Add(textBoxQuantityStock);
+                        ProductLigneGrid.Children.Add(textBoxQuantityInventory);
                         RowCounter++;
                     }
                     ProductLigneGrid.UpdateLayout();
@@ -120,7 +119,7 @@ namespace VinStore.View
             // Vérifier si le texte est un entier
             if (!int.TryParse(e.Text, out _))
             {
-                MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
+                MessageBox.Show("Veuillez entrer un nombre entier valide.");
                 e.Handled = true; // Ignorer si pas un entier
             }
         }
@@ -132,14 +131,14 @@ namespace VinStore.View
 
             for (int i = 0; i <= RowCounter ; i++)
             {
-                var ArticleTextBox = ProductLigneGrid.FindName("Product" + i ) as TextBox;
-                var StockQuantityTextBox = ProductLigneGrid.FindName("StockQuantity" + i) as TextBox;
-                var QuantityInventoryTextBox = ProductLigneGrid.FindName("QuantityInventory" + i) as TextBox;
-                if (ArticleTextBox != null && StockQuantityTextBox != null && QuantityInventoryTextBox != null)
+                var articleTextBox = ProductLigneGrid.FindName("Product" + i ) as TextBox;
+                var stockQuantityTextBox = ProductLigneGrid.FindName("StockQuantity" + i) as TextBox;
+                var quantityInventoryTextBox = ProductLigneGrid.FindName("QuantityInventory" + i) as TextBox;
+                if (articleTextBox != null && stockQuantityTextBox != null && quantityInventoryTextBox != null)
                 {
                     // Ajouter les valeurs
                     // Vérifier si l'utilisateur entre toutes les quantités
-                    if (string.IsNullOrWhiteSpace(QuantityInventoryTextBox.Text))
+                    if (string.IsNullOrWhiteSpace(quantityInventoryTextBox.Text))
                     {
                         MessageBox.Show("Veuillez entrer toutes les quantités des articles");
                         isDataValid = false;
@@ -152,21 +151,21 @@ namespace VinStore.View
                         break;
                     }
 
-                    if (!int.TryParse(QuantityInventoryTextBox.Text, out int quantityValueInventory) || quantityValueInventory <= 0)
+                    if (!int.TryParse(quantityInventoryTextBox.Text, out int quantityValueInventory) )
                     {
                         MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
                         isDataValid = false;
                         break;
                     }
 
-                    if (!int.TryParse(StockQuantityTextBox.Text, out int quantityValueStock) || quantityValueStock <= 0)
+                    if (!int.TryParse(stockQuantityTextBox.Text, out int quantityValueStock))
                     {
                         MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
                         isDataValid = false;
                         break;
                     }
 
-                    if (ArticleTextBox.Tag is int productId)
+                    if (articleTextBox.Tag is int productId)
                     {
                         // Retrieve StockId using navigation property
                         int stockId = 0;
@@ -201,7 +200,7 @@ namespace VinStore.View
 
             if (isDataValid)
             {
-                var Inventory = new Inventory
+                var inventory = new Inventory
                 {
                     Date = OrderDate.SelectedDate!.Value,
                     StatusInventory = ApiNegosud.Models.Inventory.InventoryEnum.ENCOURSDEVALIDATION,
@@ -213,7 +212,7 @@ namespace VinStore.View
                     }).ToList()
                 };
 
-                var (responseMessage, createdOrder) = await InventoryService.PostInventory(Inventory);
+                var (responseMessage, createdOrder) = await InventoryService.PostInventory(inventory);
                 return (responseMessage, createdOrder);
             }
 
@@ -222,11 +221,11 @@ namespace VinStore.View
 
         private async void SaveInventory(object sender, RoutedEventArgs e)
         {
-            var (ResponseMessage, CreatedInventory) = await SaveInventoryStatusInProgress();
-            if (!string.IsNullOrEmpty(ResponseMessage) && CreatedInventory != null)
+            var (responseMessage, createdInventory) = await SaveInventoryStatusInProgress();
+            if (!string.IsNullOrEmpty(responseMessage) && createdInventory != null)
             {
-                var Message = MessageBox.Show(ResponseMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                if (Message == MessageBoxResult.OK)
+                var message = MessageBox.Show(responseMessage, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                if (message == MessageBoxResult.OK)
                 {
                     _mainGrid.Children.Clear();
                     _mainGrid.Children.Add(new InventoryToValidate(_mainGrid));
@@ -240,8 +239,8 @@ namespace VinStore.View
         }
         private async void SaveAndValidateInventory(object sender, RoutedEventArgs e)
         {
-            var (ResponseMessage, CreatedInventory) = await SaveInventoryStatusInProgress();
-            if (!string.IsNullOrEmpty(ResponseMessage) && CreatedInventory != null)
+            var (responseMessage, CreatedInventory) = await SaveInventoryStatusInProgress();
+            if (!string.IsNullOrEmpty(responseMessage) && CreatedInventory != null)
             {
                 CreatedInventory.StatusInventory = Inventory.InventoryEnum.VALIDE;
                 var updateOrder = await InventoryService.UpdateInventory(CreatedInventory);

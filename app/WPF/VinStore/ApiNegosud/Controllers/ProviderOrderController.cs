@@ -64,15 +64,15 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var ProviderOrder = _context.ProviderOrder.Include(po => po.Provider).Include(po=>po.ProviderOrderLines).SingleOrDefault(po => po.Id == id);
+                var providerOrder = _context.ProviderOrder.Include(po => po.Provider).Include(po=>po.ProviderOrderLines).SingleOrDefault(po => po.Id == id);
 
-                if (ProviderOrder == null)
+                if (providerOrder == null)
                 {
                     return NotFound($"La commande fournisseur avec l'ID {id} est non trouvé");
                 }
                 else
                 {
-                    return Ok(ProviderOrder);
+                    return Ok(providerOrder);
                 }
             }
             catch (Exception ex)
@@ -179,41 +179,41 @@ namespace ApiNegosud.Controllers
         }
 
         [HttpPut("UpdateOrder")]
-        public IActionResult UpdateOrder(ProviderOrder UpdatedProviderOrder)
+        public IActionResult UpdateOrder(ProviderOrder updatedProviderOrder)
         {
             try
             {
-                var ExistingOrderProvider = _context.ProviderOrder.Include(po => po.Provider).FirstOrDefault(c => c.Id == UpdatedProviderOrder.Id);
+                var existingOrderProvider = _context.ProviderOrder.Include(po => po.Provider).FirstOrDefault(c => c.Id == updatedProviderOrder.Id);
 
-                if (ExistingOrderProvider == null)
+                if (existingOrderProvider == null)
                 {
-                    return NotFound($"La commande avec l'ID {UpdatedProviderOrder.Id} n'a pas été trouvée");
+                    return NotFound($"La commande avec l'ID {updatedProviderOrder.Id} n'a pas été trouvée");
                 }
 
                 // Mettre à jour les propriétés de la commande existante 
-                ExistingOrderProvider.ProviderOrderStatus = UpdatedProviderOrder.ProviderOrderStatus;
-                ExistingOrderProvider.Date = UpdatedProviderOrder.Date;
-                ExistingOrderProvider.ProviderId = UpdatedProviderOrder.ProviderId;
-                ExistingOrderProvider.Price = UpdatedProviderOrder.Price;
+                existingOrderProvider.ProviderOrderStatus = updatedProviderOrder.ProviderOrderStatus;
+                existingOrderProvider.Date = updatedProviderOrder.Date;
+                existingOrderProvider.ProviderId = updatedProviderOrder.ProviderId;
+                existingOrderProvider.Price = updatedProviderOrder.Price;
 
                 // Vérifier les lignes de commande fournisseur associées
-                if (UpdatedProviderOrder.ProviderOrderLines != null && UpdatedProviderOrder.ProviderOrderLines.Any())
+                if (updatedProviderOrder.ProviderOrderLines != null && updatedProviderOrder.ProviderOrderLines.Any())
                 {
-                    foreach (var updatedOrderLine in UpdatedProviderOrder.ProviderOrderLines)
+                    foreach (var updatedOrderLine in updatedProviderOrder.ProviderOrderLines)
                     {
                         // Assurer que la ligne est associée à la même commande fournisseur
-                        updatedOrderLine.ProviderOrderId = UpdatedProviderOrder.Id;
+                        updatedOrderLine.ProviderOrderId = updatedProviderOrder.Id;
 
                         // Vérifier si le produit appartient au même fournisseur que celui de la commande principale
                         var product = _context.Product
                             .Include(p => p.Provider)
                             .FirstOrDefault(p => p.Id == updatedOrderLine.ProductId);
 
-                        if (product != null && product.ProviderId == UpdatedProviderOrder.ProviderId)
+                        if (product != null && product.ProviderId == updatedProviderOrder.ProviderId)
                         {
                             // Vérifier si une ligne pour ce produit existe déjà dans la commande fournisseur
                             var existingLine = _context.ProviderOrderLine
-                                .FirstOrDefault(line => line.ProviderOrderId == UpdatedProviderOrder.Id
+                                .FirstOrDefault(line => line.ProviderOrderId == updatedProviderOrder.Id
                                                         && line.ProductId == updatedOrderLine.ProductId);
 
                             if (existingLine != null)
@@ -239,9 +239,9 @@ namespace ApiNegosud.Controllers
                 _context.SaveChanges();
 
                 // Si le statut est "LIVRE", mettre à jour la quantité du stock
-                if (UpdatedProviderOrder.ProviderOrderStatus == ProviderOrderStatus.LIVRE)
+                if (updatedProviderOrder.ProviderOrderStatus == ProviderOrderStatus.LIVRE)
                 {
-                    foreach (var updatedOrderLine in UpdatedProviderOrder.ProviderOrderLines!)
+                    foreach (var updatedOrderLine in updatedProviderOrder.ProviderOrderLines!)
                     {
                         var stock = _context.Stock.FirstOrDefault(s => s.ProductId == updatedOrderLine.ProductId);
                         if (stock != null)

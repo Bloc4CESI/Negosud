@@ -40,9 +40,9 @@ namespace VinStore.View
         private async void InitializeDataProvider()
         {
             // Créez une liste de stock
-            List<Provider> ProviderList = await ProviderService.GetProvidersAll();
+            List<Provider> providerList = await ProviderService.GetProvidersAll();
             // Assigne la liste à la propriété ItemsSource du DataGrid
-            ProviderDataGrid.ItemsSource = ProviderList;
+            ProviderDataGrid.ItemsSource = providerList;
             Dispatcher.Invoke(() => { }, DispatcherPriority.Render);
         }
         private async void ButtonEdite_Click(object sender, RoutedEventArgs e)
@@ -53,21 +53,19 @@ namespace VinStore.View
         {
             try
             {
-                ProviderDataGrid.CommitEdit();  
+                ProviderDataGrid.CommitEdit();
                 var selectedProvider = ProviderDataGrid.SelectedItem as Provider;
                 if (selectedProvider != null)
                 {
-                    // Appelez la méthode pour effectuer la modification via l'API
-                    bool success = await ProviderService.DeleteProvider(selectedProvider.Id);
+                    var (success, message) = await ProviderService.DeleteProvider(selectedProvider.Id);
                     if (success)
                     {
-                        MessageBox.Show($"Le ProvIder '{selectedProvider.Name}' a été supprimé avec succès!");
-                        // Rafraîchissez la liste après la modification
+                        MessageBox.Show("Le fournisseur a été supprimé avec succès!", "Suppression Réussie", MessageBoxButton.OK, MessageBoxImage.Information);
                         InitializeDataProvider();
                     }
                     else
                     {
-                        MessageBox.Show($"La suppression du provider '{selectedProvider.Name}' a échoué.");
+                        MessageBox.Show(message, "Suppression Impossible", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -142,11 +140,12 @@ namespace VinStore.View
                     errorMessage += "- Numéro de téléphone\n";
                     isFormValid = false;
                 }
-                if (!Regex.IsMatch(NewProviderPhoneNumber.Text, @"^\d{12}$"))
+                if (!Regex.IsMatch(NewProviderPhoneNumber.Text, @"^\d{10}$"))
                 {
                     errorMessage += "- Numéro Téléphone doit contenir exactement 12 chiffres\n";
                     isFormValid = false;
                 }
+
                 if (string.IsNullOrWhiteSpace(NewProviderEmail.Text))
                 {
                     errorMessage += "- Email\n";
@@ -205,15 +204,15 @@ namespace VinStore.View
                         Country = NewProviderAdresscountry.Text
                     }
                 };
-                bool success = await ProviderService.PostProvider(newProvider);
+                var (success, message) = await ProviderService.PostProvider(newProvider);
                 if (success)
                 {
                     Provider_AddPopup.IsOpen = false;
-                    MessageBox.Show("Provider ajouté avec succès!");
+                    MessageBox.Show("Le fournisseur est ajouté avec succès");
                 }
                 else
                 {
-                    MessageBox.Show("L'ajout du provider a échoué.");
+                    MessageBox.Show(message);
                 }
             }
             catch (Exception ex)
@@ -254,9 +253,9 @@ namespace VinStore.View
                     errorMessage += "- Numéro de téléphone\n";
                     isFormValid = false;
                 }
-                if (!Regex.IsMatch(ProviderPhoneNumber.Text, @"^\d{12}$"))
+                if (!Regex.IsMatch(ProviderPhoneNumber.Text, @"^\d{10}$"))
                 {
-                    errorMessage += "- Numéro Téléphone doit contenir exactement 12 chiffres\n";
+                    errorMessage += "- Numéro Téléphone doit contenir exactement 10 chiffres\n";
                     isFormValid = false;
                 }
                 if (string.IsNullOrWhiteSpace(ProviderEmail.Text))
@@ -303,18 +302,17 @@ namespace VinStore.View
                     return;
                 }
                 // Appel de la méthode PutFamily
-                bool success = await ProviderService.PutProvider(putProvider.Id, putProvider);
-                // Vérifiez si la famille a été ajoutée avec succès avant de fermer le Popup
+                var (success, message) = await ProviderService.PutProvider(putProvider.Id, putProvider);
                 if (success)
                 {
                     Provider_PutPopup.IsOpen = false;
-                    MessageBox.Show("Provider ajoutée avec succès!");
+                    MessageBox.Show("Le fournisseur a été mis à jour avec succès!");
                 }
                 else
                 {
-                    Provider_AddPopup.IsOpen = false;
-                    MessageBox.Show($"L'ajout du provider a échoué.");
-                    Provider_AddPopup.IsOpen = true;
+                    Provider_PutPopup.IsOpen = false;
+                    MessageBox.Show(message);
+                    Provider_PutPopup.IsOpen = true;
                 }
             }
             catch (Exception ex)
@@ -322,6 +320,21 @@ namespace VinStore.View
                 // Gérez les erreurs ici
                 MessageBox.Show($"Une erreur s'est produite: {ex.Message}");
             }
+        }
+        private async void SearchWithProviderName(object sender, RoutedEventArgs e)
+        {
+            var providerName = ProviderNameTextBox.Text;
+
+            if (!string.IsNullOrEmpty(providerName))
+            {
+                List<Provider> ProviderList = await ProviderService.GetProvidersAll(providerName);
+                ProviderDataGrid.ItemsSource = ProviderList;
+            }
+            else
+            {
+                InitializeDataProvider();
+            }
+
         }
 
     }

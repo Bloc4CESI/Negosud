@@ -180,18 +180,18 @@ namespace ApiNegosud.Controllers
 
 
         [HttpGet("GetByEmail/{Email}")]
-        public IActionResult GetByEmail(string Email)
+        public IActionResult GetByEmail(string email)
         {
             try
             {
-                var Client = _context.Client.SingleOrDefault(c => c.Email.Trim() == Email);
-                if (Client == null)
+                var client = _context.Client.SingleOrDefault(c => c.Email.Trim() == email);
+                if (client == null)
                 {
-                    return NotFound($"Aucun client trouvé avec cette adresse {Client.Email} ");
+                    return NotFound($"Aucun client trouvé avec cette adresse {client.Email} ");
                 }
                 else
                 {
-                    return Ok(Client);
+                    return Ok(client);
                 }
             }
             catch (Exception ex)
@@ -202,48 +202,48 @@ namespace ApiNegosud.Controllers
 
        
         [HttpPut("{id}")]
-        public IActionResult PutWithAddress(Client UpdatedClient)
+        public IActionResult PutWithAddress(Client updatedClient)
         {
             try
             {
-                var existingClient = _context.Client.Include(c => c.Address).FirstOrDefault(c => c.Id == UpdatedClient.Id);
+                var existingClient = _context.Client.Include(c => c.Address).FirstOrDefault(c => c.Id == updatedClient.Id);
 
                 if (existingClient == null)
                 {
-                    return NotFound($"Le client avec l'ID {UpdatedClient.Id} n'a pas été trouvé");
+                    return NotFound($"Le client avec l'ID {updatedClient.Id} n'a pas été trouvé");
                 }
 
                 // Vérifier si l'e-mail mis à jour est utilisé par un autre client
-                var isEmailTaken = _context.Client.Any(c => c.Id != UpdatedClient.Id && c.Email.Trim() == UpdatedClient.Email.Trim());
+                var isEmailTaken = _context.Client.Any(c => c.Id != updatedClient.Id && c.Email.Trim() == updatedClient.Email.Trim());
 
                 if (isEmailTaken)
                 {
-                    return BadRequest($"L'e-mail {UpdatedClient.Email} est déjà utilisé par une autre personne.");
+                    return BadRequest($"L'e-mail {updatedClient.Email} est déjà utilisé par une autre personne.");
                 }
                 else
                 {
-                    existingClient.Email= UpdatedClient.Email.Trim();
+                    existingClient.Email= updatedClient.Email.Trim();
                 }
 
                 // Mettre à jour les propriétés du client existant avec la première lettre en majuscule
-                existingClient.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.FirstName.Trim());
-                existingClient.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.LastName.Trim());
-                existingClient.Email = UpdatedClient.Email.Trim();
-                existingClient.PhoneNumber = UpdatedClient.PhoneNumber;
-                if (!string.IsNullOrEmpty(UpdatedClient.Password))
+                existingClient.FirstName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.FirstName.Trim());
+                existingClient.LastName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.LastName.Trim());
+                existingClient.Email = updatedClient.Email.Trim();
+                existingClient.PhoneNumber = updatedClient.PhoneNumber;
+                if (!string.IsNullOrEmpty(updatedClient.Password))
                 {
                     // Hasher le nouveau mot de passe avec BCrypt
-                    existingClient.Password = BCrypt.Net.BCrypt.HashPassword(UpdatedClient.Password);
+                    existingClient.Password = BCrypt.Net.BCrypt.HashPassword(updatedClient.Password);
                 }
                 else { existingClient.Password = existingClient.Password; }
-                if (UpdatedClient.AddressId > 0)
+                if (updatedClient.AddressId > 0)
                 {
-                    var existingAddress = _context.Address.Find(UpdatedClient.AddressId);
+                    var existingAddress = _context.Address.Find(updatedClient.AddressId);
 
                     // Vérifier si l'adresse existe et qu'elle n'est pas déjà associée à un autre client
                     if (existingAddress != null &&
-                          !_context.Address.Any(a => a.Id == UpdatedClient.AddressId &&
-                          ((a.Client != null && a.Client.Id != UpdatedClient.Id) || (a.Provider != null))))
+                          !_context.Address.Any(a => a.Id == updatedClient.AddressId &&
+                          ((a.Client != null && a.Client.Id != updatedClient.Id) || (a.Provider != null))))
                     {
                         existingClient.Address = existingAddress;
                     }
@@ -254,13 +254,13 @@ namespace ApiNegosud.Controllers
                 }
                 else
                 {
-                    if (UpdatedClient.Address != null && existingClient.Address != null)
+                    if (updatedClient.Address != null && existingClient.Address != null)
                     {
-                        existingClient.Address.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.Address.Name.Trim());
-                        existingClient.Address.Number = UpdatedClient.Address.Number;
-                        existingClient.Address.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.Address.Street.Trim());
-                        existingClient.Address.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.Address.City.Trim());
-                        existingClient.Address.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedClient.Address.Country.Trim());
+                        existingClient.Address.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.Address.Name.Trim());
+                        existingClient.Address.Number = updatedClient.Address.Number;
+                        existingClient.Address.Street = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.Address.Street.Trim());
+                        existingClient.Address.City = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.Address.City.Trim());
+                        existingClient.Address.Country = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedClient.Address.Country.Trim());
                     }
                 }
                
@@ -280,12 +280,12 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Client = _context.Client.Find(id);
-                if (Client == null)
+                var client = _context.Client.Find(id);
+                if (client == null)
                 {
                     return BadRequest("Client non trouvé");
                 }
-                _context.Client.Remove(Client);
+                _context.Client.Remove(client);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }

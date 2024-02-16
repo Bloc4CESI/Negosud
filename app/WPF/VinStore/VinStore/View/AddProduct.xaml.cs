@@ -31,7 +31,6 @@ namespace VinStore.View
     /// </summary>
     public partial class AddProduct : UserControl
     {
-
         public AddProduct()
         {
             InitializeComponent();
@@ -58,7 +57,6 @@ namespace VinStore.View
             }
      
         }
-
         private async void LoadFamily()
         {
             try
@@ -72,9 +70,7 @@ namespace VinStore.View
                 Console.WriteLine($"Une erreur s'est produite lors de la requête : {ex.Message}");
                 MessageBox.Show($"{ex.Message}");
             }
-
         }
-
         private void ChooseImageButton_Click(object sender, RoutedEventArgs e)
         {
             // Utilisez un OpenFileDialog pour permettre à l'utilisateur de choisir plusieurs images
@@ -83,12 +79,8 @@ namespace VinStore.View
             if (openFileDialog.ShowDialog() == true)
             {
                 string selectedImagePath = openFileDialog.FileName;
-
                 // Affichez l'aperçu de l'image sélectionnée
                 ImagePreview.Source = new BitmapImage(new Uri(selectedImagePath));
-
-                // Vous pouvez également stocker le chemin de l'image si nécessaire
-                // string selectedImagePath = openFileDialog.FileName;
             }
         }
 
@@ -114,7 +106,7 @@ namespace VinStore.View
             // Vérifier si le texte est un entier
             if (!int.TryParse(e.Text, out _))
             {
-                MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
+                MessageBox.Show("Veuillez entrer un nombre entier valide.");
                 e.Handled = true; // Ignorer si pas un entier
             }
         }
@@ -134,11 +126,9 @@ namespace VinStore.View
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
             string image = "";
-
             if (ImagePreview.Source != null)
             {
-                string selectedImagePath = (ImagePreview.Source as BitmapImage)?.UriSource?.LocalPath;
-
+                var selectedImagePath = (ImagePreview.Source as BitmapImage)?.UriSource?.LocalPath;
                 if (!string.IsNullOrEmpty(selectedImagePath))
                 {
                     string fileName = System.IO.Path.GetFileName(selectedImagePath);
@@ -146,58 +136,48 @@ namespace VinStore.View
 
                     image = postImgurImg(selectedImagePath, uniqueFileName);
                 }
-
                 bool isFormValid = true;
                 string errorMessage = "Veuillez remplir les champs:\n";
-
                 if (string.IsNullOrEmpty(txtName.Text))
                 {
                     errorMessage += "- Nom\n";
                     isFormValid = false;
                 }
-
                 if (string.IsNullOrEmpty(txtPrice.Text))
                 {
                     errorMessage += "- Prix\n";
                     isFormValid = false;
                 }
-
                 if (OrderDate.SelectedDate == null)
                 {
                     errorMessage += "- Date de production\n";
                     isFormValid = false;
                 }
-
                 if (string.IsNullOrEmpty(txtNbProductBox.Text))
                 {
                     errorMessage += "- Nombre de produits dans le pack\n";
                     isFormValid = false;
                 }
-
                 if (string.IsNullOrEmpty(txtHome.Text))
                 {
                     errorMessage += "- Maison\n";
                     isFormValid = false;
                 }
-
                 if (FamilyName.SelectedItem == null)
                 {
                     errorMessage += "- Famille\n";
                     isFormValid = false;
                 }
-
                 if (ProvidersName.SelectedItem == null)
                 {
                     errorMessage += "- Fournisseur\n";
                     isFormValid = false;
                 }
-
                 if (string.IsNullOrEmpty(image))
                 {
                     errorMessage += "- Image\n";
                     isFormValid = false;
                 }
-
                 if (isFormValid)
                 {
                     // Le formulaire est valide, procédez avec le reste du code
@@ -207,8 +187,8 @@ namespace VinStore.View
                     DateOnly dateProduction = DateOnly.FromDateTime(OrderDate.SelectedDate.Value);
                     int nbProductBox = Convert.ToInt32(txtNbProductBox.Text);
                     string maison = txtHome.Text;
-                    Family famille = FamilyName.SelectedItem as Family;
-                    Provider fournisseur = ProvidersName.SelectedItem as Provider;
+                    var famille = FamilyName.SelectedItem as Family;
+                    var fournisseur = ProvidersName.SelectedItem as Provider;
                     Product createdProduct = new Product
                     {
                         Name = nom,
@@ -257,7 +237,6 @@ namespace VinStore.View
             FamilyName.SelectedIndex = -1; // Réinitialisez la ComboBox "Famille"
             ProvidersName.SelectedIndex = -1; // Réinitialisez la ComboBox "Fournisseur"
         }
-
         private string postImgurImg(string selectedpath, string imagename)
         {
             // Remplacez "VOTRE_CLE_API" par votre clé API Imgur

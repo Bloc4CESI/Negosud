@@ -87,12 +87,12 @@ namespace VinStore.View
         private void ModifyButton_Click(object sender, RoutedEventArgs e)
         {
             // Ouvrir le Popup Put
-            var ModifyButton = sender as Button;
-            if( ModifyButton != null)
+            var modifyButton = sender as Button;
+            if( modifyButton != null)
             {
-                string FamilyName = ModifyButton.DataContext as string;
-                textBlockInputPutOld.Text = FamilyName;
-                textBoxInputPutNew.Text = FamilyName;
+                string familyName = modifyButton.DataContext as string;
+                textBlockInputPutOld.Text = familyName;
+                textBoxInputPutNew.Text = familyName;
                 myPopupPut.IsOpen = true;
             }
         }

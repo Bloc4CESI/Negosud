@@ -54,7 +54,7 @@
                 <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
                     <TextBlock Text="La liste des articles" Foreground="Black" FontSize="18" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
                 </StackPanel>
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="300">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Height="400">
                     <Grid x:Name="ProductLigneGrid" Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>

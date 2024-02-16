@@ -24,8 +24,8 @@ namespace VinStore
     {
         public MainWindow()
         {
-
             InitializeComponent();
+            this.WindowState = WindowState.Maximized;
             MainFrame.Navigate(new LogIn(this));
         }
 

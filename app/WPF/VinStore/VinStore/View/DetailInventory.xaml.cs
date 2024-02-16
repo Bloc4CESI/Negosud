@@ -26,9 +26,9 @@ namespace VinStore.View
             InitializeComponent(); 
             DataContext = new Inventory();
         }
-        public void DetailInventoryGrid(Inventory Inventory)
+        public void DetailInventoryGrid(Inventory inventory)
         {
-            DataContext = Inventory;
+            DataContext = inventory;
         }
     }
 }

@@ -11,235 +11,259 @@
              TextElement.FontSize="13"
              TextOptions.TextFormattingMode="Ideal"
              TextOptions.TextRenderingMode="Auto">
-    <Grid >
-        <Border Grid.Row="1" Grid.Column="1" Margin="10" Background="#F2F5F8" CornerRadius="0 0 0 5" >
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <materialDesign:ColorZone Padding="14" materialDesign:ElevationAssist.Elevation="Dp4"
+    <ScrollViewer  x:Name="myScroll2" VerticalScrollBarVisibility="Auto" Height="800">
+        <Grid >
+            <Border Grid.Row="1" Grid.Column="1" Margin="10" Background="#F2F5F8" CornerRadius="0 0 0 5" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <materialDesign:ColorZone Padding="14" materialDesign:ElevationAssist.Elevation="Dp4"
                CornerRadius="3" Background="#f5f4ea" Height="99" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Fournisseur" Foreground="Black" FontSize="48" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
-                    </StackPanel>
-                </materialDesign:ColorZone>
-                <DataGrid Margin="15,15,15,15"  Grid.Row="1" x:Name="ProviderDataGrid" AutoGenerateColumns="False" CanUserAddRows="False"   GridLinesVisibility="None" HorizontalScrollBarVisibility="Hidden" TextBlock.FontSize="16"  >
-                    <DataGrid.Columns>
-                        <DataGridTextColumn IsReadOnly="true" Header="Nom" Binding="{Binding Name}" MaxWidth="200"  >
-                            <DataGridTextColumn.ElementStyle >
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextTrimming" Value="None"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn IsReadOnly="true" Header="Adresse" Width="*" >
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextTrimming" Value="None"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.Binding>
-                                <MultiBinding StringFormat="{}{0} {1} {2}, {3}">
-                                    <Binding Path="Address.Street"/>
-                                    <Binding Path="Address.Number"/>
-                                    <Binding Path="Address.City"/>
-                                    <Binding Path="Address.Country"/>
-                                </MultiBinding>
-                            </DataGridTextColumn.Binding>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn IsReadOnly="true" Header="Email" Binding="{Binding Email}" MaxWidth="250" >
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextTrimming" Value="None"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTextColumn IsReadOnly="True" Header="Téléphone" Binding="{Binding PhoneNumber}" MaxWidth="150" >
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="TextTrimming" Value="None"/>
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                            <DataGridTextColumn.EditingElementStyle>
-                                <Style TargetType="TextBox">
-                                    <Setter Property="Background" Value="White"/>
-                                    <Setter Property="BorderBrush" Value="DarkRed"/>
-                                    <Setter Property="BorderThickness" Value="1"/>
-                                    <Setter Property="Foreground" Value="DarkRed"/>
-                                </Style>
-                            </DataGridTextColumn.EditingElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridTemplateColumn MaxWidth="150" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Éditer"   Background="DarkRed" BorderBrush="DarkRed" Click="Button_Open_Provider_PutPopup_Click" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                        <DataGridTemplateColumn MaxWidth="150" >
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <Button Content="Suprimé"   Background="DarkRed" BorderBrush="DarkRed" Click="ButtonSupp_Click" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                    <DataGrid.CellStyle>
-                        <Style TargetType="DataGridCell">
-                            <Setter Property="Margin" Value="15,0,0,0"/>
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="BorderThickness" Value="10,0,10,0"/>
-                            <Setter Property="BorderBrush" Value="#f5f4ea" />
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#f5f4ea"/>
-                                    <Setter Property="Foreground" Value="DarkRed"/>
-                                    <Setter Property="FontWeight" Value="Bold"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.CellStyle>
-                    <DataGrid.RowStyle>
-                        <Style TargetType="DataGridRow">
-                            <Setter Property="Height" Value="50"/>
-                            <Setter Property="Background" Value="#f5f4ea"/>
-                            <Setter Property="BorderThickness" Value="1"/>
-                        </Style>
-                    </DataGrid.RowStyle>
-                </DataGrid>
-            </Grid>
-        </Border>
-        <Button Grid.Row="0" Click="Button_Open_Provider_AddPopup_Click"
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBlock Text="Fournisseur" Foreground="Black" FontSize="48" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
+                        </StackPanel>
+                    </materialDesign:ColorZone>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="1" MinWidth="500" Margin="8,0,0,0" x:Name="ProviderNameTextBox"
+                           VerticalAlignment="Center"  materialDesign:HintAssist.Hint="Rechercher par Nom "
+                           materialDesign:TextFieldAssist.DecorationVisibility="Hidden"
+                           BorderThickness="0" />
+                        <Button Margin="8,0,0,0" Click="SearchWithProviderName" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}">
+                            <materialDesign:PackIcon Kind="Search" Grid.Column="2" />
+                        </Button>
+                        <Button Margin="20,0,0,0" Grid.Column="2" Content="Rechercher par Fournisseur" Panel.ZIndex="0" Style="{StaticResource MaterialDesignToolForegroundButton}" Click="SearchWithProviderName" />
+                    </Grid>
+                    <DataGrid Margin="15,15,15,15"  Grid.Row="2" x:Name="ProviderDataGrid" AutoGenerateColumns="False" CanUserAddRows="False"   GridLinesVisibility="None" HorizontalScrollBarVisibility="Hidden" TextBlock.FontSize="16"  >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn IsReadOnly="true" Header="Nom" Binding="{Binding Name}" MaxWidth="200"  >
+                                <DataGridTextColumn.ElementStyle >
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="true" Header="Adresse" Width="*" >
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} {1} {2}, {3}">
+                                        <Binding Path="Address.Street"/>
+                                        <Binding Path="Address.Number"/>
+                                        <Binding Path="Address.City"/>
+                                        <Binding Path="Address.Country"/>
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="true" Header="Email" Binding="{Binding Email}" MaxWidth="250" >
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="True" Header="Téléphone" Binding="{Binding PhoneNumber}" MaxWidth="150" >
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                                <DataGridTextColumn.EditingElementStyle>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Background" Value="White"/>
+                                        <Setter Property="BorderBrush" Value="DarkRed"/>
+                                        <Setter Property="BorderThickness" Value="1"/>
+                                        <Setter Property="Foreground" Value="DarkRed"/>
+                                    </Style>
+                                </DataGridTextColumn.EditingElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTemplateColumn Header="Actions" MaxWidth="150" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button  Background="DarkRed" BorderBrush="DarkRed" Click="Button_Open_Provider_PutPopup_Click" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="ContentSave" Width="Auto" Height="Auto" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn MaxWidth="150" >
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button  Background="DarkRed" BorderBrush="DarkRed" Click="ButtonSupp_Click" >
+                                            <StackPanel Orientation="Horizontal">
+                                                <materialDesign:PackIcon Kind="Delete" Width="Auto" Height="Auto" />
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                        <DataGrid.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="Margin" Value="15,0,0,0"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="BorderThickness" Value="10,0,10,0"/>
+                                <Setter Property="BorderBrush" Value="#f5f4ea" />
+                                <Style.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#f5f4ea"/>
+                                        <Setter Property="Foreground" Value="DarkRed"/>
+                                        <Setter Property="FontWeight" Value="Bold"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.CellStyle>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Height" Value="50"/>
+                                <Setter Property="Background" Value="#f5f4ea"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </Grid>
+            </Border>
+            <Button Grid.Row="0" Click="Button_Open_Provider_AddPopup_Click"
             IsEnabled="{Binding DataContext.ControlsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
             Style="{StaticResource MaterialDesignFloatingActionSecondaryDarkButton}"
             ToolTip="MaterialDesignFloatingActionSecondaryDarkButton" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20" Grid.RowSpan="2" RenderTransformOrigin="0.5,0.5" Background="DarkRed" BorderBrush="DarkRed">
-            <Button.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform AngleY="-0.936"/>
-                    <RotateTransform/>
-                    <TranslateTransform Y="-0.457"/>
-                </TransformGroup>
-            </Button.RenderTransform>
-            <materialDesign:PackIcon
+                <Button.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform AngleY="-0.936"/>
+                        <RotateTransform/>
+                        <TranslateTransform Y="-0.457"/>
+                    </TransformGroup>
+                </Button.RenderTransform>
+                <materialDesign:PackIcon
             Width="50"
             Height="50"
             Kind="Plus" Background="DarkRed" />
-        </Button>
-        <Popup  Name="Provider_AddPopup"  IsOpen="False" StaysOpen="True" Closed="myPopup_Closed" Placement="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="">
-            <Grid Width="600" Height="600" Background="Transparent"   >
-                <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
-                    <StackPanel Margin="10" >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
-                            <TextBlock Text="Nouveau Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="NewProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Téléphone :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="NewProviderPhoneNumber" PreviewTextInput="TextBox_IntegerInput" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
-                            <TextBlock Text="Email :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="NewProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
-                            <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
-                                <TextBlock Text="Nom :" Margin="10,30,0,10" />
-                                <TextBox Name="NewProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+            </Button>
+            <Popup  Name="Provider_AddPopup"  PlacementTarget="{Binding ElementName=MainPanel}" IsOpen="False" StaysOpen="True" Closed="myPopup_Closed" Placement="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="">
+                <Grid Width="600" Height="600" Background="Transparent"   >
+                    <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
+                        <StackPanel Margin="10" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
+                                <TextBlock Text="Nouveau Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
                             </StackPanel>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
-                            <TextBlock Text="Rue :" Margin="10" />
-                            <TextBox Name="NewProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                        </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
+                                <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="NewProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
+                                <TextBlock Text="Téléphone :" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="NewProviderPhoneNumber" PreviewTextInput="TextBox_IntegerInput" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
+                                <TextBlock Text="Email :" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="NewProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
+                                <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
+                                    <TextBlock Text="Nom :" Margin="10,30,0,10" />
+                                    <TextBox Name="NewProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
+                                <TextBlock Text="Rue :" Margin="10" />
+                                <TextBox Name="NewProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Code Postal :" Margin="10"  />
-                                <TextBox  Name="NewProviderAdressnumber" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock Text="Code Postal :" Margin="10"  />
+                                    <TextBox  Name="NewProviderAdressnumber" PreviewTextInput="TextBox_IntegerInput" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock Text="Ville :" Margin="10" />
+                                    <TextBox Name="NewProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock Text="Pays :" Margin="10" />
+                                    <TextBox Name="NewProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Ville :" Margin="10" />
-                                <TextBox Name="NewProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Pays :" Margin="10" />
-                                <TextBox Name="NewProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                            </StackPanel>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,20">
-                            <Button Content="OK" Click="ButtonPush_Provider_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
-                            <Button Content="Annuler" Click="CancelButton_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Popup>
-        <Popup  Name="Provider_PutPopup"  IsOpen="False" StaysOpen="True" Closed="myPopup_Closed" Placement="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="">
-            <Grid Width="600" Height="600" Background="Transparent"   >
-                <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
-                    <StackPanel Margin="10" >
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
-                            <TextBlock Text="Modification du Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
-                            <TextBlock Name="ProviderId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
-                            <TextBlock Name="ProviderAdressId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="ProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
-                            <TextBlock Text="Téléphone:" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="ProviderPhoneNumber" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
-                            <TextBlock Text="Email :" Margin="10" Width="120" FontSize="16" />
-                            <TextBox Name="ProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
-                            <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
-                                <TextBlock Text="Nom :" Margin="10,30,0,10" />
-                                <TextBox Name="ProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,20">
+                                <Button Content="OK" Click="ButtonPush_Provider_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
+                                <Button Content="Annuler" Click="CancelButton_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
-                            <TextBlock Text="Rue :" Margin="10" />
-                            <TextBox Name="ProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                        </StackPanel>
+                    </Border>
+                </Grid>
+            </Popup>
+            <Popup  Name="Provider_PutPopup"  PlacementTarget="{Binding ElementName=MainPanel}" IsOpen="False" StaysOpen="True" Closed="myPopup_Closed" Placement="Center"  HorizontalAlignment="Center" VerticalAlignment="Center" Cursor="">
+                <Grid Width="600" Height="600" Background="Transparent"   >
+                    <Border Background="White" BorderBrush="DarkRed" BorderThickness="2" >
+                        <StackPanel Margin="10" >
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10,10">
+                                <TextBlock Text="Modification du Fournisseur" Margin="10" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Name="ProviderId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
+                                <TextBlock Name="ProviderAdressId" Text="Modification Fournisser" Width="0" Visibility="Hidden" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
+                                <TextBlock Text="Nom :" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="ProviderName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10">
+                                <TextBlock Text="Téléphone:" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="ProviderPhoneNumber" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,10,10,40">
+                                <TextBlock Text="Email :" Margin="10" Width="120" FontSize="16" />
+                                <TextBox Name="ProviderEmail" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0"  />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10,0">
+                                <TextBlock Text="-- Adresse -- " TextAlignment="Center" Margin="10,40,10,0" Width="120" Height="40" FontSize="16" />
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left"   >
+                                    <TextBlock Text="Nom :" Margin="10,30,0,10" />
+                                    <TextBox Name="ProviderAdressName" Width="380" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0"  >
+                                <TextBlock Text="Rue :" Margin="10" />
+                                <TextBox Name="ProviderAdressStreet" Width="520" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            </StackPanel>
 
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock  Text="Code Postal :" Margin="10" />
-                                <TextBox   Name="ProviderAdressnumber" PreviewTextInput="TextBox_IntegerInput" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" >
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock  Text="Code Postal :" Margin="10" />
+                                    <TextBox   Name="ProviderAdressnumber"  PreviewTextInput="TextBox_IntegerInput" Width="140" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock Text="Ville :" Margin="10" />
+                                    <TextBox Name="ProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
+                                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
+                                    <TextBlock Text="Pays :" Margin="10" />
+                                    <TextBox Name="ProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Ville :" Margin="10" />
-                                <TextBox Name="ProviderAdresscity" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
-                            </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,0">
-                                <TextBlock Text="Pays :" Margin="10" />
-                                <TextBox Name="ProviderAdresscountry" Width="150" Height="30" BorderBrush="DarkRed" BorderThickness="1" Background="White" Margin="10,0" />
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,20">
+                                <Button Content="OK" Click="ButtonPut_Provider_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
+                                <Button Content="Annuler" Click="CancelButton_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
                             </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="30,20">
-                            <Button Content="OK" Click="ButtonPut_Provider_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
-                            <Button Content="Annuler" Click="CancelButton_Click" Background="DarkRed" BorderBrush="DarkRed" Margin="3" Width="100" />
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Popup>
-
-
-    </Grid>
+                    </Border>
+                </Grid>
+            </Popup>
+        </Grid>
+    </ScrollViewer>
 </UserControl>

@@ -18,27 +18,27 @@ namespace ApiNegosud.Controllers
             _context = context;
         }
         [HttpGet]
-        public IActionResult Get(string Name = null)
+        public IActionResult Get(string name = null)
         {
             try
             {
                 // Filtrer les employés en fonction des paramètres fournis en castant to lower case
-                var Families = _context.Family.Include(f =>f.Products).AsQueryable();
+                var families = _context.Family.Include(f =>f.Products).AsQueryable();
 
-                if (!string.IsNullOrEmpty(Name))
+                if (!string.IsNullOrEmpty(name))
                 {
-                    Families = Families.Where(e => e.Name.ToLower() == Name.ToLower());
+                    families = families.Where(e => e.Name.ToLower() == name.ToLower());
                 }
-                Families = Families.OrderByDescending(e => e.Id);
-                var FilteredFamilies = Families.ToList();
+                families = families.OrderByDescending(e => e.Id);
+                var filteredFamilies = families.ToList();
 
-                if (FilteredFamilies.Count == 0)
+                if (filteredFamilies.Count == 0)
                 {
                     return NotFound("Aucune famille trouvée avec les paramètres fournis.");
                 }
                 else
                 {
-                    return Ok(FilteredFamilies);
+                    return Ok(filteredFamilies);
                 }
             }
             catch (Exception ex)
@@ -51,14 +51,14 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Family = _context.Family.Find(id);
-                if (Family == null)
+                var family = _context.Family.Find(id);
+                if (family == null)
                 {
-                    return NotFound($" La famille {Family.Name} n'a pas été trouvée.");
+                    return NotFound($" La famille {family.Name} n'a pas été trouvée.");
                 }
                 else
                 {
-                    return Ok(Family);
+                    return Ok(family);
                 }
             }
             catch (Exception ex)
@@ -67,20 +67,20 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Post(Family Family)
+        public IActionResult Post(Family family)
         {
             try
             {
                 // Convertir le nom existant en minuscules pour la comparaison insensible à la casse
-                var ExistingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == Family.Name.ToLower());
+                var existingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == family.Name.ToLower());
 
-                if (ExistingFamily != null)
+                if (existingFamily != null)
                 {
-                    return Conflict($"Une famille avec le nom '{Family.Name}' existe déjà.");
+                    return Conflict($"Une famille avec le nom '{family.Name}' existe déjà.");
                 }
                 // Mettre la première lettre en majuscule
-                Family.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Family.Name);
-                _context.Add(Family);
+                family.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(family.Name);
+                _context.Add(family);
                 _context.SaveChanges();
 
                 return Ok("Famille ajoutée avec succès!");
@@ -92,31 +92,31 @@ namespace ApiNegosud.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(Family UpdatedFamily)
+        public IActionResult Put(Family updatedFamily)
         {
-            if (UpdatedFamily == null)
+            if (updatedFamily == null)
             {
                 return BadRequest("Famille non trouvée");
             }
-            else if (UpdatedFamily.Id == 0)
+            else if (updatedFamily.Id == 0)
             {
                 return BadRequest("la famille est invalid");
             }
             try
             {
                 // Convertir le nom existant en minuscules pour la comparaison avec casse
-                var existingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == UpdatedFamily.Name.ToLower() && f.Id != UpdatedFamily.Id);
+                var existingFamily = _context.Family.FirstOrDefault(f => f.Name.ToLower() == updatedFamily.Name.ToLower() && f.Id != updatedFamily.Id);
 
                 if (existingFamily != null)
                 {
-                    return Conflict($"Une famille avec le nom '{UpdatedFamily.Name}' existe déjà.");
+                    return Conflict($"Une famille avec le nom '{updatedFamily.Name}' existe déjà.");
                 }                
-                var FamilySearched = _context.Family.Find(UpdatedFamily.Id);
-                if (FamilySearched == null)
+                var familySearched = _context.Family.Find(updatedFamily.Id);
+                if (familySearched == null)
                 {
                     return NotFound("Famille non trouvée");
                 }
-                FamilySearched.Name = UpdatedFamily.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(UpdatedFamily.Name);
+                familySearched.Name = updatedFamily.Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(updatedFamily.Name);
                 _context.SaveChanges();
                 return Ok("Mise à jour du nom réussie");
             }
@@ -130,8 +130,8 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var Family = _context.Family.Find(id);
-                if (Family == null)
+                var family = _context.Family.Find(id);
+                if (family == null)
                 {
                     return BadRequest("Famille non trouvée");
                 }
@@ -143,7 +143,7 @@ namespace ApiNegosud.Controllers
                     return Conflict("La famille ne peut pas être supprimée car elle est utilisée par au moins un produit.");
                 }
 
-                _context.Family.Remove(Family);
+                _context.Family.Remove(family);
                 _context.SaveChanges();
                 return Ok("Suppression réussie");
             }
