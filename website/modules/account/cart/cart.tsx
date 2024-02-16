@@ -7,12 +7,14 @@ import {OrderLineType } from "../../../services/types/types";
 import Loading from "../../extras/loading";
 import { useRouter } from "next/navigation";
 import Button from "../../extras/button";
+import LoadingButton from "../../extras/buttonLoading";
 
 export default function Cart() {
   const router = useRouter();
   const { account} = useAccount();
   const [ordersline, setOrdersline] = useState<OrderLineType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isButtonLoading, setIsButtonLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,8 +42,6 @@ export default function Cart() {
         console.error('Error deleting order line:', error);
     }
 };
-
-
 
   const total = ordersline.reduce((acc, orderline) => acc + orderline.price, 0);
 
@@ -101,11 +101,16 @@ export default function Cart() {
                     <p className="text-sm text-gray-700">Taxes incluses</p>
                   </div>
                 </div>
+                {isButtonLoading ? <LoadingButton className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600" /> :
                 <button
-                  onClick={(() => {router.push('/account/cart/delivery');})}
+                  onClick={(() => {
+                    setIsLoading(true);
+                    router.push('/account/cart/delivery');
+                  })}
                   className="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">
                   Commander
                 </button>
+                }
               </div>
             </div>
           </div>
