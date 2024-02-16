@@ -54,7 +54,6 @@ export async function createAddress(data, userData) {
   userData.addressId = addressId
   userData.address = firstAddress;
   userData.address.client = userData;
-  debugger;
   console.log(userData);
   const addAddressToClient = await fetch(`${API_BASE_URL}/Client/${clientId}`, {
     method: 'PUT',

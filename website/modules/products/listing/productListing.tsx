@@ -124,6 +124,11 @@ export const ProductListing = () => {
             <h5 className="text-xl tracking-tight text-slate-900">{value.name}</h5>
           <div className="mt-2 mb-5 flex items-center justify-between">
             <p>
+              <span className="text-1xl text-slate-900">{new Date(value.dateProduction).toLocaleDateString("fr-FR", {
+                year: "numeric",
+              })}</span>
+            </p>
+            <p>
               <span className="text-3xl font-bold text-slate-900">{value.price}€</span>
             </p>
           </div>

@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import logo from '../../src/app/images/logo.png';
 import { GiWineBottle } from "react-icons/gi";
@@ -12,7 +13,6 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
   const [ordersLine, setOrderLine] = useState([]);
   const { account } = useAccount();
 
-  console.log(ordersLine);
   useEffect(() => {
     const fetchData = async () => {
       if (localStorage.getItem('connected') !== null) {
@@ -27,10 +27,6 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
     };
     fetchData();
   }, []);
-
-  const handleMenuToggle = () => {
-    setMenuOpen(!isMenuOpen);
-  };
 
   return (
     <nav
@@ -55,11 +51,11 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
             {connected ? (
                 <li>
                   <div className="relative">
+                    <a href={"/account/cart"}>
                     <div className={`t-0 absolute left-3 ${ordersLine.length == 0 ? 'hidden' : ""}`}>
                       <p
                         className="flex h-2 w-2 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">{ordersLine?.length}</p>
                     </div>
-                    <a href={"/account/cart"}>
                       <HiOutlineShoppingCart className="h-7 w-7" />
                     </a>
                   </div>

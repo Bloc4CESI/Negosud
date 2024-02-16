@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../../services/api/user/useAuth";
 
 export default function Account() {
-  debugger;
   const { account} = useAccount();
   const { authenticate } = useAuth();
   const router = useRouter();
@@ -29,7 +28,6 @@ export default function Account() {
     <>
       <Header />
       <User userData={account} />
-      <Footer />
     </>
   );
 };
