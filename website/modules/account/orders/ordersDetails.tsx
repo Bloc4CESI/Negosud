@@ -5,11 +5,6 @@ import { TruckIcon } from "@heroicons/react/24/outline";
 export default function OrderDetails({ orderDetails }: { orderDetails: OrderType | undefined }) {
   const orderLine = orderDetails?.clientOrderLines;
 
-
-  const total = orderLine?.reduce((acc, product) => acc + product.price, 0);
-
-
-
   return (
     <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <div className="flex justify-start item-start space-y-2 flex-col">
@@ -102,7 +97,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
                       {line.product.price}€
                     </p>
                     <p className="text-base xl:text-lg leading-6 text-gray-800">{line.quantity}</p>
-                    <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">{line.product.price * line.quantity}€</p>
+                    <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">{line.price}€</p>
                   </div>
                 </div>
               </div>
@@ -115,7 +110,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
               <div className="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
                 <div className="flex justify-between w-full">
                   <p className="text-base  leading-4 text-gray-800">Total</p>
-                  <p className="text-base leading-4 text-gray-600">{orderDetails?.price}</p>
+                  <p className="text-base leading-4 text-gray-600">{orderDetails?.price} €</p>
                 </div>
                 <div className="flex justify-between items-center w-full">
                   <p className="text-base  leading-4 text-gray-800">Livraison</p>
@@ -124,7 +119,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
               </div>
               <div className="flex justify-between items-center w-full">
                 <p className="text-base font-semibold leading-4 text-gray-800">Total</p>
-                <p className="text-base font-semibold leading-4 text-gray-600">$36.00</p>
+                <p className="text-base font-semibold leading-4 text-gray-600">{orderDetails?.price} €</p>
               </div>
             </div>
           </div>

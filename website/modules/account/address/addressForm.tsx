@@ -46,7 +46,6 @@ export default function AddressForm() {
         country: form.getValues("country"),
       }, infoClient.state.account)
       setIsLoading(false);
-      toast.success("Adresse créée avec succès");
       router.push('/account')
     },
 (errors) => {
