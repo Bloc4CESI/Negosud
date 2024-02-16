@@ -420,3 +420,13 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+*.bin
+
+*.cache
+
+app/WPF/VinStore/VinStore/obj/Debug/net7.0-windows/
+
+app/WPF/VinStore/ApiNegosud/obj/
+
+app/WPF/VinStore/VinStore/obj/
