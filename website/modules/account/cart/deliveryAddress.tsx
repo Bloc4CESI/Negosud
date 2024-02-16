@@ -95,10 +95,7 @@ export default function AddressForm() {
   return (
     <>
     {isPayment ? (
-    <>
-        <CreditCardForm/>
-        {isPaymentLoading ? <LoadingButton/> : <button onClick={handlePaymentClick}>button</button> }
-    </>
+        <CreditCardForm handlePaymentClick={handlePaymentClick}/>
     ) : (
       <form onSubmit={onSubmit} className="bg-white w-full max-w-3xl mb-4 mx-auto px-4 lg:px-6 py-8 shadow-md rounded-md flex flex-col lg:flex-row">
         <div className="w-full lg:pr-8 lg:border-r-2 lg:border-slate-300">
