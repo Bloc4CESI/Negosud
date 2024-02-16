@@ -5,8 +5,11 @@ import React, { useEffect, useState } from "react";
 import {getOrderClient, deleteOrderClientLine, putOrderClient } from "../../../services/api/products/cart";
 import {OrderLineType } from "../../../services/types/types";
 import Loading from "../../extras/loading";
+import { useRouter } from "next/navigation";
+import Button from "../../extras/button";
 
 export default function Cart() {
+  const router = useRouter();
   const { account} = useAccount();
   const [ordersline, setOrdersline] = useState<OrderLineType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -34,21 +37,7 @@ export default function Cart() {
     }
 };
 
-const handleModifyOrder = async () => {
-  try {
-    const data = {
-      id:ordersline[0]?.clientOrder?.id,
-      date: new Date(),
-      price: total,
-      orderStatus: "VALIDE"
-    } 
-    console.log(data)
-    await putOrderClient(data);
-  } catch (error) {
-    console.error('Error deleting order line:', error);
-}
-  
-}
+
 
   const total = ordersline.reduce((acc, orderline) => acc + orderline.price, 0);
 
@@ -87,9 +76,9 @@ const handleModifyOrder = async () => {
               <span>Total :</span>
               <span>{total} €</span>
             </p>
-              <button onClick={handleModifyOrder} className="mt-4 bg-gray-900 text-white px-4 py-2 rounded-full">
-                Commander
-              </button>
+            <Button text="Commander" onClick={(() => {
+                  router.push('/account/cart/delivery');
+            })}/>
           </div>
         </div>
       </div>
