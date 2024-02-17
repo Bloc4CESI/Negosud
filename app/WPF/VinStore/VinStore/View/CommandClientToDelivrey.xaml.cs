@@ -88,10 +88,11 @@ namespace VinStore.View
         }
         private async void RefuseCommand(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ClientOrder clientOrder)
+            var selectedOrderClient = ((FrameworkElement)sender).DataContext as ClientOrder;
+            if (selectedOrderClient != null)
             {
-                clientOrder.OrderStatus = OrderStatus.REFUSE;              
-                var updateOrder = await CommandClientService.UpdateClientOrder(clientOrder);
+                selectedOrderClient.OrderStatus = OrderStatus.REFUSE;              
+                var updateOrder = await CommandClientService.UpdateClientOrder(selectedOrderClient);
                 if (!string.IsNullOrEmpty(updateOrder))
                 {
                     var Message = MessageBox.Show(updateOrder, "Information", MessageBoxButton.OK, MessageBoxImage.Information);

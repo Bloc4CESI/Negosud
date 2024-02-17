@@ -139,11 +139,11 @@ namespace ApiNegosud.Controllers
 
 
         [HttpGet("GetByEmail/{Email}")]
-        public IActionResult GetByEmail(string email)
+        public IActionResult GetByEmail(string Email)
         {
             try
             {
-                var provider = _context.Provider.SingleOrDefault(c => c.Email == email.Trim());
+                var provider = _context.Provider.SingleOrDefault(c => c.Email == Email.Trim());
                 if (provider == null)
                 {
                     return NotFound($"Aucun fournisseur trouvé avec cette adresse {provider.Email} ");

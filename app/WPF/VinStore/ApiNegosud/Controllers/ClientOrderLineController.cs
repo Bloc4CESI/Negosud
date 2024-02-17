@@ -21,7 +21,7 @@ namespace ApiNegosud.Controllers
      
 
         [HttpGet("GetClientCart/{ClientId}")]
-        public IActionResult GetClientCart(int clientId)
+        public IActionResult GetClientCart(int ClientId)
         {
             try
             {
@@ -29,12 +29,12 @@ namespace ApiNegosud.Controllers
                     .Include(co =>co.ClientOrder)
                     .Include(col => col.Product)
                      .ThenInclude(p => p.Stock)
-                    .Where(col => col.ClientOrder.ClientId == clientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
+                    .Where(col => col.ClientOrder!.ClientId == ClientId && col.ClientOrder.OrderStatus == OrderStatus.ENCOURSDEVALIDATION)
                     .ToList();
 
                 if (clientCart == null || !clientCart.Any())
                 {
-                    return NotFound($"Aucun produit trouvé dans le panier du client avec l'ID {clientId}.");
+                    return NotFound($"Aucun produit trouvé dans le panier du client avec l'ID {ClientId}.");
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace ApiNegosud.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest($"Une erreur s'est produite lors de la récupération du panier du client avec l'ID {clientId}. Détails de l'erreur : {ex.Message}");
+                return BadRequest($"Une erreur s'est produite lors de la récupération du panier du client avec l'ID {ClientId}. Détails de l'erreur : {ex.Message}");
             }
         }
         [HttpPost("AddProductToCart")]
@@ -60,39 +60,40 @@ namespace ApiNegosud.Controllers
                     {
                         ClientId = clientId,
                         Date = DateTime.Now,
-                        // la primere fois c'est le prix de la ligne => Ps: n'oubliez pas à multiplier * NbProductBox -20% en cas de paquet
-                        Price = price,
+                        Price = 0,
                         OrderStatus = OrderStatus.ENCOURSDEVALIDATION
                     };
 
                     _context.ClientOrder.Add(clientOrder);
                     _context.SaveChanges();
                 }
-                    // Vérifier si le produit existe déjà dans la commande
-                    var existingOrderLine = _context.ClientOrderLine
-                        .FirstOrDefault(col => col.ClientOrderId == clientOrder.Id && col.ProductId == productId);
+                // Vérifier si le produit existe déjà dans la commande
+                var existingOrderLine = _context.ClientOrderLine
+                    .FirstOrDefault(col => col.ClientOrderId == clientOrder.Id && col.ProductId == productId);
 
-                    if (existingOrderLine != null)
+                if (existingOrderLine != null)
+                {
+                    // Si le produit existe déjà, mettez à jour la quantité
+                    existingOrderLine.Quantity += quantity;
+                    existingOrderLine.Price += price; // Update the total price if needed
+                }
+                else
+                {
+                    // Ajouter le produit à la ligne de commande du client
+                    var clientOrderLine = new ClientOrderLine
                     {
-                        // Si le produit existe déjà, mettez à jour la quantité
-                        existingOrderLine.Quantity += quantity;
-                        existingOrderLine.Price += price; // Update the total price if needed
-                    }
-                    else
-                    {
-                        // Ajouter le produit à la ligne de commande du client
-                        var clientOrderLine = new ClientOrderLine
-                        {
-                        ClientOrder = clientOrder,
-                        ClientOrderId = clientOrder.Id,
-                        ProductId = productId,
-                        // Ps: n'oubliez pas à multiplier * NbProductBox en cas de paquet (front)
-                        Quantity = quantity,
-                        Price = price
-                        };   
-                        _context.ClientOrderLine.Add(clientOrderLine);
-                    }
-                    _context.SaveChanges();
+                    ClientOrder = clientOrder,
+                    ClientOrderId = clientOrder.Id,
+                    ProductId = productId,
+                    // Ps: n'oubliez pas à multiplier * NbProductBox en cas de paquet (front)
+                    Quantity = quantity,
+                    Price = price
+                    };   
+                    _context.ClientOrderLine.Add(clientOrderLine);
+                    // Ajuster le prix total de la commande en ajoutant le prix de cette nouvelle ligne
+                    clientOrder.Price += clientOrderLine.Price;
+                }          
+                _context.SaveChanges();
 
                 return Ok("La ligne de la commande est ajoutée avec succès!");
             }
@@ -126,11 +127,11 @@ namespace ApiNegosud.Controllers
     }
 
         [HttpDelete("RemoveProductFromCart/{ClientOrderLineId}")]
-        public IActionResult RemoveProductFromCart(int clientOrderLineId)
+        public IActionResult RemoveProductFromCart(int ClientOrderLineId)
         {
             try
             {
-                var clientOrderLine = _context.ClientOrderLine.Find(clientOrderLineId);
+                var clientOrderLine = _context.ClientOrderLine.Find(ClientOrderLineId);
 
                 if (clientOrderLine != null)
                 {
@@ -151,7 +152,7 @@ namespace ApiNegosud.Controllers
                     return Ok("Suppression réussie!");
                 }else
                 {
-                    return NotFound($"Aucune ligne de commande trouvée avec l'ID {clientOrderLineId}.");
+                    return NotFound($"Aucune ligne de commande trouvée avec l'ID {ClientOrderLineId}.");
                 }
             }
             catch (Exception ex)

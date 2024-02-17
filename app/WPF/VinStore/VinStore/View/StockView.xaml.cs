@@ -60,6 +60,26 @@ namespace VinStore.View
                 var selectedStock = StockDataGrid.SelectedItem as Stock;
                 if (selectedStock != null)
                 {
+                    // Vérifier si la valeur Minimum est sup à la valeur Maximum
+                    if (selectedStock.Minimum > selectedStock.Maximum)
+                    {
+                        MessageBox.Show("La valeur Minimum ne peut pas être supérieure à la valeur Maximum.", "Erreur de Validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    // Ajouter la vérification pour s'assurer que Maximum est sup à Quantity
+                    if (selectedStock.Quantity >= selectedStock.Maximum)
+                    {
+                        MessageBox.Show("La valeur Maximum doit être supérieure à la Quantité.", "Erreur de Validation", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return; 
+                    }
+                    // Vérifier si AutoOrder est activé et si Minimum ou Maximum est nul ou <= 0
+                    if (selectedStock.AutoOrder == true &&
+                       (selectedStock.Minimum == null || selectedStock.Minimum <= 0 ||
+                        selectedStock.Maximum == null || selectedStock.Maximum <= 0))
+                    {
+                        MessageBox.Show("Les valeurs Minimum et Maximum sont obligatoires et doivent être différentes de 0 lorsque l'option de commande automatique est activée.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return; 
+                    }
                     // Appelez la méthode pour effectuer la modification via l'API
                     bool success = await StockService.PutStock(selectedStock.Id, selectedStock);
                     if (success)

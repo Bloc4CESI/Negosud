@@ -311,12 +311,12 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("GetProductByProvider/{ProviderId}")]
-        public IActionResult GetProductByProvider(int providerId)
+        public IActionResult GetProductByProvider(int ProviderId)
         {
             try
             {
                 var products = _context.Product.Include(f => f.Family).Include(p => p.Stock).Include(p => p.Provider).AsQueryable();
-                products = products.Where(p => p.ProviderId == providerId);
+                products = products.Where(p => p.ProviderId == ProviderId);
                 var productsList = products.ToList();
                 if (productsList.Count == 0)
                 {

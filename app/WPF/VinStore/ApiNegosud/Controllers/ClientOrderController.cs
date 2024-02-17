@@ -19,14 +19,14 @@ namespace ApiNegosud.Controllers
         }
 
         [HttpGet("GetOrdersByClient/{ClientId}")]
-        public IActionResult GetOrdersByClient(int clientId)
+        public IActionResult GetOrdersByClient(int ClientId)
         {
             try
             {           
                 var ordersClient = _context.ClientOrder.Include(co => co.ClientOrderLines!)
                     .ThenInclude(line => line.Product)
                            .ThenInclude(p => p.Stock)
-                    .Where(co => co.ClientId == clientId).ToList();
+                    .Where(co => co.ClientId == ClientId).ToList();
 
                 if (ordersClient == null)
                 {
@@ -43,30 +43,30 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpPut("Order/{ClientId}")]
-        public IActionResult Order(int clientId)
+        public IActionResult Order(int ClientId)
         {
             try
             {
                 var clientOrder = _context.ClientOrder
                     .Include(co => co.ClientOrderLines)
-                    .SingleOrDefault(co => co.ClientId == clientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
+                    .SingleOrDefault(co => co.ClientId == ClientId && co.OrderStatus == OrderStatus.ENCOURSDEVALIDATION);
 
                 if (clientOrder == null)
                 {
-                    return NotFound($"Aucune commande trouvée pour le client avec l'ID {clientId}.");
+                    return NotFound($"Aucune commande trouvée pour le client avec l'ID {ClientId}.");
                 }
 
                 // mettre à jour le prix total de la commande en fonction des lignes de commande
-                clientOrder.Price = clientOrder.ClientOrderLines.Sum(col => col.Price);
+                clientOrder.Price = clientOrder.ClientOrderLines!.Sum(col => col.Price);
 
                 // Changer le statut de la commande à "VALIDE" après avoir commandé
                 clientOrder.OrderStatus = OrderStatus.VALIDE;
                 // Sauvegarder les changements dans la base de données
                 _context.SaveChanges();
-                // Utiliser un Dictionary pour stocker les informations de quantité manquante par fournisseur
-                var quantityMissingByProvider = new Dictionary<int, (int QuantityMissing, List<int> ProductIds)>();
+                // Structure pour regrouper les informations par fournisseur et produit
+                Dictionary<int, Dictionary<int, int>> providerProductQuantities = new Dictionary<int, Dictionary<int, int>>();
                 // Mettre à jour la quantité des produits dans le stock
-                foreach (var clientOrderLine in clientOrder.ClientOrderLines)
+                foreach (var clientOrderLine in clientOrder.ClientOrderLines!)
                 {
                     var product = _context.Product
                         .Include(p => p.Stock)
@@ -80,33 +80,28 @@ namespace ApiNegosud.Controllers
                              product.Stock.Minimum.HasValue && product.Stock.Minimum.Value < clientOrderLine.Quantity &&
                              product.Stock.Maximum.HasValue && product.Stock.Minimum.HasValue)
                         {
-                            // Calculer la quantité manquante
-                            var quantityMissing = product.Stock.Maximum.Value - product.Stock.Minimum.Value;
-                            // Vérifier si le fournisseur existe déjà dans le Dictionary
-                            if (quantityMissingByProvider.TryGetValue(product.ProviderId, out var existingInfo))
+                            // Calculer la quantité à commander
+                            var quantityToOrder = product.Stock.Maximum.Value - product.Stock.Minimum.Value;
+                            if (!providerProductQuantities.ContainsKey(product.ProviderId))
                             {
-                                // Ajouter la quantité manquante et l'ID du produit au Dictionary existant
-                                existingInfo.QuantityMissing += quantityMissing;
-                                existingInfo.ProductIds.Add(product.Id);
+                                providerProductQuantities[product.ProviderId] = new Dictionary<int, int>();
                             }
-                            else
+                            if (!providerProductQuantities[product.ProviderId].ContainsKey(product.Id))
                             {
-                                // Créer une nouvelle entrée pour le fournisseur dans le Dictionary
-                                var newInfo = (QuantityMissing: quantityMissing, ProductIds: new List<int> { product.Id });
-                                quantityMissingByProvider.Add(product.ProviderId, newInfo);
+                                providerProductQuantities[product.ProviderId][product.Id] = quantityToOrder;
                             }
                         }
                     }
                 }
-                foreach (var (providerId, info) in quantityMissingByProvider)
+                foreach (var providerEntry in providerProductQuantities)
                 {
+                    var providerId = providerEntry.Key;
+                    var productsQuantities = providerEntry.Value;
                     // Vérifier s'il existe déjà une commande fournisseur en cours de validation pour ce fournisseur
-                    var existingProviderOrder = _context.ProviderOrder
-                        .FirstOrDefault(po => po.ProviderId == providerId && po.ProviderOrderStatus == ProviderOrderStatus.ENCOURSDEVALIDATION);
-
+                    var existingProviderOrder = _context.ProviderOrder.FirstOrDefault(po => po.ProviderId == providerId && po.ProviderOrderStatus == ProviderOrderStatus.ENCOURSDEVALIDATION);
+                    // Si aucune commande fournisseur n'existe, créer une nouvelle commande fournisseur
                     if (existingProviderOrder == null)
-                    {
-                        // Si aucune commande fournisseur n'existe, créer une nouvelle commande fournisseur
+                    {                        
                         var providerOrder = new ProviderOrder
                         {
                             Date = DateTime.Now,
@@ -116,49 +111,36 @@ namespace ApiNegosud.Controllers
                         };
 
                         _context.ProviderOrder.Add(providerOrder);
-                        _context.SaveChanges();  // Sauvegarder pour générer l'ID de la commande fournisseur
-                        existingProviderOrder = providerOrder; // Set the existingProviderOrder to the newly created order
+                        _context.SaveChanges();
+                        existingProviderOrder = providerOrder;
                     }
 
-
-                    foreach (var productId in info.ProductIds)
+                    foreach (var productQuantity in productsQuantities)
                     {
+                        var productId = productQuantity.Key;
+                        var quantity = productQuantity.Value;
                         // Vérifier si une ligne de commande fournisseur existe déjà pour ce produit
                         var existingProviderOrderLine = _context.ProviderOrderLine
                             .FirstOrDefault(pol => pol.ProductId == productId && pol.ProviderOrderId == existingProviderOrder.Id);
-
-                        /*if (existingProviderOrderLine != null)
-                        {
-                            // Si une ligne de commande fournisseur existe, mettre à jour la quantité
-                            existingProviderOrderLine.Quantity += info.QuantityMissing;
-                            existingProviderOrder.Price +=  (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * info.QuantityMissing;
-
-                        }*/
                         if (existingProviderOrderLine == null)
                         {
                             // Ajouter une ligne de commande fournisseur pour chaque produit insuffisant
                             var providerOrderLine = new ProviderOrderLine
                             {
-                                Quantity = info.QuantityMissing,
-                                Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * info.QuantityMissing, // 1/3 du prix produit
+                                Quantity = quantity,
+                                Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * quantity, // 1/3 du prix produit
                                 ProductId = productId,
                                 ProviderOrderId = existingProviderOrder.Id
-
                             };
-
                             _context.ProviderOrderLine.Add(providerOrderLine);
-                            _context.SaveChanges();  // Sauvegarder chaque ligne de commande fournisseur individuellement
+                            _context.SaveChanges();
                         }
                     }
-
                     // Mettre à jour le prix total de la commande fournisseur en fonction des lignes de commande fournisseur
                     existingProviderOrder.Price = _context.ProviderOrderLine.Where(col => col.ProviderOrderId == existingProviderOrder.Id).Sum(col => col.Price * col.Quantity);
                     // Sauvegarder les changements dans la base de données
                     _context.SaveChanges();
                 }
-
-               
-
                  return Ok("Commande passée avec succès! Des commandes fournisseurs ont été créées pour les produits insuffisants.");
             }            
             catch (Exception ex)
@@ -201,7 +183,6 @@ namespace ApiNegosud.Controllers
                 var existingOrder = _context.ClientOrder
                     .Include(co => co.ClientOrderLines)
                     .FirstOrDefault(co => co.Id == updatedClientOrder.Id);
-
                 if (existingOrder == null)
                 {
                     // Si aucune commande existante n'est trouvée avec cet ID, retourner un NotFound
@@ -225,7 +206,15 @@ namespace ApiNegosud.Controllers
                             existingLine.Quantity = updatedLine.Quantity;
                             existingLine.Price = updatedLine.Price;
                         }
-                    }
+                        if (updatedClientOrder.OrderStatus == OrderStatus.REFUSE)
+                        {
+                            var productStock = _context.Stock.FirstOrDefault(s => s.ProductId == updatedLine.ProductId);
+                            if (productStock != null)
+                            {
+                                productStock.Quantity += updatedLine.Quantity;
+                            }
+                        }
+                     }
                 }
                 _context.SaveChanges();
 

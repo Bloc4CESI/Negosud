@@ -67,7 +67,15 @@
                                     </Style>
                                 </DataGridTextColumn.ElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn IsReadOnly="False" Header="Stock Reel" Binding="{Binding Quantity}">
+                            <DataGridTextColumn IsReadOnly="true" Header="Fournisseur" Binding="{Binding Product.Provider.Name}">
+                                <DataGridTextColumn.ElementStyle>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="TextTrimming" Value="None"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                    </Style>
+                                </DataGridTextColumn.ElementStyle>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn IsReadOnly="False" Header="Quantité stock" Binding="{Binding Quantity}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextTrimming" Value="None"/>
@@ -85,7 +93,7 @@
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn IsReadOnly="False"  Header="Mini" Binding="{Binding Minimum}">
+                            <DataGridTextColumn IsReadOnly="False"  Header="Minimum" Binding="{Binding Minimum}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style x:Name="MiniBackground" TargetType="TextBlock">
                                         <Setter Property="TextTrimming" Value="None"/>
@@ -103,7 +111,7 @@
                                     </Style>
                                 </DataGridTextColumn.EditingElementStyle>
                             </DataGridTextColumn>
-                            <DataGridTextColumn x:Name="Maxi" IsReadOnly="False" Header="Maxi" Binding="{Binding Maximum}">
+                            <DataGridTextColumn x:Name="Maxi" IsReadOnly="False" Header="Maximum" Binding="{Binding Maximum}">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="TextTrimming" Value="None"/>

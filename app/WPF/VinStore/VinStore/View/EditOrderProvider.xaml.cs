@@ -34,7 +34,7 @@ namespace VinStore.View
         public void UpdateProviderOrder(ProviderOrder providerOrder)
         {
             DataContext = providerOrder;
-  
+
             TotalOrder.Text = $"Total commande: {providerOrder.Price}";
         }
         private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)

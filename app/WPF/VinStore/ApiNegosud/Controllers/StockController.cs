@@ -23,8 +23,12 @@ namespace ApiNegosud.Controllers
         {
             try
             {
-                var stocks = _context.Stock.Include(s => s.Product).ThenInclude(p => p.Family).AsQueryable();
-              
+                var stocks = _context.Stock
+                            .Include(s => s.Product)
+                                .ThenInclude(p => p.Family)
+                            .Include(s => s.Product) 
+                                .ThenInclude(p => p.Provider)
+                            .AsQueryable();
                 if (!string.IsNullOrEmpty(name))
                 {
                     stocks = stocks.Where(s => s.Product!.Name.ToLower().Contains(name.Trim().ToLower()));
