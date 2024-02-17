@@ -115,11 +115,11 @@ namespace ApiNegosud.Controllers
             }
         }
         [HttpGet("GetByEmail/{Email}")]
-        public IActionResult GetByEmail(string email)
+        public IActionResult GetByEmail(string Email)
         {
             try
             {
-                var employee = _context.Employee.SingleOrDefault(e => e.Email == email);
+                var employee = _context.Employee.SingleOrDefault(e => e.Email == Email);
                 if (employee == null)
                 {
                     return NotFound($"Aucun employé trouvé avec cette adresse  {employee.Email} ");
