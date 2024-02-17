@@ -11,8 +11,8 @@
             TextElement.FontSize="13"
             TextOptions.TextFormattingMode="Ideal"
             TextOptions.TextRenderingMode="Auto">
-    <Grid Background="#F2F5F8">
-        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="700">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Height="750">
+        <Grid Background="#F2F5F8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="200"/>
@@ -93,7 +93,7 @@
                             <TextBlock Text="Commande Fournisseur à Livrer" FontSize="20" FontWeight="Bold" Foreground="CadetBlue"/>
                         </StackPanel>
                     </Grid>
-                
+
                 </Grid>
                 <Grid Grid.Row="1" Grid.Column="1">
                     <Rectangle Height="120" Fill="White" RadiusY="10" RadiusX="10" >
@@ -132,6 +132,6 @@
                     </Grid>
                 </Grid>
             </Grid>
-        </ScrollViewer>
-    </Grid>
+        </Grid>
+    </ScrollViewer>
 </UserControl>
