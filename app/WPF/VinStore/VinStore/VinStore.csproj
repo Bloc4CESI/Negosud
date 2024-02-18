@@ -5,12 +5,17 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo_Hrg_icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Image_SignIn.jpg" />
     <None Remove="Photos\logo.png" />
     <None Remove="Photos\vin_accueil_bg.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="logo_Hrg_icon.ico" />
   </ItemGroup>
 
   <ItemGroup>

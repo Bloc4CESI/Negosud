@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VinStore", "VinStore\VinStore.csproj", "{188320BC-DEE0-478B-9168-BB55AF39644F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiNegosud", "ApiNegosud\ApiNegosud.csproj", "{09109A17-E410-45D7-8728-C1798A17EE43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiNegosud", "ApiNegosud\ApiNegosud.csproj", "{09109A17-E410-45D7-8728-C1798A17EE43}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SetupNegoSud", "SetupNegoSud\SetupNegoSud.vdproj", "{4014339A-9DD9-4244-82BA-4C020558D2D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,8 @@ Global
 		{09109A17-E410-45D7-8728-C1798A17EE43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09109A17-E410-45D7-8728-C1798A17EE43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09109A17-E410-45D7-8728-C1798A17EE43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4014339A-9DD9-4244-82BA-4C020558D2D8}.Debug|Any CPU.ActiveCfg = Debug
+		{4014339A-9DD9-4244-82BA-4C020558D2D8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
