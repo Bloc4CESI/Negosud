@@ -1,9 +1,13 @@
 import toast from "react-hot-toast";
 
 const API_BASE_URL = 'https://localhost:7281/api';
-
-export async function getProducts() {
-  const response = await fetch(`${API_BASE_URL}/Product`, {
+export async function getProducts(sortOrder = '') {
+  // Construire l'URL avec le paramètre de tri si spécifié
+  const url = new URL(`${API_BASE_URL}/Product`);
+  if (sortOrder) {
+    url.searchParams.append('sortOrder', sortOrder);
+  }
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -16,6 +20,7 @@ export async function getProducts() {
 
   return await response.json();
 }
+
 
 export async function getFamily() {
   const response = await fetch(`${API_BASE_URL}/Family`, {
@@ -60,8 +65,13 @@ export async function getProductByName(data) {
   return await response.json();
 }
     
-export async function getFamilyById(id) {
-  const response = await fetch(`${API_BASE_URL}/Product/GetProductByFamily/${id}`, {
+export async function getFamilyById(id, sortOrder = '') {
+  const url = new URL(`${API_BASE_URL}/Product/GetProductByFamily/${id}`);
+  if (sortOrder) {
+    url.searchParams.append('sortOrder', sortOrder);
+  }
+
+  const response = await fetch(url, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

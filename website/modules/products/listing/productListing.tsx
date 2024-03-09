@@ -9,6 +9,7 @@ import { TrashIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { fetchData } from "next-auth/client/_utils";
 import SearchBar from "../family/searchBar";
+import SortByPrice from "../family/sortByPrice";
 interface Product {
   id: number;
   name: string;
@@ -49,20 +50,22 @@ export const ProductListing = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedFamily, setSelectedFamily] = useState<number>();
   const [searchTerm, setSearchTerm] = useState<string>();
+  const [sortOrder, setSortOrder] = useState<string>();
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log(selectedFamily);
         if (selectedFamily) {
-          const productsData = await getFamilyById(selectedFamily);
+          const productsData = await getFamilyById(selectedFamily,sortOrder);
           if (Array.isArray(productsData)) {
             setProducts(productsData);
           } else {
             console.error('Invalid data format received for products:', productsData);
           }
         } else {
-        const productsData = await getProducts();
+        const productsData = await getProducts(sortOrder);
         setProducts(productsData);
         setIsLoading(false);
       }}
@@ -72,22 +75,21 @@ export const ProductListing = () => {
       }
     };
     fetchData();
-  }, []);
-
+  }, [selectedFamily, sortOrder]);
   const handleFamilyChange = async (e: React.SetStateAction<number | undefined>) => {
     if (e === undefined) {
-      const productsData = await getProducts();
+      const productsData = await getProducts(sortOrder);
       setProducts(productsData);
       setIsLoading(false);
     } else {
-      const productsData = await getFamilyById(e);
-      setSelectedFamily(e);
+      const productsData = await getFamilyById(e,sortOrder);
       if (Array.isArray(productsData)) {
         setProducts(productsData);
       } else {
         console.error('Invalid data format received for products:', productsData);
       }
     }
+    setSelectedFamily(e);
   };
 
   const handleReset = async () => {
@@ -108,6 +110,7 @@ export const ProductListing = () => {
         <div className="flex items-center">
           <SearchBar onSearch={handleProductNameChange}/>
           <SortByFamily onFamilyChange={handleFamilyChange} handleReset={handleReset}/>
+          <SortByPrice onSortChange={setSortOrder} /> 
         </div>
       </div>
       <ul className="flex flex-wrap">
@@ -143,6 +146,5 @@ export const ProductListing = () => {
     </div>
   );
 };
-
 // @ts-ignore
 export default ProductListing;

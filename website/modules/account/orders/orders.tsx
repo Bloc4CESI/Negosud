@@ -19,7 +19,9 @@ export default function Orders({ orders }: { orders: OrderType[] }) {
 return (
 <div className="m-5">
   {!isOrder ?
-    <p>Vous n&apos;avez aucune commande en cours</p>
+    <div className="text-2xl font-semibold mb-3">
+      <p>Dommage! Vous n&apos;avez aucune commande validée</p>
+    </div>
     :
   <ul className="flex flex-wrap">
     {orders.map((order) => (

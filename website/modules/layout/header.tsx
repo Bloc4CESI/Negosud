@@ -20,12 +20,21 @@ const Header = ({ style, stroke }: { style?: string, stroke?: string; }) => {
         try {
           const ordersData = await getOrderClient(account?.id);
           setOrderLine(ordersData);
+          console.log("Nouvelles données de commande récupérées:", ordersData);
         } catch (error) {
           console.error("Erreur lors de la récupération des commandes :", error);
         }
       }
     };
     fetchData();
+    console.log('Adding event listener');
+    window.addEventListener('cartUpdated', fetchData);
+ 
+  
+    return () => {
+      console.log('Removing event listener');
+      window.removeEventListener('cartUpdated', fetchData);
+    };
   }, []);
 
   return (
