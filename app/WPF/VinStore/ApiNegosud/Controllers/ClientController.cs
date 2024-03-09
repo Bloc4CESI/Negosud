@@ -180,11 +180,11 @@ namespace ApiNegosud.Controllers
 
 
         [HttpGet("GetByEmail/{Email}")]
-        public IActionResult GetByEmail(string email)
+        public IActionResult GetByEmail(string Email)
         {
             try
             {
-                var client = _context.Client.SingleOrDefault(c => c.Email.Trim() == email);
+                var client = _context.Client.SingleOrDefault(c => c.Email.Trim() == Email);
                 if (client == null)
                 {
                     return NotFound($"Aucun client trouvé avec cette adresse {client.Email} ");
