@@ -61,11 +61,11 @@ export default function User({ userData }) {
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.email}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">Numero de telephone</dt>
+            <dt className="text-sm font-medium leading-6 text-gray-900">Numéro de téléphone</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{userData?.phoneNumber}</dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-            <dt className="text-sm font-medium leading-6 text-gray-900">Mon addresse</dt>
+            <dt className="text-sm font-medium leading-6 text-gray-900">Adresse</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               {address == null ? (
                 <Button text="Ajouter une adresse" onClick={(() => {
@@ -77,7 +77,7 @@ export default function User({ userData }) {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900">Mes commandes</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <Button text="Gérer mes commandes" onClick={(() => {
+              <Button text="Gérer mes commandes"   style={{ backgroundColor: '#bbd9f0', color: '#161717' }} onClick={(() => {
                 router.push('/account/order');
               })}/>
             </dd>
@@ -85,7 +85,7 @@ export default function User({ userData }) {
           <div className="px-2 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
             <dt className="text-sm font-medium leading-6 text-gray-900"></dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              <Button onClick={() => setOpenSelectedQuoteModal(true)} text="Se déconnecter"/></dd>
+              <Button onClick={() => setOpenSelectedQuoteModal(true)} style={{ backgroundColor: '#ff94ab', color: '#161717' }} text="Se déconnecter" /></dd>
           </div>
         </dl>
       </div>

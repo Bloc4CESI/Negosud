@@ -35,6 +35,11 @@ export default function Cart() {
       await deleteOrderClientLine(orderId);
       setOrdersline(ordersline.filter((orderline) => orderline.id !== orderId));
       console.log(ordersline)
+      const event = new CustomEvent('cartUpdated');
+      setTimeout(() => {
+        const event = new CustomEvent('cartUpdated');
+        window.dispatchEvent(event);
+      }, 1000);
       if (ordersline.length < 1) {
         window.location.reload();
       }

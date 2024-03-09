@@ -18,11 +18,11 @@ export const FormProduct = ({ id }: { id: number }) => {
 
   useEffect(() => {
       const fetchData = async () => {
-          try {
-              const productData = await getProductByID(id);
-              setProduct(productData);
-              const initialPrice = productData?.price || null;
-              setFinalPrice(initialPrice); // Met à jour le prix final
+      try {
+          const productData = await getProductByID(id);
+          setProduct(productData);
+          const initialPrice = productData?.price || null;
+          setFinalPrice(initialPrice); // Met à jour le prix final
       } catch (error) {
         console.error('Error during product retrieval:', error);
       }
@@ -37,6 +37,10 @@ export const FormProduct = ({ id }: { id: number }) => {
       router.push('/login')
     } else {
     postOrderClientLine(product?.id,account?.id,quantity,finalPrice);
+    setTimeout(() => {
+      const event = new CustomEvent('cartUpdated');
+      window.dispatchEvent(event);
+    }, 1000);
     toast.success('Produit ajouté au panier');
     setIsLoading(false);
     }
@@ -96,7 +100,8 @@ return (
                             <p className="inline-block mb-8 text-4xl font-bold dark:text-gray-800 ">
                                 <span>{finalPrice}€</span>
                             </p>
-                            <p className="text-green-600 text-base font-bold">{product?.stock?.quantity} en stock !</p>
+                            { product?.stock && product?.stock?.quantity > 1 && (
+                                <p className="text-green-600 text-base font-bold">{product.stock.quantity} en stock !</p>)}
                         </div>
                         <div className="items-center mb-8">
                             <h2 className="w-16 text-xl font-bold dark:text-gray-600">

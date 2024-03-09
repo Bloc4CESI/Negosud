@@ -11,15 +11,16 @@ import { useEffect } from "react";
 import { useAccount } from "services/api/user/useAccount";
 import { AddressType, OrderLineType } from "services/types/types";
 import CreditCardForm from "modules/extras/creditCard";
-import { getOrderClient, putOrderClient } from "services/api/products/cart";
+import { getOrderClient, putOrderClient, Order } from "services/api/products/cart";
 
 export default function AddressForm() {
-    const {account} = useAccount();
+  const {account} = useAccount();
   const router = useRouter();
   const [ordersLine, setOrdersLine] = useState<OrderLineType[]>([])
   const [clientAddress, setClientAddress] = useState<AddressType>();
   const [isLoading, setIsLoading] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
+  const [isGoOrder, setIsGoOrder] = useState(false);
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
 
   const form = useForm();
@@ -78,23 +79,23 @@ export default function AddressForm() {
 
   const handlePaymentClick = async () => {
     setIsPaymentLoading(true);
-          setIsLoading(false);
-        const total = ordersLine?.reduce((acc, orderline) => acc + orderline.price, 0);
-        const data = {
-          id: ordersLine[0]?.clientOrder?.id,
-          date: new Date(),
-          price: total,
-          orderStatus: "VALIDE"
-        } 
-        console.log(data)
-        console.log(ordersLine);
-        await putOrderClient(data);
-        router.push(`/account/order/${ordersLine[0].clientOrder.id}`)
+    setIsLoading(false);
+    setIsGoOrder(true)
+    try {
+      await Order(account?.id);
+    }catch (error){
+
     }
+    const event = new CustomEvent('cartUpdated');
+    setTimeout(() => {
+      const event = new CustomEvent('cartUpdated');
+      window.dispatchEvent(event);
+    }, 1000);
+  }
 
   return (
     <>
-    {isPayment ? (
+    {isGoOrder?(router.push(`/account/order/`)):isPayment ? (
         <CreditCardForm handlePaymentClick={handlePaymentClick}/>
     ) : (
       <form onSubmit={onSubmit} className="bg-white w-full max-w-3xl mb-4 mx-auto px-4 lg:px-6 py-8 shadow-md rounded-md flex flex-col lg:flex-row">

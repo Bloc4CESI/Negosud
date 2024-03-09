@@ -8,7 +8,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
   return (
     <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <div className="flex justify-start item-start space-y-2 flex-col">
-        <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Commande #{orderDetails?.id}</h1>
+        <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Commande</h1>
         <p className="text-base  font-medium leading-6 text-gray-600">{//@ts-ignore
            new Date(orderDetails?.date).toLocaleDateString("fr")}
         </p>
@@ -67,7 +67,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
                           className="inline-flex items-center justify-center w-10 h-10 mb-8 text-gray-700 bg-gray-200 rounded-full shadow-md">
                             4
                         </span>
-                <h2 className="text-lg font-medium">Livré</h2>
+                <h2 className="text-lg font-medium">Livrée</h2>
               </div>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
         <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
           <div className="flex flex-col justify-start items-start  bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
             <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">
-              Details des produits
+              Détails des produits
             </p>
             {orderLine?.map((line) => (
               <div key={line.id}
@@ -91,11 +91,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
                     <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">
                       {line.product.name}</h3>
                   </div>
-
                   <div className="flex justify-between space-x-8 items-start w-full">
-                    <p className="text-base  xl:text-lg leading-6">
-                      {line.product.price}€
-                    </p>
                     <p className="text-base xl:text-lg leading-6 text-gray-800">{line.quantity}</p>
                     <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">{line.price}€</p>
                   </div>
@@ -114,7 +110,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
                 </div>
                 <div className="flex justify-between items-center w-full">
                   <p className="text-base  leading-4 text-gray-800">Livraison</p>
-                  <p className="text-base leading-4 text-gray-600">Offert</p>
+                  <p className="text-base leading-4 text-gray-600">Offerte</p>
                 </div>
               </div>
               <div className="flex justify-between items-center w-full">

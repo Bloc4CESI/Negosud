@@ -71,3 +71,15 @@ export async function putOrderClient(data){
   }
   return await response.text();
 }
+export async function Order(clientId){
+  const response = await fetch(`${API_BASE_URL}/ClientOrder/Order/${clientId}`,{
+    method: 'PUT',
+    headers : {
+      'Content-Type': 'application/json',
+    },
+  });
+  if (!response.ok) {
+    throw new Error('Erreur lors de la mise à jour de la commande');
+  }
+  return await response.text();
+}

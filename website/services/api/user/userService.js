@@ -20,7 +20,7 @@ export async function createUser(data) {
     throw new Error('Erreur lors de la création de l\'utilisateur');
   }
 
-    return await response.text();
+  return await response.text(); 
 }
 
 export async function createAddress(data, userData) {
@@ -53,7 +53,6 @@ export async function createAddress(data, userData) {
   const clientId = userData.id;
   userData.addressId = addressId
   userData.address = firstAddress;
-  userData.address.client = userData;
   console.log(userData);
   const addAddressToClient = await fetch(`${API_BASE_URL}/Client/${clientId}`, {
     method: 'PUT',
