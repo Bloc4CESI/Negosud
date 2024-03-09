@@ -23,18 +23,20 @@ namespace ApiNegosud.Controllers
         {
             try
             {           
-                var ordersClient = _context.ClientOrder.Include(co => co.ClientOrderLines!)
+                var ordersClientQuery = _context.ClientOrder.Include(co => co.ClientOrderLines!)
                     .ThenInclude(line => line.Product)
                            .ThenInclude(p => p.Stock)
                     .Where(co => co.ClientId == ClientId).ToList();
 
-                if (ordersClient == null)
+                var clientOrders = ordersClientQuery.OrderByDescending(oc => oc.Id).ToList();
+
+                if (clientOrders == null)
                 {
                     return NotFound($"Aucune commande trouvée pour le client.");
                 }
                 else
                 {
-                    return Ok(ordersClient);
+                    return Ok(clientOrders);
                 }
             }
             catch (Exception ex)
@@ -77,8 +79,8 @@ namespace ApiNegosud.Controllers
                         // Déduire la quantité commandée du stock
                         product.Stock.Quantity -= clientOrderLine.Quantity;
                         if (product.Stock.AutoOrder &&
-                             product.Stock.Minimum.HasValue && product.Stock.Minimum.Value < clientOrderLine.Quantity &&
-                             product.Stock.Maximum.HasValue && product.Stock.Minimum.HasValue)
+                             product.Stock.Minimum.HasValue && (product.Stock.Quantity < clientOrderLine.Quantity || product.Stock.Minimum < clientOrderLine.Quantity)
+                             && product.Stock.Maximum.HasValue && product.Stock.Minimum.HasValue)
                         {
                             // Calculer la quantité à commander
                             var quantityToOrder = product.Stock.Maximum.Value - product.Stock.Minimum.Value;
@@ -141,7 +143,7 @@ namespace ApiNegosud.Controllers
                     // Sauvegarder les changements dans la base de données
                     _context.SaveChanges();
                 }
-                 return Ok("Commande passée avec succès! Des commandes fournisseurs ont été créées pour les produits insuffisants.");
+                return Ok("Commande passée avec succès! Des commandes fournisseurs ont été créées pour les produits insuffisants.");
             }            
             catch (Exception ex)
             {

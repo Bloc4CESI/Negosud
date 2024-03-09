@@ -56,7 +56,7 @@ namespace ApiNegosud.Controllers
                     case "price_desc":
                         products = products.OrderByDescending(c => c.Price);
                         break;
-                    default:
+                    default:        
                         products = products.OrderByDescending(c => c.Id);
                         break;
                 }
