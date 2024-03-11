@@ -41,22 +41,19 @@ export default function RegisterForm({ handleToggle, isChecked }: { handleToggle
   const onSubmit = async (formData: FormValues) => {
     setIsLoading(true);
     try {
-      const { success, message }  = await createUser(formData)
-      if (success) {
+      const res  = await createUser(formData)
+      if (res === 200) {
         await authenticate(formData.Email);
         router.push('/account');
       } else {
         setError(true);
-        errorText = message;
         setIsLoading(false);
-        setError(true);
         setModalVisible(true);
         setModalMessage("L'adresse fournie n'est pas valide ou est déjà associée à un autre client.");        
       }
     } catch (error) {
       setError(true);
       setIsLoading(false);
-      setError(true);
       setModalVisible(true);
       setModalMessage("L'adresse fournie n'est pas valide ou est déjà associée à un autre client.");      
     }

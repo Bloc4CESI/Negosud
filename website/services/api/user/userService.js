@@ -20,7 +20,7 @@ export async function createUser(data) {
     throw new Error('Erreur lors de la création de l\'utilisateur');
   }
 
-  return await response.text(); 
+  return response.status;
 }
 
 export async function createAddress(data, userData) {
