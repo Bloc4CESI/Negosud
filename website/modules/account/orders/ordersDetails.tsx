@@ -1,11 +1,13 @@
 import { OrderType } from "../../../services/types/types";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import { TruckIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function OrderDetails({ orderDetails }: { orderDetails: OrderType | undefined }) {
   const orderLine = orderDetails?.clientOrderLines;
 
   return (
+
     <div className="py-14 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
       <div className="flex justify-start item-start space-y-2 flex-col">
         <h1 className="text-3xl lg:text-4xl font-semibold leading-7 lg:leading-9 text-gray-800">Commande</h1>
@@ -14,14 +16,23 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
         </p>
       </div>
         <div className="justify-center flex-1 max-w-6xl py-10 mx-auto bg-white rounded-2xl">
-          <div className="flex flex-wrap items-center ">
-            <div className="relative w-full px-4 mb-16 md:w-1/2 lg:w-1/4 lg:mb-0">
-              <div className="absolute hidden top-5 lg:block left-1/2 ">
+          {orderDetails?.orderStatus === 0 ? (
+            <div className="relative text-center">
                         <span
-                          className="mb-3 border-b-2 border-r border-green-600 w-72 md:block left-1/2 inset-px">
+                          className="inline-flex items-center justify-center w-10 h-10 mb-8 text-lg text-gray-100 bg-white rounded-full shadow-md">
+                           <XMarkIcon color="red"/>
                         </span>
-              </div>
-              <div className="relative text-center">
+              <h2 className="text-lg text-red-900 font-medium">Commande refusée</h2>
+            </div>
+          ) : (
+            <div className="flex flex-wrap items-center ">
+              <div className="relative w-full px-4 mb-16 md:w-1/2 lg:w-1/4 lg:mb-0">
+                <div className="absolute hidden top-5 lg:block left-1/2 ">
+                  <span
+                    className="mb-3 border-b-2 border-r border-green-600 w-72 md:block left-1/2 inset-px">
+                  </span>
+                </div>
+                <div className="relative text-center">
                         <span
                           className="inline-flex items-center justify-center w-10 h-10 mb-8 text-lg text-gray-100 bg-green-600 rounded-full shadow-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -71,6 +82,7 @@ export default function OrderDetails({ orderDetails }: { orderDetails: OrderType
               </div>
             </div>
           </div>
+            )}
         </div>
       <div
         className="mt-2 flex flex-col xl:flex-row jusitfy-center items-stretch w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">

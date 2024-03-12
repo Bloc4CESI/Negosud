@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import { useAccount } from "services/api/user/useAccount";
 import { AddressType, OrderLineType } from "services/types/types";
 import CreditCardForm from "modules/extras/creditCard";
-import { getOrderClient, putOrderClient, Order } from "services/api/products/cart";
+import { getOrderClient, Order } from "services/api/products/cart";
 
 export default function AddressForm() {
   const {account} = useAccount();
@@ -21,22 +21,21 @@ export default function AddressForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [isPayment, setIsPayment] = useState(false);
   const [isGoOrder, setIsGoOrder] = useState(false);
-  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
 
   const form = useForm();
 
     useEffect(() => {
-        if (account?.addressId){
-            const fetchClientAddress = async () => {
-            try {
-                const address = await getAddresses(account?.addressId);
-                setClientAddress(address);
-            } catch (error) {
-                console.error('Erreur lors de la récupération de l\'adresse du client:');
-            } finally {
-                setIsLoading(false);
-            }
-            };
+      if (account?.addressId){
+        const fetchClientAddress = async () => {
+        try {
+            const address = await getAddresses(account?.addressId);
+            setClientAddress(address);
+        } catch (error) {
+            console.error('Erreur lors de la récupération de l\'adresse du client:');
+        } finally {
+            setIsLoading(false);
+        }
+        };
         
             fetchClientAddress();
     }}, []);
@@ -55,7 +54,7 @@ export default function AddressForm() {
         country: form.getValues("country") == "" ? clientAddress.country : form.getValues("country"),
         }
         await modifyAddressClient(data, account?.addressId);
-      }else {
+      } else {
         data = {
           name: form.getValues("name"),
           street: form.getValues("street"),
@@ -78,7 +77,6 @@ export default function AddressForm() {
   )
 
   const handlePaymentClick = async () => {
-    setIsPaymentLoading(true);
     setIsLoading(false);
     setIsGoOrder(true)
     try {
@@ -108,7 +106,7 @@ export default function AddressForm() {
             <label className="text-neutral-800 font-bold text-sm mb-2 block">Nom de l&apos;adresse</label>
             <input
               type="text"
-              placeholder={clientAddress?.name}
+              defaultValue={clientAddress?.name ? clientAddress?.name : undefined}
               className="flex h-10 w-full rounded-md border-2 bg-background px-4 py-1.5 text-lg ring-offset-background placeholder-text-muted-foreground focus-visible:outline-none focus-visible:border-purple-600 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 undefined"
               {...form.register("name")}
             />
@@ -117,7 +115,7 @@ export default function AddressForm() {
             <label className="text-neutral-800 font-bold text-sm mb-2 block">Rue</label>
             <input
               type="text"
-              placeholder={clientAddress?.street}
+              defaultValue={clientAddress?.street ? clientAddress?.street : undefined}
               className="flex h-10 w-full rounded-md border-2 bg-background px-4 py-1.5 text-lg ring-offset-background placeholder-text-muted-foreground focus-visible:outline-none focus-visible:border-purple-600 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 undefined"
               {...form.register("street")}
             />
@@ -126,7 +124,7 @@ export default function AddressForm() {
             <label className="text-neutral-800 font-bold text-sm mb-2 block">Code postal</label>
             <input
               type="number"
-              placeholder={clientAddress?.number.toString()}
+              defaultValue={clientAddress?.number.toString() ? clientAddress?.number.toString() : undefined}
               className="flex h-10 w-full rounded-md border-2 bg-background px-4 py-1.5 text-lg ring-offset-background placeholder-text-muted-foreground focus-visible:outline-none focus-visible:border-purple-600 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 undefined"
               {...form.register("number")}
             />
@@ -135,7 +133,7 @@ export default function AddressForm() {
             <label className="text-neutral-800 font-bold text-sm mb-2 block">Ville</label>
             <input
               type="text"
-              placeholder={clientAddress?.city}
+              defaultValue={clientAddress?.city ? clientAddress?.city : undefined}
               className="flex h-10 w-full rounded-md border-2 bg-background px-4 py-1.5 text-lg ring-offset-background placeholder-text-muted-foreground focus-visible:outline-none focus-visible:border-purple-600 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 undefined"
               {...form.register("city")}
               
@@ -145,7 +143,7 @@ export default function AddressForm() {
             <label className="text-neutral-800 font-bold text-sm mb-2 block">Pays</label>
             <input
               type="text"
-              placeholder={clientAddress?.country}
+              defaultValue={clientAddress?.country}
               className="flex h-10 w-full rounded-md border-2 bg-background px-4 py-1.5 text-lg ring-offset-background placeholder-text-muted-foreground focus-visible:outline-none focus-visible:border-purple-600 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 undefined"
               {...form.register("country")}
         

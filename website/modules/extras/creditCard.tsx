@@ -46,7 +46,6 @@ const CreditCardForm = ({handlePaymentClick} : {handlePaymentClick:any}) => {
               onChange={handleCardNumberChange}
               onClick={toggleFrontCard}
               placeholder="4256 4256 4256 4256"
-              required
             />
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -59,7 +58,6 @@ const CreditCardForm = ({handlePaymentClick} : {handlePaymentClick:any}) => {
                 onChange={handleCardNameChange}
                 onClick={toggleFrontCard}
                 placeholder="John Doe"
-                required
               />
             </div>
             <div className="mb-4">
@@ -72,7 +70,6 @@ const CreditCardForm = ({handlePaymentClick} : {handlePaymentClick:any}) => {
                 onChange={handleCardDateChange}
                 onClick={toggleFrontCard}
                 placeholder="MM/YYYY"
-                required
               />
             </div>
             <div className="mb-4 lg:col-span-1">
@@ -85,7 +82,6 @@ const CreditCardForm = ({handlePaymentClick} : {handlePaymentClick:any}) => {
                 onChange={handleCardSecurityChange}
                 onClick={toggleBackCard}
                 placeholder="XXX"
-                required
               />
             </div>
             <div className="mb-4 flex items-end justify-center">

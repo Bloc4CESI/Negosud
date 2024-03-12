@@ -102,18 +102,20 @@ export const ProductListing = () => {
 
   if (isLoading) return <Loading />;
   return (
-    <div className="m-16 mt-2">
-      <div className="p-5 mb-5 border-b-2 border-b-zinc-800 flex justify-between">
-        <div>
-         <h2 className="text-5xl flex justify-center">NOS PRODUITS</h2>
-        </div>
-        <div className="flex items-center">
-          <SearchBar onSearch={handleProductNameChange}/>
-          <SortByFamily onFamilyChange={handleFamilyChange} handleReset={handleReset}/>
-          <SortByPrice onSortChange={setSortOrder} /> 
+    <div className="md:m16 mt-2">
+      <div className="p-5 mb-5 border-b-2 border-b-zinc-800 flex-col  md:flex-row flex justify-between">
+           <h2 className="text-5xl mb-4 flex justify-center">NOS PRODUITS</h2>
+          <div className="flex flex-col md:flex-row items-center">
+            <SearchBar onSearch={handleProductNameChange}/>
+            <SortByFamily onFamilyChange={handleFamilyChange}/>
+            <XMarkIcon
+              className="h-6 w-6 cursor-pointer hover:scale-110"
+              onClick={() => {handleReset();}}
+            />
+            <SortByPrice onSortChange={setSortOrder} />
         </div>
       </div>
-      <ul className="flex flex-wrap">
+      <ul className="flex justify-center flex-wrap">
         {products.filter(value => {
           return value.name.toLowerCase().includes(searchTerm ? searchTerm.toLowerCase() : "");
         }).map((value) => (

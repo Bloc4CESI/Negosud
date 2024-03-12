@@ -10,11 +10,10 @@ interface Family {
 
 interface SortByFamilyProps {
   onFamilyChange: (familyId: number | undefined) => void;
-  handleReset: () => void;
   error?: string;
 }
 
-export default function SortByFamily({ onFamilyChange, handleReset, error, ...rest }: SortByFamilyProps) {
+export default function SortByFamily({ onFamilyChange, error, ...rest }: SortByFamilyProps) {
   const [family, setFamily] = useState<Family[]>([]);
   const [selectedFamily, setSelectedFamily] = useState();
   const [selectedNameFamily, setSelectedNameFamily] = useState();
@@ -83,9 +82,6 @@ export default function SortByFamily({ onFamilyChange, handleReset, error, ...re
           )}
         </Listbox>
       </div>
-      <XMarkIcon className="h-6 w-6 cursor-pointer hover:scale-110" onClick={() => {
-        handleChange(undefined);
-      }}/>
     </div>
   );
 }

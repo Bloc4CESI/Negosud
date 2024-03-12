@@ -15,7 +15,7 @@ export default function OrdersPage() {
   const [connected, setConnected] = useState(false);
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-const [orders, setOrders] = useState<OrderType[]>([]);
+  const [orders, setOrders] = useState<OrderType[]>([]);
 
   useEffect(() => {
     if (localStorage.getItem('connected') === null) {
