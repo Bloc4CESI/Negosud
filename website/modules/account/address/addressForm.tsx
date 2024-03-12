@@ -11,7 +11,13 @@ export default function AddressForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { register, handleSubmit, formState: { errors }, trigger } = useForm<FormValues>();
-  const accountData = localStorage.getItem('account');
+  let accountData
+  if (typeof window !== 'undefined') {
+    accountData = localStorage.getItem('account');
+  } else {
+    console.log("Le code s'exécute côté serveur et localStorage n'est pas disponible.");
+  }
+
 
   type FormValues = {
     name: string;
@@ -38,6 +44,7 @@ export default function AddressForm() {
     }
 
   if (accountData !== null) {
+    // @ts-ignore
     infoClient = JSON.parse(accountData);
   } else {
     router.push('/login');
