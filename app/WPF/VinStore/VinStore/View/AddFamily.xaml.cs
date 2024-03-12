@@ -37,7 +37,11 @@ namespace VinStore.View
         private async void LoadFamily()
         {
             var family = await FamilyService.GetFamily();
-            FamilyName.ItemsSource = family.Select(f => f.Name).ToList();
+            if(family != null)
+            {
+                FamilyName.ItemsSource = family.Select(f => f.Name).ToList();
+            }
+           
         }
         private void Button_Click(object sender, RoutedEventArgs e)
         {

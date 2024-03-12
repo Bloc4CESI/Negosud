@@ -86,13 +86,37 @@ namespace VinStore.View
            NewProviderAdresscountry.Text = "";
            Provider_AddPopup.IsOpen = true;
         }
+        private string ActivePopup = "";
         private void TextBox_IntegerInput(object sender, TextCompositionEventArgs e)
         {
-            // Vérifier si le texte est un entier
             if (!int.TryParse(e.Text, out _))
             {
-                MessageBox.Show("Veuillez entrer un nombre entier valide dans la quantité.");
+                // Déterminer quel popup est actuellement ouvert
+                if (Provider_AddPopup.IsOpen)
+                {
+                    ActivePopup = "Add";
+                    Provider_AddPopup.IsOpen = false;
+                }
+                else if (Provider_PutPopup.IsOpen)
+                {
+                    ActivePopup = "Put";
+                    Provider_PutPopup.IsOpen = false;
+                }
+                MessageBox.Show("Veuillez entrer un nombre entier valide.");
                 e.Handled = true; // Ignorer si pas un entier
+
+                // Réouvrir le popup basé sur ActivePopup
+                if (ActivePopup == "Add")
+                {
+                    Provider_AddPopup.IsOpen = true;
+                }
+                else if (ActivePopup == "Put")
+                {
+                    Provider_PutPopup.IsOpen = true;
+                }
+
+                // Réinitialiser ActivePopup
+                ActivePopup = "";
             }
         }
         private void Button_Open_Provider_PutPopup_Click(object sender, RoutedEventArgs e)
@@ -142,7 +166,7 @@ namespace VinStore.View
                 }
                 if (!Regex.IsMatch(NewProviderPhoneNumber.Text, @"^\d{10}$"))
                 {
-                    errorMessage += "- Numéro Téléphone doit contenir exactement 12 chiffres\n";
+                    errorMessage += "- Numéro Téléphone doit contenir exactement 10 chiffres\n";
                     isFormValid = false;
                 }
 

@@ -35,14 +35,21 @@ namespace VinStore.View
         private async void LoadProductsAlert()
         {
             var productsAlert = await ProductService.GetAlertProducts();
-            int count = productsAlert.Count;
-            CountProductQuantityMin.Text = count.ToString();
+            if(productsAlert != null) {
+                int count = productsAlert.Count;
+                CountProductQuantityMin.Text = count.ToString();
+            }
+          
         }
         private async void LoadOrderProvierToValidate()
         {
             var providerOrdersToValidate = await CommandProviderService.GetProviderOrderByStatus(ProviderOrderStatus.ENCOURSDEVALIDATION);
-            int count = providerOrdersToValidate.Count;
-            CommandProviderToValidate.Text = count.ToString();
+         if(providerOrdersToValidate != null)
+            {
+                int count = providerOrdersToValidate.Count;
+                CommandProviderToValidate.Text = count.ToString();
+            }
+           
 
         }
         private async void CommandToDeliver()

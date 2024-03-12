@@ -23,6 +23,8 @@ using System.Windows.Shapes;
 using VinStore.Services;
 using static System.Net.Mime.MediaTypeNames;
 using RestSharp;
+using System.Globalization;
+using System.Diagnostics;
 
 namespace VinStore.View
 {
@@ -41,7 +43,7 @@ namespace VinStore.View
         {
             try
             {
-                var providers = await ProviderService.GetProviders();
+                var providers = await ProviderService.GetProvidersAll();
 
                 // Utiliser Dispatcher.Invoke pour mettre à jour l'interface utilisateur
                 Dispatcher.Invoke(() =>
@@ -182,9 +184,9 @@ namespace VinStore.View
                 {
                     // Le formulaire est valide, procédez avec le reste du code
                     string nom = txtName.Text;
-                    decimal prix = Convert.ToDecimal(txtPrice.Text);
+                    decimal.TryParse(txtPrice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal prix);
                     string description = txtDescription.Text;
-                    DateOnly dateProduction = DateOnly.FromDateTime(OrderDate.SelectedDate.Value);
+                    DateOnly dateProduction = DateOnly.FromDateTime(OrderDate.SelectedDate!.Value);
                     int nbProductBox = Convert.ToInt32(txtNbProductBox.Text);
                     string maison = txtHome.Text;
                     var famille = FamilyName.SelectedItem as Family;
