@@ -130,7 +130,7 @@ namespace ApiNegosud.Controllers
                             var providerOrderLine = new ProviderOrderLine
                             {
                                 Quantity = quantity,
-                                Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)) * quantity, // 1/3 du prix produit
+                                Price = (_context.Product.FirstOrDefault(p => p.Id == productId)!.Price * (1m / 3m)), // 1/3 du prix produit
                                 ProductId = productId,
                                 ProviderOrderId = existingProviderOrder.Id
                             };

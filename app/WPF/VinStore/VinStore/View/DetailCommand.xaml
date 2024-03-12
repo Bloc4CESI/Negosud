@@ -38,7 +38,7 @@
                         <TextBlock Text="Informations générales" Foreground="Black" FontSize="18" FontWeight="Bold" Opacity="2" TextAlignment="Center"/>
                     </StackPanel>
                 </materialDesign:ColorZone>
-                <DatePicker Grid.Row="1" Margin="20" Background="#F5F5F5" materialDesign:CalendarAssist.SelectionForegroundColor="Beige"
+                <DatePicker Grid.Row="1" Margin="20" Background="#F5F5F5" IsEnabled="False" materialDesign:CalendarAssist.SelectionForegroundColor="Beige"
                materialDesign:HintAssist.Hint="Date de la commande" SelectedDate="{Binding Path=Date,Mode=TwoWay}" BorderBrush="Black" x:Name="OrderDate"
                   materialDesign:TextFieldAssist.UnderlineBrush="Black">
                     <DatePicker.CalendarStyle>

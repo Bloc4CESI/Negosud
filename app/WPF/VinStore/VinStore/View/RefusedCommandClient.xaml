@@ -48,6 +48,7 @@
                     </materialDesign:ColorZone>
                     <DataGrid Margin="0,90,0,0" x:Name="RefusedCommandClientGrid" AutoGenerateColumns="False" CanUserAddRows="False" ColumnWidth="*" IsReadOnly="True">
                         <DataGrid.Columns>
+                            <DataGridTextColumn Header="Numéro commande" Foreground="Black" Binding="{Binding Id}" />
                             <DataGridTextColumn Header="Date commande" Foreground="Black" Binding="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}" />
                             <DataGridTextColumn Header="Prix commande" Foreground="Black" Binding="{Binding Price}" />
                             <DataGridTextColumn Header="Client" Foreground="Black" Binding="{Binding Client.FirstName}" />

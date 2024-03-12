@@ -90,7 +90,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" Margin="20" Cursor="Hand">
                             <materialDesign:PackIcon Kind="AlertOutline" Foreground="CadetBlue"  Width="30" Height="30" VerticalAlignment="Center" Margin="5 0"/>
-                            <TextBlock Text="Commande Fournisseur à Livrer" FontSize="20" FontWeight="Bold" Foreground="CadetBlue"/>
+                            <TextBlock Text="Commande Fournisseur à réceptionner" FontSize="20" FontWeight="Bold" Foreground="CadetBlue"/>
                         </StackPanel>
                     </Grid>
 
