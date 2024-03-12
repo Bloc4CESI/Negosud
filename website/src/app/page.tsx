@@ -28,7 +28,7 @@ export default function Home() {
         <div className="flex flex-col md:flex-row items-center bg-[url(../../public/images/vin_accueil.jpg)] bg-clip-border bg-cover bg-center h-72 md:h-96 md:rounded-lg mb-1 md:mb-4">
           <div className="w-full h-full flex items-center bg-white bg-opacity-40 md:bg-gradient-to-r md:from-white md:via-white md:to-transparent text-center md:text-left px-6 md:px-0 py-6 md:py-0">
               <p className="text-xl font-mono italic font-bold">
-                Bienvenue chez NegoSud, votre partenaire de confiance pour l'achat de vins en ligne.
+                Bienvenue chez NegoSud, votre partenaire de confiance pour l&apos;achat de vins en ligne.
                 <br/>
                 <br/>
                 Découvrez notre histoire et notre passion pour les vins de qualité.
